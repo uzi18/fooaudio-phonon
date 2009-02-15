@@ -14,7 +14,6 @@ FooTabWidget::FooTabWidget (QWidget *parent) : QWidget (parent)
 {
 	tabBar_ = new FooTabBar (this);
 	tabBar_->setUsesScrollButtons (true);
-//	setTabPosition(QTabWidget::North);
 
 	layout_ = new QVBoxLayout(this);
 	layout_->setMargin(0);

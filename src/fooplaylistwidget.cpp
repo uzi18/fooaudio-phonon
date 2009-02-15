@@ -1,7 +1,8 @@
 #include <QtGui>
-#include "fooplaylist.hpp"
+#include "fooplaylistwidget.hpp"
+#include "fooplaylistview.hpp"
 
-FooPlaylist::FooPlaylist (QWidget *parent) : FooTabWidget (parent)
+FooPlaylistWidget::FooPlaylistWidget (QWidget *parent) : FooTabWidget (parent)
 {
 	tabBarMenu = new QMenu;
 	tabMenu = new QMenu;
@@ -14,28 +15,28 @@ FooPlaylist::FooPlaylist (QWidget *parent) : FooTabWidget (parent)
 	setupTabs ();
 }
 
-void FooPlaylist::addPlaylist ()
+void FooPlaylistWidget::addPlaylist (QString name)
 {
-	QWidget *widget = new QWidget;
-	addTab (widget, tr ("Default"));
+	FooPlaylistView *fooPlaylistView = new FooPlaylistView (this);
+	addTab (fooPlaylistView, name);
 }
 
-void FooPlaylist::removePlaylist ()
-{
-	;
-}
-
-void FooPlaylist::renamePlaylist ()
+void FooPlaylistWidget::removePlaylist ()
 {
 	;
 }
 
-void FooPlaylist::newPlaylist ()
+void FooPlaylistWidget::renamePlaylist ()
 {
-	addPlaylist ();
+	;
 }
 
-void FooPlaylist::showTabMenu (int tab, QPoint pos, QContextMenuEvent *event)
+void FooPlaylistWidget::newPlaylist ()
+{
+	addPlaylist ("New playlist");
+}
+
+void FooPlaylistWidget::showTabMenu (int tab, QPoint pos, QContextMenuEvent *event)
 {
 	Q_UNUSED (event);
 	tabMenu->clear ();
@@ -58,7 +59,7 @@ void FooPlaylist::showTabMenu (int tab, QPoint pos, QContextMenuEvent *event)
 	}
 }
 
-void FooPlaylist::showTabBarMenu (QPoint pos, QContextMenuEvent *event)
+void FooPlaylistWidget::showTabBarMenu (QPoint pos, QContextMenuEvent *event)
 {
 	Q_UNUSED (event);
 	tabBarMenu->clear ();
@@ -75,15 +76,13 @@ void FooPlaylist::showTabBarMenu (QPoint pos, QContextMenuEvent *event)
 	}
 	if (act == add)
 	{
-		addPlaylist ();
+		newPlaylist ();
 	}
 }
 
-void FooPlaylist::setupTabs ()
+void FooPlaylistWidget::setupTabs ()
 {
-	QWidget *widget = new QWidget;
-	QLabel *aaa = new QLabel ("aaa", widget);
-	addTab (widget, tr ("Nowy"));
+	addPlaylist ("New playlist");
 }
 
 

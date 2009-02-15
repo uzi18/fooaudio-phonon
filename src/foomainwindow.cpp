@@ -1,14 +1,14 @@
 #include <QtGui>
 #include "foomainwindow.hpp"
 
-class FooPlaylist;
+class FooPlaylistWidget;
 
 FooMainWindow::FooMainWindow () : QMainWindow ()
 {
 	createMenus ();
 	createToolBars ();
-	fooPlaylist = new FooPlaylist;
-	setCentralWidget (fooPlaylist);
+	fooPlaylistWidget = new FooPlaylistWidget;
+	setCentralWidget (fooPlaylistWidget);
 	setWindowTitle (tr ("foobar"));
 }
 

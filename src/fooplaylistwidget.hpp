@@ -1,17 +1,19 @@
-#ifndef _FOOPLAYLIST_HPP_
-#define _FOOPLAYLIST_HPP_
+#ifndef _FOOPLAYLISTWIDGET_HPP_
+#define _FOOPLAYLISTWIDGET_HPP_
 
 #include <QWidget>
 #include "footabwidget.hpp"
+#include "footablewidget.hpp"
+#include "fooplaylistview.hpp"
 
-class FooPlaylist : public FooTabWidget
+class FooPlaylistWidget : public FooTabWidget
 {
 	Q_OBJECT
 
 public:
-	FooPlaylist (QWidget *parent = 0);
+	FooPlaylistWidget (QWidget *parent = 0);
 
-	void addPlaylist ();
+	void addPlaylist (QString);
 
 protected slots:
 	void removePlaylist ();
@@ -27,5 +29,5 @@ private:
 	void setupTabs ();
 };
 
-#endif // _FOOPLAYLIST_HPP_
+#endif // _FOOPLAYLISTWIDGET_HPP_
 
