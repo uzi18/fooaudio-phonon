@@ -9,7 +9,7 @@ FooMainWindow::FooMainWindow () : QMainWindow ()
 	createToolBars ();
 	fooPlaylistWidget = new FooPlaylistWidget;
 	setCentralWidget (fooPlaylistWidget);
-	setWindowTitle (tr ("foobar"));
+	setWindowTitle (tr ("fooaudio"));
 }
 
 FooMainWindow::~FooMainWindow ()
