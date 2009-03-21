@@ -1,212 +1,205 @@
 #include "footabwidget.hpp"
-#include "footabbar.hpp"
-#include <QWidget>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QToolButton>
-#include <QStackedLayout>
-#include <QStyle>
-#include <QApplication>
+
+#include "foomainwindow.hpp"
+#include "footabbat.hpp"
+
+#include <QCompleter>
+#include <QEvent>
 #include <QMenu>
+
 #include <QDebug>
 
-FooTabWidget::FooTabWidget (QWidget *parent) : QWidget (parent)
+FooTabWidget::FooTabWidget (QWidget *parent) : QTabWidget (parent), m_recentlyClosedTabsAction(0), m_newTabAction(0), m_closeTabAction(0), m_nextTabAction(0), m_previousTabAction(0), m_recentlyClosedTabsMenu(0), m_lineEditCompleter(0), m_lineEdits(0), m_tabBar(new FooTabBar (this))
 {
-	tabBar_ = new FooTabBar (this);
-	tabBar_->setUsesScrollButtons (true);
+   setElideMode(Qt::ElideRight);
 
-	layout_ = new QVBoxLayout(this);
-	layout_->setMargin(0);
-	layout_->setSpacing(0);
-	
-	barLayout_ = new QHBoxLayout ();
-	barLayout_->setMargin(0);
-	barLayout_->setSpacing(0);
-	barLayout_->addWidget(tabBar_, 2);
-	barLayout_->setAlignment(Qt::AlignLeft);
-	layout_->addLayout (barLayout_);
+   new QShortcut(QKeySequence(Qt:CTRL | Qt::SHIFT | Qt::Key_T), this, SLOT(openLastTab()));
 
-	stacked_ = new QStackedLayout(layout_);
+   connect(m_tabBar, SIGNAL(newTab()), this, SLOT(newTab()));
+   connect(m_tabBar, SIGNAL(closeTab(int)), this, SLOT(closeTab(int)));
+   connect(m_tabBar, SIGNAL(cloneTab(int)), this, SLOT(cloneTab(int)));
+   connect(m_tabBar, SIGNAL(closeOtherTabs(int)), this, SLOT(closeOtherTabs(int)));
 
-	connect (tabBar_, SIGNAL (mouseDoubleClickTab (int)), this, SLOT (mouseDoubleClickTab (int)));
-	connect (tabBar_, SIGNAL (contextMenu(QContextMenuEvent *, int)), this, SLOT (tab_contextMenu (QContextMenuEvent *, int)));
-	connect (tabBar_, SIGNAL (currentChanged (int)), this, SLOT (tab_currentChanged (int)));
-	connect (tabBar_, SIGNAL (moveTabSignal (int, int)), this, SLOT (moveTab (int, int)));
+   setTabBar(m_tabBar);
+
+   setDocumentMode(true);
+
+   connect(m_tabBar, SIGNAL(tabMoved(int, int)), this, SLOT(moveTab(int, int)));
+
+   // Actions
+   m_newTabAction = new QAction(tr("New &Tab"), this);
+   m_newTabAction->setShortcuts(QKeySequence::AddTab);
+   connect(m_newTabAction, SIGNAL(triggered()), this, SLOT(newTab()));
+
+   m_closeTabAction = new QAction(tr("&Close Tab"), this);
+   m_closeTabAction->setShortcuts(QKeySequence::Close);
+   connect(m_closeTabAction, SIGNAL(triggered()), this, SLOT(closeTab()));
+
+   m_nextTabAction = new QAction(tr("Show Next Tab"), this);
+   QList<QKeySequence> shortcuts;
+   shortcuts.append(QKeySequence(Qt::CTRL | Qt::Key_BraceRight));
+   shortcuts.append(QKeySequence(Qt::CTRL | Qt::Key_PageDown));
+   shortcuts.append(tr("Ctrl-]"));
+   shortcuts.append(QKeySequence(Qt::CTRL | Qt::Key_Less));
+   shortcuts.append(QKeySequence(Qt::CTRL | Qt::Key_Tab));
+   m_nextTabAction->setShortcuts(shortcuts);
+   connect(m_nextTabAction, SIGNAL(triggered()), this, SLOT(nextTab()));
+
+   m_previousTabAction = new QAction(tr("Show Previous Tab"), this);
+   shortcuts.clear();
+   shortcuts.append(QKeySequence(Qt::CTRL | Qt::Key_BraceLeft));
+   shortcuts.append(QKeySequence(Qt::CTRL | Qt::Key_PageUp));
+   shortcuts.append(tr("Ctrl-["));
+   shortcuts.append(QKeySequence(Qt::CTRL | Qt::Key_Greater));
+   shortcuts.append(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_Tab));
+   m_previousTabAction->setShortcuts(shortcuts);
+   connect(m_previousTabAction, SIGNAL(triggered()), this, SLOT(previousTab()));
+
+   m_recentlyClosedTabsMenu = new QMenu(this);
+   connect(m_recentlyClosedTabsMenu, SIGNAL(aboutToShow()), this, SLOT(aboutToShowRecentTabsMenu()));
+   connect(m_recentlyClosedTabsMenu, SIGNAL(triggered(QAction *)), this, SLOT(aboutToShowRecentTriggeredAction(QAction *)));
+   m_recentlyClosedTabsAction = new QAction(tr("Recently Closed Tabs"), this);
+   m_recentlyClosedTabsAction->setMenu(m_recentlyClosedTabsMenu);
+   m_recentlyClosedTabsAction->setEnabled(false);
+
+   m_tabBar->setTabsClosable(true);
+   connect(m_tabBar, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
+   m_tabBar->setSelectionBehaviorOnRemove(QTabBar::SelectPreviousTab);
+
+   connect(this, SIGNAL(currentChanged(int)), this, SLOT(currentChanged(int)));
+
+   m_lineEdits = new QStackedWidget(this);
 }
 
-FooTabWidget::~FooTabWidget ()
+void FooTabWidget::clear()
 {
+   // clear the recently closed tabs
+   m_recentlyClosedTabs.clear();
+   m_recentlyClosedTabsAction->setEnabled(false);
+   // clear the line edit history
+   for (int i = 0; i < m_lineEdits->count(); ++i)
+   {
+	  QLineEdit *qLineEdit = lineEdit(i);
+	  qLineEdit->setText(qLineEdit->text());
+   }
 }
 
-// liczba tabów/widgetów
-int FooTabWidget::count()
+// When index is -1 index chooses the current tab
+void FooTabWidget::moveTab(int fromIndex, int toIndex)
 {
-	return tabBar_->count();
+   QWidget *lineEdit = m_lineEdits->widget(fromIndex);
+   m_lineEdits->removeWidget(lineEdit);
+   m_lineEdits->insertWidget(toIndex, lineEdit);
 }
 
-// Zwraca widget z aktualnego tabu
-QWidget *FooTabWidget::currentPage ()
+void FooTabWidget::currentChanged(int index)
 {
-	if (currentPageIndex () == -1)
-	{
-		return 0;
-	}
-	
-	return widgets_[currentPageIndex ()];
+   Q_ASSERT(m_lineEdits->count() == count());
+   m_lineEdits->setCurrentIndex(index);
 }
 
-void FooTabWidget::tab_currentChanged (int tab)
+QAction *FooTabWidget::newTabAction() const
 {
-// qt 4.4 sends -1 i case of an empty QTabbar, ignore that case.
-	if (tab == -1)
-	{
-		return;
-	}
-	setCurrentPage (tab);
-	emit currentChanged (currentPage ());
+   return m_newTabAction;
 }
 
-//zwraca indeks aktualnego tabu
-int FooTabWidget::currentPageIndex ()
+QAction *FooTabWidget::closeTabAction() const
 {
-	return tabBar_->currentIndex ();
+   return m_closeTabAction;
 }
 
-QWidget *FooTabWidget::widget (int index)
+QAction *FooTabWidget::recentlyClosedTabsAction() const
 {
-	return widgets_[index];
+   return m_recentlyClosedTabsAction;
 }
 
-// dodanie widgetu do stosu
-void FooTabWidget::addTab(QWidget *widget, QString name)
+QAction *FooTabWidget::nextTabAction() const
 {
-	Q_ASSERT(widget);
-	if (widgets_.contains (widget))
-	{
-		return;
-	}
-	widgets_.append (widget);
-	stacked_->addWidget (widget);
-	tabBar_->addTab (name);
-	showPage (currentPage ());
+   return m_nextTabAction;
 }
 
-// wybranie strony dla zdeyfiniowanego widgetu (???)
-void FooTabWidget::showPage (QWidget* widget)
+QAction *FooTabWidget::previousTabAction() const
 {
-	for (int i = 0; i < count (); i++)
-	{
-		if (widgets_[i] == widget)
-		{
-			showPageDirectly (widget);
-			tabBar_->setCurrentIndex (i);
-		}
-	}
+   return m_previousTabAction;
 }
 
-// ja + jakiś internal helper (?????)
-void FooTabWidget::showPageDirectly (QWidget* widget)
+QWidget *FooTabWidget::lineEditStack() const
 {
-	// FIXME move this back into showPage? should this be in the public interface?
-	for (int i = 0; i < count (); i++)
-	{
-		if (widgets_[i] == widget)
-		{
-			stacked_->setCurrentWidget (widget);
-			// currentChanged is handled by tabBar_
-			return;
-		}
-
-	}
+   return m_lineEdits;
 }
 
-// usunięcie strony dla specyficznego widgetu
-void FooTabWidget::removePage (QWidget* widget)
+QLineEdit *FooTabWidget::currentLineEdit() const
 {
-	for (int i = 0; i < count (); i++)
-	{
-		if (widgets_[i] == widget)
-		{
-			stacked_->removeWidget (widget);
-			widgets_.remove (i);
-			tabBar_->removeTab (i);
-		}
-	}
+   return lineEdit(m_lineEdits->currentIndex());
 }
 
-void FooTabWidget::removePage (int index)
+void FooTabWidget::newTab()
 {
-	stacked_->removeWidget (widget (index));
-	widgets_.remove (index);
-	tabBar_->removeTab (index);
+   makeNewTab(true);
 }
 
-void FooTabWidget::insertPage (int index, QString name, QWidget *wid)
+FooMainWindow *FooTabWidget::mainWindow()
 {
-	tabBar_->insertTab (index, name);
-	widgets_.insert (index, wid);
-	stacked_->insertWidget (index, wid);
+   QWidget *w = this->parentWidget();
+   while (w)
+   {
+	  if (FooMainWindow *mw = qobject_cast<FooMainWindow*>(w))
+	  {
+		 return mw;
+	  }
+	  w = w->parentWidget();
+   }
+
+   return 0;
 }
 
-void FooTabWidget::moveTab (int from, int to)
+void FooTabWidget::closeOtherTabs(int index)
 {
-	QString name = tabBar_->tabText (from);
-	QWidget *wid = new QWidget;
-	wid = widget (from);
-	blockSignals (true);
-	this->removePage (from);
-	this->insertPage (to, name, wid);
-	tabBar_->setCurrentIndex (to);
-	this->setCurrentPage (to);
-	blockSignals (false);
-//	delete wid;
+   if (-1 == index)
+   {
+	  return;
+   }
+
+   for (int i = count() - 1; i > index; --i)
+   {
+	  closeTab(i);
+   }
+   for (int i = index - 1; i >= 0; --i)
+   {
+	  closeTab(i);
+   }
 }
 
-// znajdowanie indeksu 
-int FooTabWidget::getIndex (QWidget* widget)
+void FooTabWidget::aboutToShowRecentTabsMenu()
 {
-	for (int i = 0; i < count (); i++)
-	{
-		if (widgets_[i] == widget)
-		{
-			return i;
-		}
-	}
-	return -1;
+   m_recentlyClosedTabsMenu->clear();
+
+   for (int i = 0; i < m_recentlyClosedTabs.count(); ++i)
+   {
+	  QAction *action = new QAction(m_recentlyClosedTabsMenu);
+	  action->setData(m_recentlyClosedTabs.at(i));
+	  m_recentlyClosedTabsMenu->addAction(action);
+   }
 }
 
-void FooTabWidget::setCurrentPage (int index)
+void FooTabWidget::nextTab()
 {
-	Q_ASSERT (index >= 0 && index < count());
-	showPage (widgets_[index]);
+   int next = currentIndex() + 1;
+   if (next == count())
+   {
+	  next = 0;
+   }
+   setCurrentIndex(next);
 }
 
-void FooTabWidget::removeCurrentPage ()
+void FooTabWidget::previousTab()
 {
-	removePage (currentPage ());
-}
-
-void FooTabWidget::mouseDoubleClickTab (int tab)
-{
-	if (tab >= 0)
-	{
-		emit mouseDoubleClickTab (widget (tab));
-	}
-	else
-	{
-		emit mouseDoubleClickTabBar ();
-	}
-}
-
-void FooTabWidget::tab_contextMenu (QContextMenuEvent *event, int tab)
-{
-	if (tab >= 0)
-	{
-		emit tabContextMenu (tab, tabBar_->mapToGlobal (event->pos ()), event);
-	}
-	else
-	{
-		emit tabBarContextMenu (tabBar_->mapToGlobal (event->pos ()), event);
-	}
+   int next = currentIndex() - 1;
+   if (next < 0)
+   {
+	  next = count() - 1;
+   }
+   setCurrentIndex(next);
+   }
 }
 

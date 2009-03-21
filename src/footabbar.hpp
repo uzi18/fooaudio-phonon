@@ -2,38 +2,69 @@
 #define _FOOTABBAR_HPP_
 
 #include <QTabBar>
-#include <QPoint>
+#include "footabwidget.hpp"
+
+class FooTabWidget;
+
+/*
+ * Tab bar with a few more features such as a context menu and shortcuts
+ */
 
 class FooTabBar : public QTabBar
 {
 	Q_OBJECT
 
-public:
-	FooTabBar (QWidget *parent);
-	~FooTabBar ();
-
 signals:
-	void mouseDoubleClickTab (int tab);
-	void contextMenu (QContextMenuEvent *event, int tab);
-	void moveTabSignal (int, int);
+	void newTab ();
+	void cloneTab (int);
+	void closeTab (int);
+	void closeOtherTabs (int);
+
+public:
+	FooTabBar (QWidget *parent = 0);
+
+	QTabBar::ButtonPosition freeSide ();
 
 protected:
 	void mouseDoubleClickEvent (QMouseEvent *);
-	void mouseMoveEvent (QMouseEvent *);
+	void mouseReleaseEvent (QMouseEvent *);
 	void mousePressEvent (QMouseEvent *);
-	void contextMenuEvent (QContextMenuEvent *);
-	void wheelEvent (QWheelEvent *);
+	void moiseMoveEvent (QMouseEvent *);
 
-	void dragEnterEvent (QDragEnterEvent *);
-	void dragMoveEvent (QDragMoveEvent *);
-	void dropEvent (QDropEvent *);
+	QSize tabSizeHint (int) const;
+	void tabInserted (int);
+	void tabRemoved (int);
+
+private slots:
+	void selectTabAction ();
+	void cloneTab ();
+	void closeTab ();
+	void closeOtherTabs ();
+	void contextMenuRequested (const QPoint &);
 
 private:
-	QPoint dragStartPosition_;
-	int dragTab_;
+	void updateVisibility ();
+	friend class TabWidget;
 
-	int findTabUnder (const QPoint &pos);
-	void moveTab (int, int);
+	QPoint m_dragStartPos;
 };
+
+#include <QShortcut>
+
+/*
+ * Shortcut to switch directly to a tab by index
+ */
+
+class FooTabShortcut : public QShortcut
+{
+	Q_OBJECT
+
+public:
+	int tab ();
+	FooTabShortcut (int, const QKeySequence &, QWidget *);
+
+private:
+	int m_tab;
+}
 
 #endif // _FOOTABBAT_HPP_

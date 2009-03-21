@@ -2,63 +2,91 @@
 #define _FOOTABWIDGET_HPP_
 
 #include <QTabWidget>
-#include <QTabBar>
-#include <QDragEnterEvent>
+#include <QtGui>
 #include "footabbar.hpp"
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QToolButton;
-class QStackedLayout;
-class QMenu;
+/*
+ *
+ */
 
-class FooTabWidget : public QWidget
+class FooTabWidget : public QTabWidget
 {
-	Q_OBJECT
-	
-public:
-	FooTabWidget (QWidget *parent = 0);
-	~FooTabWidget ();
-
-	int count ();
-	QWidget *currentPage ();
-	int currentPageIndex ();
-	QWidget *widget (int);
-	void addTab (QWidget *, QString);
-	void showPage (QWidget *);
-	void showPageDirectly (QWidget *);
-
-	void removePage (QWidget *);
-	void removePage (int);
-	void insertPage (int, QString, QWidget *);
-	int getIndex (QWidget *);
-
-public slots:
-	void setCurrentPage (int);
-	void removeCurrentPage ();
-	void moveTab (int, int);
+   Q_OBJECT
 
 signals:
-	void mouseDoubleClickTab (QWidget *);
-	void mouseDoubleClickTabBar ();
-	void tabBarContextMenu (QPoint, QContextMenuEvent *);
-	void tabContextMenu (int, QPoint, QContextMenuEvent *);
-	void currentChanged (QWidget *);
+	// tabwidget signals
+	void tabsChanged ();
+	void lastTabClosed ();
+
+	// current tab signals
+	void setCurrentTitle(const QString &);
+	void showStatusBarMessage (const QString &);
+	void linkHovered (const QString &);
+	void loadProgress (int);
+	void geometryChangeRequested(const QRect &);
+	void menuBarVisibilityChangeRequested (bool);
+	void statusBarVisibilityChangeRequested (bool);
+	void toolBarVisibilityChangeRequested (bool);
+	
+public:
+	enum Tab
+	{
+	   CurrentTab, NewTab
+	};
+
+	FooTabWidget (QWidget *parent = 0);
+
+	FooTabBar *tabBar ()
+	{
+	   return m_tabBar;
+	}
+
+	void clear ();
+
+	QAction *newTabAction () const;
+	QAction *closeTabAction () const;
+	QAction *recentlyClosedTabsAction () const;
+	QAction *nextTabAction () const;
+	QAction *previousTabAction () const;
+
+	QWidget *lineEditStack () const;
+	QLineEdit *currentLineEdit () const;
+	QLineEdit *lineEdit (int) const;
+	
+public slots:
+	void newTab ();
+	void cloneTab (int index = -1);
+	void closeTab (int index = -1);
+	void closeOtherTabs (int);
+	void nextTab ();
+	void previousTab ();
 
 private slots:
-	void mouseDoubleClickTab (int);
-	void tab_currentChanged (int);
-	void tab_contextMenu (QContextMenuEvent *, int);
+	void currentChanged (int);
+	void openLastTab ();
+	void aboutToShowRecentTabsMenu ();
+	void aboutToShowRecentTriggeredAction (QAction *action);
+	void lineEditReturnPressed ();
+	void windowCloseRequested ();
+	void moveTab (int, int);
+	void geometryChangeRequestedCheck (const QRect &);
 
 private:
-	QVector<QWidget*> widgets_;
-	FooTabBar *tabBar_;
-	QVBoxLayout *layout_;
-	QHBoxLayout *barLayout_;
-	QStackedLayout *stacked_;
-};
+	QLabel *animationLabel (int, bool);
 
-#define FOOTABDRAGMIMETYPE "x-drag-drop/x-foo-tab-drag"
+	QAction *m_recentlyClosedTabAction;
+	QAction *m_newTabAction;
+	QAction *m_closeTabAction;
+	QAction *m_nextTabAction;
+	QAction *m_previousTabAction;
+
+	QMenu *m_recentlyCLosedTabsMenu;
+
+	static const int m_recentlyClosedTabsSize = 10;
+	QCompleter *m_lineEditCompleter;
+	QStackedWidget *m_lineEdits;
+	FooTabBar *m_tabBar;
+}
 
 #endif // _FOOTABWIDGET_HPP_
 
