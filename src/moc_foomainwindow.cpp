@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'foomainwindow.hpp'
 **
-** Created: Sat Mar 21 12:59:28 2009
+** Created: Sat Mar 21 13:04:43 2009
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.0)
 **
 ** WARNING! All changes made in this file will be lost!
