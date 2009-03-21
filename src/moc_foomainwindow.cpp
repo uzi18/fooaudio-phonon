@@ -1,8 +1,8 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'foomainwindow.hpp'
 **
-** Created: Mon Feb 9 22:58:25 2009
-**      by: The Qt Meta Object Compiler version 59 (Qt 4.4.3)
+** Created: Sat Mar 21 12:59:28 2009
+**      by: The Qt Meta Object Compiler version 61 (Qt 4.5.0)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -10,8 +10,8 @@
 #include "foomainwindow.hpp"
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'foomainwindow.hpp' doesn't include <QObject>."
-#elif Q_MOC_OUTPUT_REVISION != 59
-#error "This file was generated using the moc from 4.4.3. It"
+#elif Q_MOC_OUTPUT_REVISION != 61
+#error "This file was generated using the moc from 4.5.0. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -20,12 +20,13 @@ QT_BEGIN_MOC_NAMESPACE
 static const uint qt_meta_data_FooMainWindow[] = {
 
  // content:
-       1,       // revision
+       2,       // revision
        0,       // classname
        0,    0, // classinfo
-      54,   10, // methods
+      54,   12, // methods
        0,    0, // properties
        0,    0, // enums/sets
+       0,    0, // constructors
 
  // slots: signature, parameters, type, tag, flags
       15,   14,   14,   14, 0x08,
@@ -189,6 +190,7 @@ int FooMainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 51: searchAlbum(); break;
         case 52: configure(); break;
         case 53: about(); break;
+        default: ;
         }
         _id -= 54;
     }

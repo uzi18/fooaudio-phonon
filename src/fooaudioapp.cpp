@@ -15,7 +15,7 @@ FooaudioApp::FooaudioApp (int argc, char *argv[]) : QApplication (argc, argv)
 
 void FooaudioApp::loadPlugins ()
 {
-	foreach (QObject *plugin, QPluginLoader::staticInstances ())
+/*	foreach (QObject *plugin, QPluginLoader::staticInstances ())
 	{
 		;
 	}
@@ -33,6 +33,6 @@ void FooaudioApp::loadPlugins ()
 		{
 			pluginFileNames += fileName;
 		}
-	}
+	}*/
 }
 

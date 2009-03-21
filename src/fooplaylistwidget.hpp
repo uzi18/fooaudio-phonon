@@ -3,8 +3,6 @@
 
 #include <QWidget>
 #include "footabwidget.hpp"
-#include "footablewidget.hpp"
-#include "fooplaylistview.hpp"
 
 class FooPlaylistWidget : public FooTabWidget
 {

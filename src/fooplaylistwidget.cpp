@@ -1,6 +1,5 @@
 #include <QtGui>
 #include "fooplaylistwidget.hpp"
-#include "fooplaylistview.hpp"
 
 FooPlaylistWidget::FooPlaylistWidget (QWidget *parent) : FooTabWidget (parent)
 {
@@ -17,8 +16,8 @@ FooPlaylistWidget::FooPlaylistWidget (QWidget *parent) : FooTabWidget (parent)
 
 void FooPlaylistWidget::addPlaylist (QString name)
 {
-	FooPlaylistView *fooPlaylistView = new FooPlaylistView (this);
-	addTab (fooPlaylistView, name);
+   QWidget *widget = new QWidget ();
+	addTab (widget, name);
 }
 
 void FooPlaylistWidget::removePlaylist ()
