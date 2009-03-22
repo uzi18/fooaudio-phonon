@@ -1,7 +1,7 @@
 #include "footabwidget.hpp"
 
 #include "foomainwindow.hpp"
-#include "footabbat.hpp"
+#include "footabbar.hpp"
 
 #include <QCompleter>
 #include <QEvent>
@@ -9,15 +9,15 @@
 
 #include <QDebug>
 
-FooTabWidget::FooTabWidget (QWidget *parent) : QTabWidget (parent), m_recentlyClosedTabsAction(0), m_newTabAction(0), m_closeTabAction(0), m_nextTabAction(0), m_previousTabAction(0), m_recentlyClosedTabsMenu(0), m_lineEditCompleter(0), m_lineEdits(0), m_tabBar(new FooTabBar (this))
+FooTabWidget::FooTabWidget (QWidget *parent) : QTabWidget (parent), m_newTabAction(0), m_closeTabAction(0), m_nextTabAction(0), m_previousTabAction(0), m_tabBar(new FooTabBar (this))
 {
    setElideMode(Qt::ElideRight);
 
-   new QShortcut(QKeySequence(Qt:CTRL | Qt::SHIFT | Qt::Key_T), this, SLOT(openLastTab()));
+//   new QShortcut(QKeySequence(Qt:CTRL | Qt::SHIFT | Qt::Key_T), this, SLOT(openLastTab()));
 
    connect(m_tabBar, SIGNAL(newTab()), this, SLOT(newTab()));
    connect(m_tabBar, SIGNAL(closeTab(int)), this, SLOT(closeTab(int)));
-   connect(m_tabBar, SIGNAL(cloneTab(int)), this, SLOT(cloneTab(int)));
+//   connect(m_tabBar, SIGNAL(cloneTab(int)), this, SLOT(cloneTab(int)));
    connect(m_tabBar, SIGNAL(closeOtherTabs(int)), this, SLOT(closeOtherTabs(int)));
 
    setTabBar(m_tabBar);
@@ -55,47 +55,33 @@ FooTabWidget::FooTabWidget (QWidget *parent) : QTabWidget (parent), m_recentlyCl
    m_previousTabAction->setShortcuts(shortcuts);
    connect(m_previousTabAction, SIGNAL(triggered()), this, SLOT(previousTab()));
 
-   m_recentlyClosedTabsMenu = new QMenu(this);
-   connect(m_recentlyClosedTabsMenu, SIGNAL(aboutToShow()), this, SLOT(aboutToShowRecentTabsMenu()));
-   connect(m_recentlyClosedTabsMenu, SIGNAL(triggered(QAction *)), this, SLOT(aboutToShowRecentTriggeredAction(QAction *)));
-   m_recentlyClosedTabsAction = new QAction(tr("Recently Closed Tabs"), this);
-   m_recentlyClosedTabsAction->setMenu(m_recentlyClosedTabsMenu);
-   m_recentlyClosedTabsAction->setEnabled(false);
-
-   m_tabBar->setTabsClosable(true);
-   connect(m_tabBar, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
+   m_tabBar->setTabsClosable(false);
    m_tabBar->setSelectionBehaviorOnRemove(QTabBar::SelectPreviousTab);
 
    connect(this, SIGNAL(currentChanged(int)), this, SLOT(currentChanged(int)));
 
-   m_lineEdits = new QStackedWidget(this);
+   newTab ();
 }
 
 void FooTabWidget::clear()
 {
    // clear the recently closed tabs
-   m_recentlyClosedTabs.clear();
-   m_recentlyClosedTabsAction->setEnabled(false);
-   // clear the line edit history
-   for (int i = 0; i < m_lineEdits->count(); ++i)
-   {
-	  QLineEdit *qLineEdit = lineEdit(i);
-	  qLineEdit->setText(qLineEdit->text());
-   }
+}
+
+FooTabBar *FooTabWidget::tabBar ()
+{
+   return m_tabBar;
 }
 
 // When index is -1 index chooses the current tab
 void FooTabWidget::moveTab(int fromIndex, int toIndex)
 {
-   QWidget *lineEdit = m_lineEdits->widget(fromIndex);
-   m_lineEdits->removeWidget(lineEdit);
-   m_lineEdits->insertWidget(toIndex, lineEdit);
 }
 
 void FooTabWidget::currentChanged(int index)
 {
-   Q_ASSERT(m_lineEdits->count() == count());
-   m_lineEdits->setCurrentIndex(index);
+//   Q_ASSERT(m_lineEdits->count() == count());
+//   m_lineEdits->setCurrentIndex(index);
 }
 
 QAction *FooTabWidget::newTabAction() const
@@ -108,11 +94,6 @@ QAction *FooTabWidget::closeTabAction() const
    return m_closeTabAction;
 }
 
-QAction *FooTabWidget::recentlyClosedTabsAction() const
-{
-   return m_recentlyClosedTabsAction;
-}
-
 QAction *FooTabWidget::nextTabAction() const
 {
    return m_nextTabAction;
@@ -123,34 +104,15 @@ QAction *FooTabWidget::previousTabAction() const
    return m_previousTabAction;
 }
 
-QWidget *FooTabWidget::lineEditStack() const
-{
-   return m_lineEdits;
-}
-
-QLineEdit *FooTabWidget::currentLineEdit() const
-{
-   return lineEdit(m_lineEdits->currentIndex());
-}
-
 void FooTabWidget::newTab()
 {
-   makeNewTab(true);
+   QWidget *wid = new QWidget ();
+   addTab (wid, "dupa");
+//   m_tabBar->addTab("dupa");
 }
 
-FooMainWindow *FooTabWidget::mainWindow()
+void FooTabWidget::closeTab (int index)
 {
-   QWidget *w = this->parentWidget();
-   while (w)
-   {
-	  if (FooMainWindow *mw = qobject_cast<FooMainWindow*>(w))
-	  {
-		 return mw;
-	  }
-	  w = w->parentWidget();
-   }
-
-   return 0;
 }
 
 void FooTabWidget::closeOtherTabs(int index)
@@ -167,18 +129,6 @@ void FooTabWidget::closeOtherTabs(int index)
    for (int i = index - 1; i >= 0; --i)
    {
 	  closeTab(i);
-   }
-}
-
-void FooTabWidget::aboutToShowRecentTabsMenu()
-{
-   m_recentlyClosedTabsMenu->clear();
-
-   for (int i = 0; i < m_recentlyClosedTabs.count(); ++i)
-   {
-	  QAction *action = new QAction(m_recentlyClosedTabsMenu);
-	  action->setData(m_recentlyClosedTabs.at(i));
-	  m_recentlyClosedTabsMenu->addAction(action);
    }
 }
 
@@ -200,6 +150,5 @@ void FooTabWidget::previousTab()
 	  next = count() - 1;
    }
    setCurrentIndex(next);
-   }
 }
 

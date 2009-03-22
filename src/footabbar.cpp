@@ -10,47 +10,16 @@
 
 #include <QDebug>
 
-FooTabShortcut::FooTabShortcut (int tab, const QKeySequence &key, QWidget *parent) : QShortcut (key, parent), m_tab (tab)
+FooTabBar::FooTabBar (QWidget *parent) : QTabBar (parent), m_showTabBarWhenOneTab(true)
 {
-}
-
-int FooTabShortbut::tab ()
-{
-	return m_tab;
-}
-
-FooTabBar::FooTabBar (QWidget *parent) : QTabBar (parent) 
-{
-   setContextMenuPolicy (Qt::CustomContexMenu);
+   setContextMenuPolicy (Qt::CustomContextMenu);
    setAcceptDrops (true);
    setElideMode (Qt::ElideRight);
    setUsesScrollButtons (true);
 
    connect (this, SIGNAL (customContextMenuRequested (const QPoint &)), this, SLOT (contextMenuRequested (const QPoint &)));
 
-   QString alt = QLatin1String ("Ctrl+%1");
-   for (int i = 0; i< 10; i++)
-   {
-	  int key = i == 9 ? 0 : i + 1;
-	  FooTabShortcut *fooTabShortCut = new FooTabShortcut (i, alt.arg (key), this);
-	  connect (fooTabShortCut, SIGNAL (activated ()), this, SLOT (selectTabAction ()));
-   }
-
    setMovable (true);
-}
-
-QTabBar::ButtonPosition FooTabBar::freeSide ()
-{
-   QTabBar::ButtonPosition side = (QTabBar::ButtonPosition) style ()->styleHint (QStyle::SH_TabBar_CloseButtonPosition, 0, this);
-   side = (side == QTabBar::LeftSide) ? QTabBar::RightSide : QTabBar::LeftSide;
-
-   return side;
-}
-
-void FooTabBar::selectTabAction ()
-{
-   int index = qobject_cast<TabShortcut *> (sender ())->tab ();
-   setCurrentIndex (index);
 }
 
 void FooTabBar::contextMenuRequested (const QPoint &position)
@@ -72,7 +41,7 @@ void FooTabBar::contextMenuRequested (const QPoint &position)
 
 	  menu.addSeparator ();
 
-	  action->seData (index);
+	  action->setData (index);
 
 	  menu.addSeparator ();
 	  
@@ -125,21 +94,6 @@ void FooTabBar::mouseDoubleClickEvent (QMouseEvent *event)
    QTabBar::mouseDoubleClickEvent (event);
 }
 
-void FooTabBar::mouseReleaseEvent (QMouseEvent *event)
-{
-   if (event->button() == Qt::MidButton)
-   {
-	  int index = tabAt (event->pos ());
-	  if (index != -1)
-	  {
-		 emit closeTab(index);
-		 return;
-	  }
-   }
-
-   QTabBar::mouseReleaseEvent(event);
-}
-
 void FooTabBar::mousePressEvent (QMouseEvent *event)
 {
    if (event->button() == Qt::LeftButton)
@@ -157,12 +111,12 @@ void FooTabBar::mouseMoveEvent (QMouseEvent *event)
 	  int diffX = event->pos().x() - m_dragStartPos.x();
 	  int diffY = event->pos().y() - m_dragStartPos.y();
 
-	  if ((event->pos () - m_dragStartPos).ManhattanLength () > QApplication::startDragDistance () && diffX < 3 && diffX > -3 && diffY < -10)
+	  if ((event->pos () - m_dragStartPos).manhattanLength () > QApplication::startDragDistance () && diffX < 3 && diffX > -3 && diffY < -10)
 	  {
 		 QDrag *drag = new QDrag (this);
 		 QMimeData *mimeData = new QMimeData;
 		 int index = tabAt (event->pos ());
-		 mimeData->setText(tabTExt (index));
+		 mimeData->setText(tabText (index));
 		 mimeData->setData(QLatin1String("action"), "tab-reordering");
 		 drag->setMimeData(mimeData);
 		 drag->exec();
@@ -194,5 +148,7 @@ void FooTabBar::tabRemoved (int position)
 
 void FooTabBar::updateVisibility()
 {
-   setVisible((count ()) > 1);
+   setVisible((count ()) > 1 || m_showTabBarWhenOneTab);
+   m_viewTabBarAction->setEnabled(count() == 1);
+//   updateViewToolAction();
 }

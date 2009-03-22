@@ -2,7 +2,7 @@
 #define _FOOMAINWINDOW_HPP_
 
 #include <QtGui>
-#include "fooplaylistwidget.hpp"
+#include "footabwidget.hpp"
 
 class FooMainWindow : public QMainWindow
 {
@@ -74,7 +74,7 @@ private slots:
 	void about ();
 
 private:
-	FooPlaylistWidget *fooPlaylistWidget;
+	FooTabWidget *fooTabWidget;
 
 	QMenu *fileMenu;
 		QAction *openAction;

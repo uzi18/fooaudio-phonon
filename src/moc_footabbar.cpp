@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'footabbar.hpp'
 **
-** Created: Sat Mar 21 12:59:31 2009
+** Created: Sun Mar 22 08:22:39 2009
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,23 +23,31 @@ static const uint qt_meta_data_FooTabBar[] = {
        2,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   12, // methods
+       8,   12, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
 
  // signals: signature, parameters, type, tag, flags
-      15,   11,   10,   10, 0x05,
-      50,   40,   10,   10, 0x05,
-      88,   86,   10,   10, 0x05,
+      11,   10,   10,   10, 0x05,
+      20,   10,   10,   10, 0x05,
+      34,   10,   10,   10, 0x05,
+      48,   10,   10,   10, 0x05,
+
+ // slots: signature, parameters, type, tag, flags
+      68,   10,   10,   10, 0x08,
+      79,   10,   10,   10, 0x08,
+      90,   10,   10,   10, 0x08,
+     107,   10,   10,   10, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_FooTabBar[] = {
-    "FooTabBar\0\0tab\0mouseDoubleClickTab(int)\0"
-    "event,tab\0contextMenu(QContextMenuEvent*,int)\0"
-    ",\0moveTabSignal(int,int)\0"
+    "FooTabBar\0\0newTab()\0cloneTab(int)\0"
+    "closeTab(int)\0closeOtherTabs(int)\0"
+    "cloneTab()\0closeTab()\0closeOtherTabs()\0"
+    "contextMenuRequested(QPoint)\0"
 };
 
 const QMetaObject FooTabBar::staticMetaObject = {
@@ -67,34 +75,45 @@ int FooTabBar::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: mouseDoubleClickTab((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 1: contextMenu((*reinterpret_cast< QContextMenuEvent*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
-        case 2: moveTabSignal((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
+        case 0: newTab(); break;
+        case 1: cloneTab((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 2: closeTab((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 3: closeOtherTabs((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 4: cloneTab(); break;
+        case 5: closeTab(); break;
+        case 6: closeOtherTabs(); break;
+        case 7: contextMenuRequested((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 3;
+        _id -= 8;
     }
     return _id;
 }
 
 // SIGNAL 0
-void FooTabBar::mouseDoubleClickTab(int _t1)
+void FooTabBar::newTab()
 {
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
-    QMetaObject::activate(this, &staticMetaObject, 0, _a);
+    QMetaObject::activate(this, &staticMetaObject, 0, 0);
 }
 
 // SIGNAL 1
-void FooTabBar::contextMenu(QContextMenuEvent * _t1, int _t2)
+void FooTabBar::cloneTab(int _t1)
 {
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 
 // SIGNAL 2
-void FooTabBar::moveTabSignal(int _t1, int _t2)
+void FooTabBar::closeTab(int _t1)
 {
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);
+}
+
+// SIGNAL 3
+void FooTabBar::closeOtherTabs(int _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 3, _a);
 }
 QT_END_MOC_NAMESPACE

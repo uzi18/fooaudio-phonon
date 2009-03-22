@@ -7,7 +7,7 @@
 class FooTabWidget;
 
 /*
- * Tab bar with a few more features such as a context menu and shortcuts
+ * Tab bar with a few more features such as a context menu
  */
 
 class FooTabBar : public QTabBar
@@ -27,44 +27,27 @@ public:
 
 protected:
 	void mouseDoubleClickEvent (QMouseEvent *);
-	void mouseReleaseEvent (QMouseEvent *);
 	void mousePressEvent (QMouseEvent *);
-	void moiseMoveEvent (QMouseEvent *);
+	void mouseMoveEvent (QMouseEvent *);
 
 	QSize tabSizeHint (int) const;
 	void tabInserted (int);
 	void tabRemoved (int);
 
 private slots:
-	void selectTabAction ();
 	void cloneTab ();
 	void closeTab ();
 	void closeOtherTabs ();
 	void contextMenuRequested (const QPoint &);
+//	void updateViewToolBarAction();
 
 private:
 	void updateVisibility ();
 	friend class TabWidget;
 
 	QPoint m_dragStartPos;
+	QAction *m_viewTabBarAction;
+	bool m_showTabBarWhenOneTab;
 };
-
-#include <QShortcut>
-
-/*
- * Shortcut to switch directly to a tab by index
- */
-
-class FooTabShortcut : public QShortcut
-{
-	Q_OBJECT
-
-public:
-	int tab ();
-	FooTabShortcut (int, const QKeySequence &, QWidget *);
-
-private:
-	int m_tab;
-}
 
 #endif // _FOOTABBAT_HPP_
