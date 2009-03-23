@@ -20,21 +20,8 @@ signals:
 	void tabsChanged ();
 	void lastTabClosed ();
 
-	// current tab signals
-	void setCurrentTitle(const QString &);
-	void showStatusBarMessage (const QString &);
-	void linkHovered (const QString &);
-	void loadProgress (int);
-	void menuBarVisibilityChangeRequested (bool);
-	void statusBarVisibilityChangeRequested (bool);
-	void toolBarVisibilityChangeRequested (bool);
-	
 public:
 	FooTabWidget (QWidget *parent = 0);
-
-	FooTabBar *tabBar ();
-
-	void clear ();
 
 	QAction *newTabAction () const;
 	QAction *closeTabAction () const;
@@ -49,13 +36,7 @@ public slots:
 	void nextTab ();
 	void previousTab ();
 
-private slots:
-	void currentChanged (int);
-	void moveTab (int, int);
-
 private:
-	QLabel *animationLabel (int, bool);
-
 	QAction *m_recentlyClosedTabAction;
 	QAction *m_newTabAction;
 	QAction *m_closeTabAction;

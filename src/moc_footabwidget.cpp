@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'footabwidget.hpp'
 **
-** Created: Mon Mar 23 00:20:25 2009
+** Created: Tue Mar 24 00:10:52 2009
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FooTabWidget[] = {
        2,       // revision
        0,       // classname
        0,    0, // classinfo
-      17,   12, // methods
+       8,   12, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -31,39 +31,23 @@ static const uint qt_meta_data_FooTabWidget[] = {
  // signals: signature, parameters, type, tag, flags
       14,   13,   13,   13, 0x05,
       28,   13,   13,   13, 0x05,
-      44,   13,   13,   13, 0x05,
-      69,   13,   13,   13, 0x05,
-      99,   13,   13,   13, 0x05,
-     120,   13,   13,   13, 0x05,
-     138,   13,   13,   13, 0x05,
-     177,   13,   13,   13, 0x05,
-     218,   13,   13,   13, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-     257,   13,   13,   13, 0x0a,
-     272,  266,   13,   13, 0x0a,
-     286,   13,   13,   13, 0x2a,
-     297,   13,   13,   13, 0x0a,
-     317,   13,   13,   13, 0x0a,
-     327,   13,   13,   13, 0x0a,
-     341,   13,   13,   13, 0x08,
-     363,  361,   13,   13, 0x08,
+      44,   13,   13,   13, 0x0a,
+      59,   53,   13,   13, 0x0a,
+      73,   13,   13,   13, 0x2a,
+      84,   13,   13,   13, 0x0a,
+     104,   13,   13,   13, 0x0a,
+     114,   13,   13,   13, 0x0a,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_FooTabWidget[] = {
     "FooTabWidget\0\0tabsChanged()\0lastTabClosed()\0"
-    "setCurrentTitle(QString)\0"
-    "showStatusBarMessage(QString)\0"
-    "linkHovered(QString)\0loadProgress(int)\0"
-    "menuBarVisibilityChangeRequested(bool)\0"
-    "statusBarVisibilityChangeRequested(bool)\0"
-    "toolBarVisibilityChangeRequested(bool)\0"
     "newTab()\0index\0closeTab(int)\0closeTab()\0"
     "closeOtherTabs(int)\0nextTab()\0"
-    "previousTab()\0currentChanged(int)\0,\0"
-    "moveTab(int,int)\0"
+    "previousTab()\0"
 };
 
 const QMetaObject FooTabWidget::staticMetaObject = {
@@ -93,24 +77,15 @@ int FooTabWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         switch (_id) {
         case 0: tabsChanged(); break;
         case 1: lastTabClosed(); break;
-        case 2: setCurrentTitle((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 3: showStatusBarMessage((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 4: linkHovered((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 5: loadProgress((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 6: menuBarVisibilityChangeRequested((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 7: statusBarVisibilityChangeRequested((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 8: toolBarVisibilityChangeRequested((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 9: newTab(); break;
-        case 10: closeTab((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 11: closeTab(); break;
-        case 12: closeOtherTabs((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 13: nextTab(); break;
-        case 14: previousTab(); break;
-        case 15: currentChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 16: moveTab((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
+        case 2: newTab(); break;
+        case 3: closeTab((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 4: closeTab(); break;
+        case 5: closeOtherTabs((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 6: nextTab(); break;
+        case 7: previousTab(); break;
         default: ;
         }
-        _id -= 17;
+        _id -= 8;
     }
     return _id;
 }
@@ -125,54 +100,5 @@ void FooTabWidget::tabsChanged()
 void FooTabWidget::lastTabClosed()
 {
     QMetaObject::activate(this, &staticMetaObject, 1, 0);
-}
-
-// SIGNAL 2
-void FooTabWidget::setCurrentTitle(const QString & _t1)
-{
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
-    QMetaObject::activate(this, &staticMetaObject, 2, _a);
-}
-
-// SIGNAL 3
-void FooTabWidget::showStatusBarMessage(const QString & _t1)
-{
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
-    QMetaObject::activate(this, &staticMetaObject, 3, _a);
-}
-
-// SIGNAL 4
-void FooTabWidget::linkHovered(const QString & _t1)
-{
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
-    QMetaObject::activate(this, &staticMetaObject, 4, _a);
-}
-
-// SIGNAL 5
-void FooTabWidget::loadProgress(int _t1)
-{
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
-    QMetaObject::activate(this, &staticMetaObject, 5, _a);
-}
-
-// SIGNAL 6
-void FooTabWidget::menuBarVisibilityChangeRequested(bool _t1)
-{
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
-    QMetaObject::activate(this, &staticMetaObject, 6, _a);
-}
-
-// SIGNAL 7
-void FooTabWidget::statusBarVisibilityChangeRequested(bool _t1)
-{
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
-    QMetaObject::activate(this, &staticMetaObject, 7, _a);
-}
-
-// SIGNAL 8
-void FooTabWidget::toolBarVisibilityChangeRequested(bool _t1)
-{
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
-    QMetaObject::activate(this, &staticMetaObject, 8, _a);
 }
 QT_END_MOC_NAMESPACE

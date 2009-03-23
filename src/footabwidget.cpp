@@ -16,8 +16,6 @@ FooTabWidget::FooTabWidget (QWidget *parent) : QTabWidget (parent), m_newTabActi
 {
    setElideMode(Qt::ElideRight);
 
-//   new QShortcut(QKeySequence(Qt:CTRL | Qt::SHIFT | Qt::Key_T), this, SLOT(openLastTab()));
-
    connect(m_tabBar, SIGNAL(newTab()), this, SLOT(newTab()));
    connect(m_tabBar, SIGNAL(closeTab(int)), this, SLOT(closeTab(int)));
 //   connect(m_tabBar, SIGNAL(cloneTab(int)), this, SLOT(cloneTab(int)));
@@ -27,11 +25,8 @@ FooTabWidget::FooTabWidget (QWidget *parent) : QTabWidget (parent), m_newTabActi
 
    setDocumentMode(true);
 
-   connect(m_tabBar, SIGNAL(tabMoved(int, int)), this, SLOT(moveTab(int, int)));
-
    // Actions
    m_newTabAction = new QAction(tr("New &Tab"), this);
-   m_newTabAction->setShortcuts(QKeySequence::AddTab);
    connect(m_newTabAction, SIGNAL(triggered()), this, SLOT(newTab()));
 
    m_closeTabAction = new QAction(tr("&Close Tab"), this);
@@ -46,30 +41,7 @@ FooTabWidget::FooTabWidget (QWidget *parent) : QTabWidget (parent), m_newTabActi
    m_tabBar->setTabsClosable(false);
    m_tabBar->setSelectionBehaviorOnRemove(QTabBar::SelectPreviousTab);
 
-   connect(this, SIGNAL(currentChanged(int)), this, SLOT(currentChanged(int)));
-
    newTab ();
-}
-
-void FooTabWidget::clear()
-{
-   // clear the recently closed tabs
-}
-
-FooTabBar *FooTabWidget::tabBar ()
-{
-   return m_tabBar;
-}
-
-// When index is -1 index chooses the current tab
-void FooTabWidget::moveTab(int fromIndex, int toIndex)
-{
-}
-
-void FooTabWidget::currentChanged(int index)
-{
-//   Q_ASSERT(m_lineEdits->count() == count());
-//   m_lineEdits->setCurrentIndex(index);
 }
 
 QAction *FooTabWidget::newTabAction() const
