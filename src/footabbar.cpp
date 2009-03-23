@@ -1,3 +1,6 @@
+#include <iostream>
+using namespace std;
+
 #include "footabbar.hpp"
 
 #include <QAction>
@@ -87,9 +90,13 @@ void FooTabBar::mouseDoubleClickEvent (QMouseEvent *event)
 		 // Remove the line beloe when QTabWidget does not have a one pixel frame
 		 && event->pos().y() < (y() + height()))
    {
-	  emit newTab();
-	  return;
-   }
+		int i = tabAt(event->pos());
+		if (i < 0)
+		{
+			emit newTab();
+		}
+		return;
+	}
 
    QTabBar::mouseDoubleClickEvent (event);
 }
@@ -148,7 +155,7 @@ void FooTabBar::tabRemoved (int position)
 
 void FooTabBar::updateVisibility()
 {
-   setVisible((count ()) > 1 || m_showTabBarWhenOneTab);
-   m_viewTabBarAction->setEnabled(count() == 1);
+//   setVisible(true);
+//   m_viewTabBarAction->setEnabled(count() == 1);
 //   updateViewToolAction();
 }

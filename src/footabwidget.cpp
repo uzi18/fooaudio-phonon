@@ -1,7 +1,10 @@
-#include "footabwidget.hpp"
+#include <iostream>
 
-#include "foomainwindow.hpp"
+using namespace std;
+
+#include "footabwidget.hpp"
 #include "footabbar.hpp"
+#include "fooplaylistwidget.hpp"
 
 #include <QCompleter>
 #include <QEvent>
@@ -32,27 +35,12 @@ FooTabWidget::FooTabWidget (QWidget *parent) : QTabWidget (parent), m_newTabActi
    connect(m_newTabAction, SIGNAL(triggered()), this, SLOT(newTab()));
 
    m_closeTabAction = new QAction(tr("&Close Tab"), this);
-   m_closeTabAction->setShortcuts(QKeySequence::Close);
    connect(m_closeTabAction, SIGNAL(triggered()), this, SLOT(closeTab()));
 
    m_nextTabAction = new QAction(tr("Show Next Tab"), this);
-   QList<QKeySequence> shortcuts;
-   shortcuts.append(QKeySequence(Qt::CTRL | Qt::Key_BraceRight));
-   shortcuts.append(QKeySequence(Qt::CTRL | Qt::Key_PageDown));
-   shortcuts.append(tr("Ctrl-]"));
-   shortcuts.append(QKeySequence(Qt::CTRL | Qt::Key_Less));
-   shortcuts.append(QKeySequence(Qt::CTRL | Qt::Key_Tab));
-   m_nextTabAction->setShortcuts(shortcuts);
    connect(m_nextTabAction, SIGNAL(triggered()), this, SLOT(nextTab()));
 
    m_previousTabAction = new QAction(tr("Show Previous Tab"), this);
-   shortcuts.clear();
-   shortcuts.append(QKeySequence(Qt::CTRL | Qt::Key_BraceLeft));
-   shortcuts.append(QKeySequence(Qt::CTRL | Qt::Key_PageUp));
-   shortcuts.append(tr("Ctrl-["));
-   shortcuts.append(QKeySequence(Qt::CTRL | Qt::Key_Greater));
-   shortcuts.append(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_Tab));
-   m_previousTabAction->setShortcuts(shortcuts);
    connect(m_previousTabAction, SIGNAL(triggered()), this, SLOT(previousTab()));
 
    m_tabBar->setTabsClosable(false);
@@ -106,9 +94,8 @@ QAction *FooTabWidget::previousTabAction() const
 
 void FooTabWidget::newTab()
 {
-   QWidget *wid = new QWidget ();
-   addTab (wid, "dupa");
-//   m_tabBar->addTab("dupa");
+   FooPlaylistWidget *fpw = new FooPlaylistWidget ();
+   addTab (fpw, "dupa");
 }
 
 void FooTabWidget::closeTab (int index)

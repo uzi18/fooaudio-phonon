@@ -1,4 +1,9 @@
+#include <iostream>
+
+using namespace std;
+
 #include <QtGui>
+#include "fooplaylistwidget.hpp"
 #include "foomainwindow.hpp"
 
 class FooTabWidget;
@@ -328,6 +333,19 @@ void FooMainWindow::openAudioCD ()
 
 void FooMainWindow::addFiles ()
 {
+	QStringList files = QFileDialog::getOpenFileNames(this, tr("Select Music Files"), QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
+
+	if (files.isEmpty())
+	{
+		 return;
+	}
+
+	foreach (QString string, files)
+	{
+
+		FooPlaylistWidget *wid = static_cast<FooPlaylistWidget *> (fooTabWidget->currentWidget());
+		wid->addFile (string);
+	}
 }
 
 void FooMainWindow::addFolder ()
