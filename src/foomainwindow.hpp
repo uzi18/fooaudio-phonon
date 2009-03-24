@@ -12,6 +12,13 @@ public:
 	FooMainWindow ();
 	~FooMainWindow ();
 
+signals:
+	void playSignal ();
+	void prevSignal ();
+	void stopSignal ();
+	void nextSignal ();
+	void pauseSignal ();
+
 private slots:
 	void open ();
 	void openAudioCD ();

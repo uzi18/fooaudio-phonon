@@ -3,7 +3,8 @@
 
 //#include "fooplugininterfaces.hpp"
 #include <QApplication>
-//#include "foomainwindow.hpp"
+#include "foomainwindow.hpp"
+#include "fooplayer.hpp"
 
 class FooaudioApp : public QApplication
 {
@@ -11,11 +12,6 @@ class FooaudioApp : public QApplication
 
 public:
 	FooaudioApp (int, char **);
-
-//	void showMainWindow ();
-
-private:
-//	FooMainWindow fooWindow;
 };
 
 #endif // _FOOAUDIOAPP_HPP_

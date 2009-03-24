@@ -3,7 +3,8 @@
 //#include <QDir>
 
 #include "fooaudioapp.hpp"
-//#include "foomainwindow.hpp"
+#include "fooplayer.hpp"
+#include "foomainwindow.hpp"
 //#include "fooplugininterfaces.hpp"
 
 FooaudioApp::FooaudioApp (int argc, char *argv[]) : QApplication (argc, argv)
@@ -13,11 +14,6 @@ FooaudioApp::FooaudioApp (int argc, char *argv[]) : QApplication (argc, argv)
 
 	QTextCodec::setCodecForCStrings (QTextCodec::codecForName ("UTF-8"));
 }
-
-//void FooaudioApp::showMainWindow ()
-//{
-//	fooWindow.show ();
-//}
 
 //void FooaudioApp::loadPlugins ()
 //{

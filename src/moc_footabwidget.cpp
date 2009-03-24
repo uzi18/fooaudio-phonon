@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'footabwidget.hpp'
 **
-** Created: Tue Mar 24 00:10:52 2009
+** Created: Tue Mar 24 13:34:15 2009
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.0)
 **
 ** WARNING! All changes made in this file will be lost!

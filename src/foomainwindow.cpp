@@ -474,22 +474,27 @@ void FooMainWindow::paste ()
 
 void FooMainWindow::stop ()
 {
+   emit stopSignal ();
 }
 
 void FooMainWindow::pause ()
 {
+   emit pauseSignal ();
 }
 
 void FooMainWindow::play ()
 {
+   emit playSignal();
 }
 
 void FooMainWindow::previous ()
 {
+   emit prevSignal ();
 }
 
 void FooMainWindow::next ()
 {
+   emit nextSignal ();
 }
 
 void FooMainWindow::random ()

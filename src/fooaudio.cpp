@@ -7,12 +7,11 @@ int main (int argc, char * argv [])
 
 	FooaudioApp fooApp (argc, argv);
 
-//	QApplication fooApp (argc, argv);
 	FooMainWindow fooWindow;
 
 	fooWindow.show ();
-//	fooApp.showMainWindow ();
 
+	FooPlayer fooPlayer (&fooWindow);
 
 	return fooApp.exec ();
 } // int main (int, char **);
