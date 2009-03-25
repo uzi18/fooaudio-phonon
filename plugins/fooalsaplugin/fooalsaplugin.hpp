@@ -11,13 +11,13 @@ class FooAlsaPlugin : public QObject, public FooAudioInterface
 	Q_INTERFACES(FooAudioInterface)
 
 public:
-	int init(struct output_driver_caps *caps);
+	int init(struct OutputDriverCaps *);
 	void shutdown();
-	int open(struct sound_params *sound_params);
+	int open(struct SoundParams *);
 	void close();
-	int play(const char *buff, const size_t size);
+	int play(const char *, const size_t);
 	int readMixer();
-	void setMixer(int vol);
+	void setMixer(int);
 	int getBuffFill();
 	int reset();
 	int getRate();
@@ -61,7 +61,11 @@ private:
 /* Scale the mixer value to 0-100 range for first and second channel */
 #define scale_volume1(v) ((v) - mixer1_min) * 100 / (mixer1_max - mixer1_min)
 #define scale_volume2(v) ((v) - mixer2_min) * 100 / (mixer2_max - mixer2_min)
-	
+
+	int fillCapabilities (struct OutputDriverCaps *);
+	int readMixerRaw(snd_mixer_elem_t *);
+	void handleMixerEvents (snd_mixer_t *);
+	snd_mixer_elem_t *initMixerChannel (const char *name, long *vol_min, long *vol_max);
 }
 
 #endif
