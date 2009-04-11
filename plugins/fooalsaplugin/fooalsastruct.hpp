@@ -22,25 +22,35 @@ enum sfmt_endianes
 #else
 	SFMT_NE = SFMT_LE
 #endif
-}
+};
 
-struct sound_params
+struct Params
+{
+	unsigned channels;
+	unsigned rate;
+	snd_pcm_format_t format;
+};
+
+struct SoundParams
 {
 	int channels;
 	int rate;
 	long fmt;
 };
 
-struct outputDriverCaps
+struct OutputDriverCaps
 {
 	int min_channels;
 	int max_channels;
 	long formats;
-}
+};
 
 const long SFMT_MASK_FORMAT = 0x00000fff;
-const long SFMT_MASK_ENDIANES = 0x00003000
+const long SFMT_MASK_ENDIANES = 0x00003000;
 
 char *sfmt_str (const long format, char *msg, const size_t buf_size);
+int sfmt_Bps (const long format);
 inline bool sound_format_ok (const long f);
+
+#endif // _FOOALSASTRUCT_HPP_
 

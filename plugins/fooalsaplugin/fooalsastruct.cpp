@@ -40,3 +40,32 @@ inline bool sound_format_ok (const long f)
 	return (((f) & SFMT_MASK_FORMAT) && (((f) & (SFMT_S8 | SFMT_U8 | SFMT_FLOAT)) || (f) & SFMT_MASK_ENDIANES));
 }
 
+int sfmt_Bps (const long format)
+{
+	int Bps = -1;
+
+	switch (format & SFMT_MASK_FORMAT)
+	{
+		case SFMT_S8:
+		case SFMT_U8:
+			Bps = 1;
+			break;
+
+		case SFMT_S16:
+		case SFMT_U16:
+			Bps = 2;
+			break;
+
+		case SFMT_S32:
+		case SFMT_U32:
+			Bps = 4;
+
+		case SFMT_FLOAT:
+			Bps = sizeof (float);
+			break;
+	}
+
+	assert (Bps > 0);
+
+	return Bps;
+}

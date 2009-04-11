@@ -1,13 +1,40 @@
 #include <alsa/asoundlib.h>
+#include <errno.h>
 #include <iostream>
 #include <cassert>
 #include <cstring>
 
 using namespace std;
 
+#include "fooalsastruct.hpp"
 #include "fooalsaplugin.hpp"
+#include "fooalsaoption.hpp"
 
-int FooAlsaPlugin::init(struct outputDriverCaps *caps)
+FooAlsaPlugin::FooAlsaPlugin ()
+{
+	BUFFER_MAX_USEC = 300000;
+	handle = NULL;
+	chunk_size = -1;
+	alsa_buf_fill = 0;
+	mixer_handle = NULL;
+	mixer_elem1 = NULL;
+	mixer_elem2 = NULL;
+	mixer_elem_curr = NULL;
+	mixer1_min = -1;
+	mixer1_max = -1;
+	mixer2_min = -1;
+	mixer2_max = -1;
+	volume1 = -1;
+	volume2 = -1;
+	real_volume1 = -1;
+	real_volume2 = -1;
+
+	params.channels = 0;
+	params.rate = 0;
+	params.format = SND_PCM_FORMAT_UNKNOWN;
+}
+
+int FooAlsaPlugin::init(OutputDriverCaps *caps)
 {
 	int err;
 
@@ -80,7 +107,7 @@ int FooAlsaPlugin::init(struct outputDriverCaps *caps)
 	return fillCapabilities (caps);
 }
 
-int FooAlsaPlugin::fillCapabilities (struct OutputDriverCaps *caps)
+int FooAlsaPlugin::fillCapabilities (OutputDriverCaps *caps)
 {
 	snd_pcm_hw_params_t *hw_params;
 	snd_pcm_format_mask_t *format_mask;
@@ -365,7 +392,7 @@ void FooAlsaPlugin::close ()
 		playBufChunks ();
 	}
 
-	params.format = 0;
+	params.format = (snd_pcm_format_t)0;
 	params.rate = 0;
 	params.channels = 0;
 	snd_pcm_close (handle);
@@ -384,7 +411,7 @@ int FooAlsaPlugin::play (const char *buff, const size_t size)
 
 	while (to_write)
 	{
-		int to_copy = MIN((size_t)to_write, sizeof(alsa_buf) - (size_t)alsa_buf_fill);
+		int to_copy = min((size_t)to_write, sizeof(alsa_buf) - (size_t)alsa_buf_fill);
 		memcpy (alsa_buf + alsa_buf_fill, buff + buf_pos, to_copy);
 
 		to_write -= to_copy;
@@ -460,7 +487,7 @@ void FooAlsaPlugin::setMixer (int vol)
 
 		 if ((err = snd_mixer_selem_set_playback_volume_all( mixer_elem_curr, vol_alsa)) < 0)
 		 {
-			 error ("Can't set mixer: %s", snd_strerror(err));
+			 cerr << "Can't set mixer: " <<  snd_strerror(err) << endl;
 		 }
 		 else
 		 {
@@ -537,10 +564,10 @@ char *FooAlsaPlugin::getMixerChannelName ()
 {
 	if (mixer_elem_curr == mixer_elem1)
 	{
-		return xstrdup (options_get_str("AlsaMixer"));
+		return strdup (options_get_str("AlsaMixer"));
 	}
-
-	return xstrdup (options_get_str("AlsaMixer2"));
+#warning "poprawic na cos z cpp"
+	return strdup (options_get_str("AlsaMixer2"));
 }
 
 int FooAlsaPlugin::readMixerRaw (snd_mixer_elem_t *elem)
@@ -558,12 +585,12 @@ int FooAlsaPlugin::readMixerRaw (snd_mixer_elem_t *elem)
 
 		for (i = 0; i < SND_MIXER_SCHN_LAST; ++i)
 		{
-			if (snd_mixer_selem_has_playback_channel(elem, 1 << i))
+			if (snd_mixer_selem_has_playback_channel(elem, (snd_mixer_selem_channel_id_t)(1 << i)))
 			{
 				long vol;
 
 				nchannels++;
-				if ((err = snd_mixer_selem_get_playback_volume(elem, 1 << i, &vol)) < 0)
+				if ((err = snd_mixer_selem_get_playback_volume(elem, (snd_mixer_selem_channel_id_t)(1 << i), &vol)) < 0)
 				{
 					cerr << "Can't read mixer: " << snd_strerror(err) << endl;
 					return -1;
@@ -598,18 +625,18 @@ void FooAlsaPlugin::handleMixerEvents (snd_mixer_t *mixer_handle)
 
 	if ((count = snd_mixer_poll_descriptors_count(mixer_handle)) < 0)
 	{
-		clog << "snd_mixer_poll_descriptors_count() failed: " << snd_strerrnor(count) << endl;
+		clog << "snd_mixer_poll_descriptors_count() failed: " << snd_strerror(count) << endl;
 	}
 	else
 	{
 		struct pollfd *fds;
 		int err;
 
-		fds = xcalloc (count, sizeof(struct pollfd));
+		fds = new pollfd[count];
 
 		if ((err = snd_mixer_poll_descriptors(mixer_handle, fds, count)) < 0)
 		{
-			clog << "snd_mixer_poll_descriptors() failed: " << snd_strerrnor(count) << endl;
+			clog << "snd_mixer_poll_descriptors() failed: " << snd_strerror(count) << endl;
 		}
 		else
 		{
@@ -628,7 +655,7 @@ void FooAlsaPlugin::handleMixerEvents (snd_mixer_t *mixer_handle)
 			}
 		}
 
-		free (fds);
+		delete[] fds;
 	}
 }
 

@@ -3,17 +3,19 @@
 
 #include <QObject>
 
-#include "../foopluginunterfaces.hpp"
+#include "fooalsastruct.hpp"
+#include "fooalsaplugin.hpp"
+#include "../fooplugininterfaces.hpp"
 
-class FooAlsaPlugin : public QObject, public FooAudioInterface
+class FooAlsaPlugin : public QObject, FooAudioInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(FooAudioInterface)
 
 public:
-	int init(struct OutputDriverCaps *);
+	int init(OutputDriverCaps *);
 	void shutdown();
-	int open(struct SoundParams *);
+	int open(SoundParams *);
 	void close();
 	int play(const char *, const size_t);
 	int readMixer();
@@ -25,48 +27,50 @@ public:
 	char *getMixerChannelName();
 
 private:
-	const int BUFFER_MAX_USEC 300000;
-	snd_pcm_t *handle = NULL;
+	const unsigned int BUFFER_MAX_USEC;
+	snd_pcm_t *handle;
 
-	struct
+	Params params;
+/*	struct
 	{
 		unsigned channels;
 		unsigned rate;
 		snd_pcm_format_t format;
 	} params = { 0, 0, SND_PCM_FORMAT_UNKNOWN };
-
-	int chunk_size = -1;
+*/
+	int chunk_size;
 	char alsa_buf[64 * 1024];
-	int alsa_buf_fill = 0;
+	int alsa_buf_fill;
 	int bytes_per_frame;
 
-	snd_mixer_t *mixer_handle = NULL;
-	snd_mixer_elem_t *mixer_elem1 = NULL;
-	snd_mixer_elem_t *mixer_elem2 = NULL;
-	snd_mixer_elem_t *mixer_elem_curr = NULL;
-	long mixer1_min = -1, mixer1_max = -1;
-	long mixer2_min = -1, mixer2_max = -1;
+	snd_mixer_t *mixer_handle;
+	snd_mixer_elem_t *mixer_elem1;
+	snd_mixer_elem_t *mixer_elem2;
+	snd_mixer_elem_t *mixer_elem_curr;
+	long mixer1_min, mixer1_max;
+	long mixer2_min, mixer2_max;
 
 /* Volume for first and second mixer in range 1-100 despite the actual device
  * resolution.
  */
 
-	int volume1 = -1;
-	int volume2 = -1;
+	int volume1;
+	int volume2;
 
 /* Real volume setting as we last read them. */
-	int real_volume1 = -1;
-	int real_volume2 = -1;
+	int real_volume1;
+	int real_volume2;
 
 /* Scale the mixer value to 0-100 range for first and second channel */
 #define scale_volume1(v) ((v) - mixer1_min) * 100 / (mixer1_max - mixer1_min)
 #define scale_volume2(v) ((v) - mixer2_min) * 100 / (mixer2_max - mixer2_min)
 
-	int fillCapabilities (struct OutputDriverCaps *);
+	int playBufChunks();
+	int fillCapabilities (OutputDriverCaps *);
 	int readMixerRaw(snd_mixer_elem_t *);
 	void handleMixerEvents (snd_mixer_t *);
 	snd_mixer_elem_t *initMixerChannel (const char *name, long *vol_min, long *vol_max);
-}
+};
 
 #endif
 
