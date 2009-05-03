@@ -2,17 +2,19 @@
 #define _FOOALSAPLUGIN_HPP_
 
 #include <QObject>
+#include <alsa/asoundlib.h>
 
-#include "fooalsastruct.hpp"
-#include "fooalsaplugin.hpp"
-#include "../fooplugininterfaces.hpp"
+#include "../include/fooaudiostruct.hpp"
+#include "../include/fooplugininterfaces.hpp"
 
-class FooAlsaPlugin : public QObject, FooAudioInterface
+class FooAlsaPlugin : public QObject, public FooAudioInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(FooAudioInterface)
 
 public:
+	FooAlsaPlugin ();
+
 	int init(OutputDriverCaps *);
 	void shutdown();
 	int open(SoundParams *);

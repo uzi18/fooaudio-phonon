@@ -1,4 +1,9 @@
-char *sfmt_str (const long format, char *msg, const size_t buf_size)
+#include "fooaudiostruct.hpp"
+#include <cstring>
+
+#define sound_format_ok(f) (((f) & SFMT_MASK_FORMAT) && (((f) & (SFMT_S8 | SFMT_U8 | SFMT_FLOAT)) || (f) & SFMT_MASK_ENDIANES))
+
+char *sfmt_str (const long format, char *msg, size_t buf_size)
 {
 	assert (sound_format_ok(format));
 
@@ -35,10 +40,10 @@ char *sfmt_str (const long format, char *msg, const size_t buf_size)
 	return msg;
 }
 
-inline bool sound_format_ok (const long f)
+/*inline bool sound_format_ok (const long f)
 {
 	return (((f) & SFMT_MASK_FORMAT) && (((f) & (SFMT_S8 | SFMT_U8 | SFMT_FLOAT)) || (f) & SFMT_MASK_ENDIANES));
-}
+}*/
 
 int sfmt_Bps (const long format)
 {

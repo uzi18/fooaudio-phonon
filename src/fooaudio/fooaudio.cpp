@@ -1,4 +1,5 @@
 #include "fooaudioapp.hpp"
+#include "fooaudioengine.hpp"
 #include "foomainwindow.hpp"
 
 int main (int argc, char * argv [])
@@ -7,11 +8,11 @@ int main (int argc, char * argv [])
 
 	FooaudioApp fooApp (argc, argv);
 
-	FooMainWindow fooWindow;
+	FooAudioEngine fooAudioEngine;
+
+	FooMainWindow fooWindow (&fooAudioEngine);
 
 	fooWindow.show ();
-
-	FooPlayer fooPlayer (&fooWindow);
 
 	return fooApp.exec ();
 } // int main (int, char **);

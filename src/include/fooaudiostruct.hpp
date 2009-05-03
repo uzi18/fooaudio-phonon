@@ -1,5 +1,9 @@
-#ifndef _FOOALSASTRUCT_HPP_
-#define _FOOALSASTRUCT_HPP_
+#ifndef _FOOAUDIOSTRUCT_HPP_
+#define _FOOAUDIOSTRUCT_HPP_
+
+#include <cassert>
+#include <alsa/asoundlib.h>
+#include <cstring>
 
 enum sfmt_fmt
 {
@@ -48,7 +52,7 @@ struct OutputDriverCaps
 const long SFMT_MASK_FORMAT = 0x00000fff;
 const long SFMT_MASK_ENDIANES = 0x00003000;
 
-char *sfmt_str (const long format, char *msg, const size_t buf_size);
+char *sfmt_str (const long format, char *msg, size_t buf_size);
 int sfmt_Bps (const long format);
 inline bool sound_format_ok (const long f);
 

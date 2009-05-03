@@ -4,12 +4,15 @@ using namespace std;
 
 #include <QtGui>
 #include "fooplaylistwidget.hpp"
+#include "fooplugindialog.hpp"
 #include "foomainwindow.hpp"
 
 class FooTabWidget;
 
-FooMainWindow::FooMainWindow () : QMainWindow ()
+FooMainWindow::FooMainWindow (FooAudioEngine * fae) : QMainWindow ()
 {
+	fooAudioEngine = fae;
+
 	createMenus ();
 	createToolBars ();
 	fooTabWidget = new FooTabWidget ();
@@ -370,6 +373,8 @@ void FooMainWindow::savePlaylist ()
 
 void FooMainWindow::preferences ()
 {
+	FooPluginDialog dialog(fooAudioEngine->getPluginsDir().path(), fooAudioEngine->getPluginFileNames(), this);
+	dialog.exec ();
 }
 
 void FooMainWindow::exit ()

@@ -1,3 +1,7 @@
-src
+*.[oa]
 *.o
-
+*.a
+fooaudio
+*.so
+moc_*
+.*

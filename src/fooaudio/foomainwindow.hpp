@@ -2,6 +2,7 @@
 #define _FOOMAINWINDOW_HPP_
 
 #include <QtGui>
+#include "fooaudioengine.hpp"
 #include "footabwidget.hpp"
 
 class FooMainWindow : public QMainWindow
@@ -9,7 +10,7 @@ class FooMainWindow : public QMainWindow
 	Q_OBJECT
 
 public:
-	FooMainWindow ();
+	FooMainWindow (FooAudioEngine *);
 	~FooMainWindow ();
 
 signals:
@@ -81,6 +82,8 @@ private slots:
 	void about ();
 
 private:
+	FooAudioEngine *fooAudioEngine;
+
 	FooTabWidget *fooTabWidget;
 
 	QMenu *fileMenu;

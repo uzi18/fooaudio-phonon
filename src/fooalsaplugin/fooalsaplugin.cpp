@@ -6,13 +6,12 @@
 
 using namespace std;
 
-#include "fooalsastruct.hpp"
+#include "../include/fooaudiostruct.hpp"
 #include "fooalsaplugin.hpp"
 #include "fooalsaoption.hpp"
 
-FooAlsaPlugin::FooAlsaPlugin ()
+FooAlsaPlugin::FooAlsaPlugin () : BUFFER_MAX_USEC(300000)
 {
-	BUFFER_MAX_USEC = 300000;
 	handle = NULL;
 	chunk_size = -1;
 	alsa_buf_fill = 0;
@@ -752,4 +751,6 @@ int FooAlsaPlugin::playBufChunks()
 
 	return written * bytes_per_frame;
 }
+
+Q_EXPORT_PLUGIN2(fooalsaplugin, FooAlsaPlugin)
 
