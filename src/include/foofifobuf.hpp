@@ -9,7 +9,7 @@ struct FifoBuf
 	int size;   /* Size of the buffer. */
 	int pos; /* Current position. */
 	int fill;   /* Current fill. */
-}
+};
 
 void FifoBufInit (FifoBuf *, const size_t);
 void FifoBufDestroy (FifoBuf *);

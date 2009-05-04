@@ -34,4 +34,3 @@ char *options_get_str (const char *name)
 
 	return options[i].value.str;
 }
-

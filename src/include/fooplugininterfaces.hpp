@@ -3,6 +3,8 @@
 
 #include <QtPlugin>
 #include "fooaudiostruct.hpp"
+#include "footags.hpp"
+#include "foodecoder.hpp"
 
 class FooAudioInterface
 {
@@ -36,10 +38,10 @@ public:
 	virtual void close (void *) = 0;
 	virtual int decode (void *, char *, int , SoundParams *) = 0;
 	virtual int seek (void *, int) = 0;
-//	virtual void info (const char *, fileTags *, const int) = 0;
+	virtual void info (const char *, FileTags *, const int) = 0;
 	virtual int getBitrate (void *) = 0;
 	virtual int getDuration (void *) = 0;
-//	virtual void getError (void *, decoderError *) = 0;
+	virtual void getError (void *, DecoderError *) = 0;
 	virtual int ourFormatExt (const char *) = 0;
 //	virtual int outFormatMime (const char *) = 0;
 	virtual void getName (const char *, char tab [4]) = 0;

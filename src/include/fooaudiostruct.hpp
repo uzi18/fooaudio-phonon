@@ -56,5 +56,5 @@ char *sfmt_str (const long format, char *msg, size_t buf_size);
 int sfmt_Bps (const long format);
 inline bool sound_format_ok (const long f);
 
-#endif // _FOOALSASTRUCT_HPP_
+#endif // _FOOAUDIOSTRUCT_HPP_
 

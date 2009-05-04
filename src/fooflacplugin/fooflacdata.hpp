@@ -1,6 +1,13 @@
 #ifndef _FOOFLACDATA_HPP_
 #define _FOOFLACDATA_HPP_
 
+#include "../include/fooio.hpp"
+
+#define MAX_SUPPORTED_CHANNELS		2
+
+#define SAMPLES_PER_WRITE		512
+#define SAMPLE_BUFFER_SIZE ((FLAC__MAX_BLOCK_SIZE + SAMPLES_PER_WRITE) * MAX_SUPPORTED_CHANNELS * (32/8))
+
 struct FlacData
 {
 	FLAC__StreamDecoder *decoder;
@@ -23,7 +30,7 @@ struct FlacData
 
 	 FLAC__uint64 lastDecodePosition;
 	 int ok; /* was this stream successfully opened? */
-	 decoderError error;
+	 DecoderError error;
 }
 
 #endif // _FOOFLACDATA_HPP_

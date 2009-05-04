@@ -1,6 +1,8 @@
 #ifndef _FOOIO_HPP_
 #define _FOOIO_HPP_
 
+#include "foofifobuf.hpp"
+
 enum IoSource
 {
 	IO_SOURCE_FD,
@@ -9,7 +11,7 @@ enum IoSource
 
 struct IoStream;
 
-typedef void (*bufFillCallbackT) (struct IoStream *, size_t, size_t, void *);
+typedef void (*BufFillCallbackT) (struct IoStream *, size_t, size_t, void *);
 
 struct IoStream
 {

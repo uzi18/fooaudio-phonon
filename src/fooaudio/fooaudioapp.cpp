@@ -10,4 +10,3 @@ FooaudioApp::FooaudioApp (int argc, char *argv[]) : QApplication (argc, argv)
 
 	QTextCodec::setCodecForCStrings (QTextCodec::codecForName ("UTF-8"));
 }
-
