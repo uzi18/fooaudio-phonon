@@ -35,7 +35,7 @@ void *FooFlacPlugin::openInternal (const char *file, const int buffered)
 
 	if (!ioOk(data->stream))
 	{
-		decoderError (&data->error, ERROR_FATAL, 0, "Can't load file: %s", ioStrError(data->stream));
+		decoderError (&data->error, ERROR_FATAL, 0, "Can't load file: %s", ioStrerror(data->stream));
 		ioClose (data->stream);
 
 		return data;
@@ -100,7 +100,7 @@ int FooFlacPlugin::decode (void *void_data, char *buf, int buf_len, SoundParams 
 
 	bytesPerSample = data->bitsPerSample / 8;
 
-	switch (bytes_per_sample)
+	switch (bytesPerSample)
 	{
 		case 1:
 			sound_params->fmt = SFMT_S8;
@@ -113,8 +113,8 @@ int FooFlacPlugin::decode (void *void_data, char *buf, int buf_len, SoundParams 
 			break;
 	}
 
-	soundParams->rate = data->sampleRate;
-	soundParams->channels = data->channels;
+	sound_params->rate = data->sampleRate;
+	sound_params->channels = data->channels;
 
 	decoderErrorClear (&data->error);
 
@@ -193,7 +193,7 @@ void FooFlacPlugin::info (const char *file_name, FileTags *info, const int tags_
 	{
 		 FlacData *data;
 
-		if ((data = flac_open_internal(file_name, 0)))
+		if ((data = (FlacData *)openInternal(file_name, 0)))
 		 {
 			info->time = data->length;
 			close (data);
@@ -215,12 +215,12 @@ int FooFlacPlugin::getBitrate (void *void_data)
 
 int FooFlacPlugin::getDuration (void *void_data)
 {
-	FlacFata *data = (FlacData *)void_data;
+	FlacData *data = (FlacData *)void_data;
 
 	return data->length;
 }
 
-void FooFlacPlugin::getError (void *prv_data, struct decoder_error *error)
+void FooFlacPlugin::getError (void *prv_data, DecoderError *error)
 {
 	FlacData *data = (FlacData *)prv_data;
 

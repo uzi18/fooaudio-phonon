@@ -25,12 +25,12 @@ struct FlacData
 
 	 /* sound parameters */
 	 unsigned int bitsPerSample;
-	 unsigned int sample_rate;
+	 unsigned int sampleRate;
 	 unsigned int channels;
 
 	 FLAC__uint64 lastDecodePosition;
 	 int ok; /* was this stream successfully opened? */
 	 DecoderError error;
-}
+};
 
 #endif // _FOOFLACDATA_HPP_

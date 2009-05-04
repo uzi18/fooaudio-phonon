@@ -4,6 +4,16 @@ using namespace std;
 
 #include "fooio.hpp"
 
+char *xstrdup (const char *s)
+{
+	char *n;
+
+	if (s && (n = strdup(s)) == NULL)
+		cerr << "Can't allocate memory!";
+
+	return s ? n : NULL;
+}
+
 IoStream *ioOpen (const char *file, const int buffered)
 {
 	IoStream *s;
@@ -69,34 +79,7 @@ void ioOpenFile (IoStream *, const char *file)
 	else
 	{
 		s->size = file_stat.st_size;
-/*
-#ifdef HAVE_NMAP
-		if (optionsGetInt("UseMmap") && s->size > 0)
-		{
-			if ((s->mem = mmap(0, s->size, PROT_READ, MAP_SHARED, s->fd, 0)) == MAP_FAILED)
-			{
-				s->mem = NULL;
-				logit ("mmap() failed: %s", strerror(errno));
-				s->source = IO_SOURCE_FD;
-			}
-			else
-			{
-				logit ("mmap()ed %lu bytes", (unsigned long)s->size);
-				s->source = IO_SOURCE_MMAP;
-				s->mem_pos = 0;
-			}
-		}
-		else
-		{
-			logit ("Not using mmap()");
-			s->source = IO_SOURCE_FD;
-		}
-#else
-*/
 		s->source = IO_SOURCE_FD;
-/*
-#endif
-*/
 		s->opened = 1;
 	}
 }
@@ -247,7 +230,7 @@ void ioClose (IoStream *s)
 		{
 			if (s->mem && munmap(s->mem, s->size))
 			{
-				logit ("munmap() failed: %s", strerror(errno)); 
+				logit ("munmap() failed: %s", strerror(errno));
 			}
 
 			close (s->fd);
@@ -306,5 +289,81 @@ void ioClose (IoStream *s)
 	delete s;
 
 	clog << "Done" << endl;
+}
+
+char *ioStrerror (IoStream *s)
+{
+	char err[256];
+
+	if (s->strerror)
+	{
+		free (s->strerror);
+	}
+
+	if (s->errnoVal) {
+		strerror_r (s->errnoVal, err, sizeof(err));
+		s->strerror = xstrdup (err);
+	}
+	else
+		s->strerror = xstrdup ("OK");
+
+	return s->strerror;
+}
+
+void ioClose (IoStream *s)
+{
+	assert (s != NULL);
+
+	clog << "Closing stream..." << endl;
+
+
+	if (s->opened)
+	{
+
+		if (s->buffered)
+		{
+			ioAbort (s);
+
+			clog << "Waiting for io_read_thread()..." << endl;
+			pthread_join (s->readThread, NULL);
+			clog << "IO read thread exited" << endl;
+		}
+
+		if (s->source == IO_SOURCE_FD)
+			close (s->fd);
+
+		if (s->buffered)
+		{
+			FifoBufDestroy (&s->buf);
+
+			if (pthread_cond_destroy(&s->buf_free_cond))
+			{
+				clog << "Destroying buf_free_cond faild: " << strerror(errno)) << endl;
+			}
+
+			if (pthread_cond_destroy(&s->bufFillCond))
+			{
+				clog << "Destroying buf_fill_cond faild: " << strerror(errno));
+			}
+		}
+
+		if (s->metadata.title)
+			free (s->metadata.title);
+		if (s->metadata.url)
+			free (s->metadata.url);
+	}
+
+	if (pthread_mutex_destroy(&s->bufMutex))
+		logit ("Destroying buf_mutex failed: %s", strerror(errno));
+	if (pthread_mutex_destroy(&s->ioMutex))
+		logit ("Destroying io_mutex failed: %s", strerror(errno));
+	if (pthread_mutex_destroy(&s->metadata.mutex))
+		logit ("Destroying metadata mutex failed: %s", strerror(errno));
+
+	if (s->strerror)
+		free (s->strerror);
+	delete s;
+
+	logit ("done");
 }
 

@@ -62,5 +62,7 @@ void ioOpenFile (IoStream *, const char *);
 int ioOkNolock (IoStream *);
 int ioOk (IoStream *);
 void *ioReadThread (void *);
+char *ioStrerror (IoStream *);
+void ioClose (IoStream *s);
 
 #endif // _FOOIO_HPP_
