@@ -6,7 +6,8 @@
 enum IoSource
 {
 	IO_SOURCE_FD,
-//	IO_SOURCE_MMAP,
+	IO_SOURCE_MMAP,
+	IO_SOURCE_CURL
 };
 
 struct IoStream;
@@ -63,6 +64,20 @@ int ioOkNolock (IoStream *);
 int ioOk (IoStream *);
 void *ioReadThread (void *);
 char *ioStrerror (IoStream *);
-void ioClose (IoStream *s);
+void ioClose (IoStream *);
+ssize_t ioRead (IoStream *, void *, size_t);
+long ioTell (IoStream *);
+off_t ioSeek (IoStream *, off_t, int);
+ssize_t ioFileSize (const IoStream *);
+int ioEof (IoStream *);
+void ioAbort (IoStream *);
+ssize_t ioInternalRead (IoStream *, const int, char *, size_t);
+ssize_t ioReadFd (IoStream *, const int, void *, size_t);
+off_t ioSeekFd (IoStream *, const int);
+off_t ioSeekBuffered (IoStream *, const long);
+off_t ioSeekUnbuffered (IoStream *, const long);
+void ioWakeUp (IoStream *s);
+ssize_t ioReadBuffered (IoStream *, void *, size_t);
+ssize_t ioReadUnbuffered (IoStream *, const int, void *, size_t);
 
 #endif // _FOOIO_HPP_

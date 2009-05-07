@@ -13,6 +13,9 @@ public:
 	QDir getPluginsDir ();
 	QStringList getPluginFileNames ();
 
+	void audioPlay (const char *);
+	void audioStop ();
+
 private:
 	QDir pluginsDir;
 	QStringList pluginFileNames;

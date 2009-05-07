@@ -16,6 +16,8 @@ struct DecoderError
 
 void decoderErrorInit (DecoderError *);
 void decoderError (DecoderError *, const DecoderErrorType, const int, const char *, ...);
+void decoderErrorClear (DecoderError *error);
+void decoderErrorCopy (DecoderError *, const DecoderError *);
 
 #endif // _FOODECODER_HPP_
 

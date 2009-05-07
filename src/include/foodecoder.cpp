@@ -1,9 +1,10 @@
-#include <stdio.h>                                                                                                                                   
-#include <cstring>                                                                                                                                  
-#include <stdarg.h>                                                                                                                                  
-#include <errno.h>                                                                                                                                   
-#include <cassert>                                                                                                                                  
-#include <ltdl.h>
+#include <stdio.h>
+#include <cstring>
+#include <stdarg.h>
+#include <errno.h>
+#include <cassert>
+//#include <ltdl.h>
+#include "foodecoder.hpp"
 
 void decoderErrorInit (DecoderError *error)
 {
@@ -33,10 +34,26 @@ void decoderError (DecoderError *error, const DecoderErrorType type, const int a
 		strerror_r(add_errno, errno_buf, sizeof(errno_buf));
 	}
 
-	error->err = xmalloc (sizeof(char) * (strlen(err_str) + strlen(errno_buf) + 1));
+	error->err = new char [(strlen(err_str) + strlen(errno_buf) + 1)];
 	strcpy (error->err, err_str);
 	strcat (error->err, errno_buf);
 
 	va_end (va);
+}
+
+void decoderErrorClear (DecoderError *error)
+{
+	error->type = ERROR_OK;
+	if (error->err)
+	{
+		delete[] error->err;
+		error->err = NULL;
+	}
+}
+
+void decoderErrorCopy (DecoderError *dst, const DecoderError *src)
+{
+	dst->type = src->type;
+	dst->err = strdup (src->err);
 }
 
