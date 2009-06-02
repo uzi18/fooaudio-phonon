@@ -15,6 +15,7 @@ class FooAlsaPlugin : public QObject, public FooAudioInterface
 public:
 	FooAlsaPlugin ();
 
+	int getType ();
 	int init(OutputDriverCaps *);
 	void shutdown();
 	int open(SoundParams *);

@@ -74,3 +74,10 @@ int sfmt_Bps (const long format)
 
 	return Bps;
 }
+
+static int audioGetBps ()
+{
+	return driverSoundParams.rate * driverSoundParams.channels
+		* (driverSoundParams.fmt ? sfmt_Bps(driverSoundParams.fmt)
+				: 0);
+}

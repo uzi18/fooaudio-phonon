@@ -24,9 +24,9 @@ FooMainWindow::~FooMainWindow ()
 {
 }
 
-void FooMainWindow::createMenus ()
+void FooMainWindow::createMenus()
 {
-	fileMenu = menuBar ()->addMenu (tr ("&File"));
+	fileMenu = menuBar()->addMenu(tr("&File"));
 
 	openAction = new QAction (tr ("&Open"), this);
 	connect (openAction, SIGNAL (triggered ()), this, SLOT (open ()));
@@ -81,7 +81,7 @@ void FooMainWindow::createMenus ()
 	undoAction = new QAction (tr ("&Undo"), this);
 	connect (undoAction, SIGNAL (triggered ()), this, SLOT (undo ()));
 	editMenu->addAction (undoAction);
-	
+
 	redoAction = new QAction (tr ("&Redo"), this);
 	connect (redoAction, SIGNAL (triggered ()), this, SLOT (redo ()));
 	editMenu->addAction (redoAction);
@@ -479,27 +479,27 @@ void FooMainWindow::paste ()
 
 void FooMainWindow::stop ()
 {
-   emit stopSignal ();
+	emit stopSignal ();
 }
 
 void FooMainWindow::pause ()
 {
-   emit pauseSignal ();
+	emit pauseSignal ();
 }
 
 void FooMainWindow::play ()
 {
-   emit playSignal();
+	emit playSignal();
 }
 
 void FooMainWindow::previous ()
 {
-   emit prevSignal ();
+	emit prevSignal ();
 }
 
 void FooMainWindow::next ()
 {
-   emit nextSignal ();
+	emit nextSignal ();
 }
 
 void FooMainWindow::random ()

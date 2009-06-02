@@ -496,4 +496,9 @@ void errorCallback (const FLAC__StreamDecoder *decoder, FLAC__StreamDecoderError
 		decoderError (&data->error, ERROR_FATAL, 0, "FLAC: lost sync");
 }
 
+int FooFlacPlugin::getType()
+{
+	return 2;
+}
+
 Q_EXPORT_PLUGIN2(fooflacplugin, FooFlacPlugin)

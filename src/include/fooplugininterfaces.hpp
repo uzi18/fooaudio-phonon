@@ -23,6 +23,7 @@ public:
 	virtual int getRate () = 0;
 	virtual void toggleMixerChannel () = 0;
 	virtual char *getMixerChannelName () = 0;
+	virtual int getType () = 0;
 };
 
 class FooMusicFormatInterface
@@ -48,6 +49,7 @@ public:
 //	virtual int currentTags (void *data, FiuleTags *) = 0;
 //	virtual IoStream *getStream (void *) = 0;
 	virtual int getAvgBitrate (void *) = 0;
+	virtual int getType () = 0;
 
 private:
 	int apiVersion;

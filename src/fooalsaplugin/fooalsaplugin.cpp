@@ -752,5 +752,10 @@ int FooAlsaPlugin::playBufChunks()
 	return written * bytes_per_frame;
 }
 
+int FooAlsaPlugin::getType()
+{
+	return 1;
+}
+
 Q_EXPORT_PLUGIN2(fooalsaplugin, FooAlsaPlugin)
 

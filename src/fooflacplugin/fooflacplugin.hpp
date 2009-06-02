@@ -26,6 +26,7 @@ public:
 	int ourFormatExt (const char *);
 	void getName (const char *, char tab [4]);
 	int getAvgBitrate (void *);
+	int getType();
 
 private:
 	void getVorbiscomments (const char *, FileTags *);

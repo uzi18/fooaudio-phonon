@@ -17,7 +17,9 @@ HEADERS += fooaudioapp.hpp \
     footabbar.hpp \
     footabwidget.hpp \
     ../include/fooplugininterfaces.hpp \
-    ../include/fooplugininterfaces.hpp
+    ../include/fooplugininterfaces.hpp \
+    ../include/foooutbuf.hpp \
+    ../include/fooio.hpp
 SOURCES += fooaudio.cpp \
     fooaudioapp.cpp \
     fooaudioengine.cpp \
@@ -25,5 +27,7 @@ SOURCES += fooaudio.cpp \
     fooplaylistwidget.cpp \
     fooplugindialog.cpp \
     footabbar.cpp \
-    footabwidget.cpp
+    footabwidget.cpp \
+    ../include/foooutbuf.cpp \
+    ../include/fooio.cpp
 RESOURCES += resource.qrc

@@ -26,3 +26,33 @@ void FooPlaylistWidget::addFile (QString path)
 	addTopLevelItem (wid);
 }
 
+int FooPlaylistWidget::plistFindFname (const char *fname)
+{
+	for (int i = 0; i < topLevelItemCount(); i++)
+	{
+		QTreeWidgetItem *wid = topLevelItem(i);
+
+		QLabel *lab = itemWidget(wid, 0);
+
+		if (lab->text() == fname)
+		{
+			return i;
+			break;
+		}
+	}
+}
+
+char *FooPlaylistWidget::plistGetFile(int i)
+{
+	return topLevelItem(i)->text()->toStdString();
+}
+
+int FooPlaylistWidget::plistCount()
+{
+	return topLevelItemCount ();
+}
+
+int FooPlaylistWidget::plistNext(int i)
+{
+	return (topLeverItemCount() == i) ? 1 : ++i;
+}
