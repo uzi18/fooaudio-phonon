@@ -16,4 +16,3 @@ int main (int argc, char * argv [])
 
 	return fooApp.exec ();
 } // int main (int, char **);
-
