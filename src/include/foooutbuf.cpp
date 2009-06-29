@@ -175,7 +175,7 @@ void FooOutBuf::reset ()
 void FooOutBuf::timeSet (const float time)
 {
 	pthread_mutex_lock(&mutex);
-	time = time;
+	this->time = time;
 	pthread_mutex_unlock(&mutex);
 }
 

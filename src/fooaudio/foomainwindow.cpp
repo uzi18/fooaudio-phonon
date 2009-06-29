@@ -9,7 +9,7 @@ using namespace std;
 
 class FooTabWidget;
 
-FooMainWindow::FooMainWindow (FooAudioEngine * fae) : QMainWindow ()
+FooMainWindow::FooMainWindow(FooAudioEngine *fae) : QMainWindow ()
 {
 	fooAudioEngine = fae;
 

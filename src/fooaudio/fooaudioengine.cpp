@@ -190,14 +190,14 @@ void *FooAudioEngine::playThread (void *unused)
 
 			currPlayingFname = strdup (file);
 
-			outBufTimeSet (&outBuf, 0.0);
+			outBuf.timeSet (0.0);
 
 			next = currPlist->plistNext (currPlaying);
 			nextFile = next != -1 ? plistGetFile(next) : NULL;
 			pthread_mutex_unlock(&plistMut);
 			pthread_mutex_unlock(&currPlayingMut);
 
-			player (file, nextFile, &outBuf);
+			player (file, nextFile);
 
 			if (nextFile)
 			{
@@ -207,7 +207,7 @@ void *FooAudioEngine::playThread (void *unused)
 			setInfoRate (0);
 			setInfoBitrate (0);
 			setInfoChannels (1);
-			outBufTimeSet (&outBuf, 0.0);
+			outBuf.timeSet (0.0);
 			delete file;
 		}
 
@@ -249,14 +249,113 @@ void *FooAudioEngine::playThread (void *unused)
 	return NULL;
 }
 
-void FooAudioEngine::player(const char *file, const char *next_file, FooOutBuf *out_buf)
+void FooAudioEngine::player(const char *file, const char *next_file)
 {
 	getDecoder (file);
 	pthread_mutex_lock(&decoderStreamMut);
 //	decoderStream = NULL;
 	pthread_mutex_unlock(&decoderStreamMut);
 
-	playFile (file, next_file, out_buf);
+	playFile (file, next_file);
+}
+
+void FooAudioEngine::playFile (const char *file, const char *next_file)
+{
+	void *decoderData;
+	SoundParams soundParams = { 0, 0, 0 };
+	float alreadyDecodedTime;
+
+	outBuf.reset();
+
+	precacheWait();
+
+	if (precache.ok && strcmp(precache.file, file))
+	{
+		clog << "The precached file is not the file we want." << endl;
+		precache.f->close (precache.decoderData);
+		precacheReset (&precache);
+	}
+
+	if (precache.ok && !strcmp(precache.file, file))
+	{
+		struct decoder_error err;
+
+		clog << "Using precached file" << endl;
+
+		assert (f == precache.f);
+
+		soundParams = precache.soundParams;
+		decoderData = precache.decoderData;
+		setInfoChannels (soundParams.channels);
+		setInfoRate (soundParams.rate / 1000);
+
+		if (!audioOpen(&soundParams))
+		{
+			return;
+		}
+
+		audioSendBuf (precache.buf, precache.bufFill);
+
+		precache.f->getError (precache.decoderData, &err);
+
+		if (err.type != ERROR_OK)
+		{
+			if (err.type != ERROR_STREAM || optionsGetInt("ShowStreamErrors"))
+			{
+				error ("%s", err.err);
+			}
+
+			decoderErrorClear (&err);
+		}
+
+		alreadyDecodedTime = precache.decodedTime;
+
+		if (f->getAvgBitrate)
+		{
+			setInfoAvgBitrate (f->getAvgBitrate(decoderData));
+		}
+		else
+		{
+			setInfoAvgBitrate (0);
+		}
+
+		bitrateListInit (&bitrateList);
+		bitrateList.head = precache.bitrateList.head;
+		bitrateList.tail = precache.bitrateList.tail;
+
+		/* don't free list elements when reseting precache */
+		precache.bitrateList.head = NULL;
+		precache.bitrateList.tail = NULL;
+	}
+	else
+	{
+		DecoderError err;
+
+		statusMsg ("Opening...");
+		decoderData = f->open(file);
+		f->getError (decoderData, &err);
+		if (err.type != ERROR_OK)
+		{
+			f->close (decoderData);
+			error ("%s", err.err);
+			decoderErrorClear (&err);
+			clog << "Can't open file, exiting" << endl;
+			return;
+		}
+
+		alreadyDecodedTime = 0.0;
+		if (f->getAvgBitrate)
+		{
+			setInfoAvgBitrate (f->getAvgBitrate(decoderData));
+		}
+		bitrateListInit (&bitrateList);
+	}
+
+	audioPlistSetTime (file, f->getDuration(decoderData));
+	audioStateStartedPlaying ();
+	precacheReset(&precache);
+
+	decodeLoop(f, decoderData, nextFile, soundParams, alreadyDecodedTime);
 }
 
 void FooAudioEngine::playerStop ()
