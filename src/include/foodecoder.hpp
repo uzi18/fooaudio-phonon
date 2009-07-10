@@ -8,16 +8,31 @@ enum DecoderErrorType
 	ERROR_FATAL /*!< Fatal error in the stream - further decoding can't be performed. */
 };
 
-struct DecoderError
+class DecoderError
 {
-	DecoderErrorType type; /*!< Type of the error. */
+public:
+	DecoderError();
+	DecoderError(const DecoderErrorType, const int, const char *, ...);
+
+	void init();
+	void clear();
+	void copy(const DecoderError *);
+
+	char * getErr();
+	DecoderErrorType getType();
+
+#warning "poprawić na prywatne"
 	char *err;  /*!< malloc()ed error string or NULL. */
+private:
+	DecoderErrorType type; /*!< Type of the error. */
+
 };
 
-void decoderErrorInit (DecoderError *);
-void decoderError (DecoderError *, const DecoderErrorType, const int, const char *, ...);
-void decoderErrorClear (DecoderError *error);
-void decoderErrorCopy (DecoderError *, const DecoderError *);
+class Decoder
+{
+public:
+	Decoder();
+};
 
 #endif // _FOODECODER_HPP_
 

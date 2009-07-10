@@ -19,7 +19,9 @@ HEADERS += fooaudioapp.hpp \
     ../include/fooplugininterfaces.hpp \
     ../include/fooplugininterfaces.hpp \
     ../include/foooutbuf.hpp \
-    ../include/fooio.hpp
+    ../include/fooio.hpp \
+    ../include/foodecoder.hpp \
+    ../include/fooaudiostruct.hpp
 SOURCES += fooaudio.cpp \
     fooaudioapp.cpp \
     fooaudioengine.cpp \
@@ -29,5 +31,7 @@ SOURCES += fooaudio.cpp \
     footabbar.cpp \
     footabwidget.cpp \
     ../include/foooutbuf.cpp \
-    ../include/fooio.cpp
+    ../include/fooio.cpp \
+    ../include/foodecoder.cpp \
+    ../include/fooaudiostruct.cpp
 RESOURCES += resource.qrc

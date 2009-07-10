@@ -50,40 +50,36 @@
   <valuemap type="QVariantMap" >
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Release</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList" >
-    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-2DV9W8kBfY,guid=33a238026d77f9e109cb98054a28d4a8</value>
+    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-PlnJZKjsUe,guid=64751b4f66a4f40c38d697304a523610</value>
     <value type="QString" >DESKTOP_SESSION=kde</value>
     <value type="QString" >DESKTOP_STARTUP_ID=</value>
     <value type="QString" >DISPLAY=:0.0</value>
     <value type="QString" >DM_CONTROL=/var/run/xdmctl</value>
     <value type="QString" >GS_LIB=/home/matthew/.fonts</value>
-    <value type="QString" >GTK2_RC_FILES=/etc/gtk-2.0/gtkrc:/home/matthew/.gtkrc-2.0::/home/matthew/.kde4/share/config/gtkrc-2.0</value>
-    <value type="QString" >GTK_RC_FILES=/etc/gtk/gtkrc:/home/matthew/.gtkrc::/home/matthew/.kde4/share/config/gtkrc</value>
+    <value type="QString" >GTK2_RC_FILES=/etc/gtk-2.0/gtkrc:/home/matthew/.gtkrc-2.0::/home/matthew/.kde/share/config/gtkrc-2.0</value>
+    <value type="QString" >GTK_RC_FILES=/etc/gtk/gtkrc:/home/matthew/.gtkrc::/home/matthew/.kde/share/config/gtkrc</value>
     <value type="QString" >HOME=/home/matthew</value>
-    <value type="QString" >KDEDIR=/opt/kde4</value>
-    <value type="QString" >KDEHOME=/home/matthew/.kde4</value>
     <value type="QString" >KDE_FULL_SESSION=true</value>
     <value type="QString" >KDE_MULTIHEAD=false</value>
     <value type="QString" >KDE_SESSION_UID=1000</value>
     <value type="QString" >KDE_SESSION_VERSION=4</value>
     <value type="QString" >LANG=pl_PL.UTF-8</value>
-    <value type="QString" >LD_LIBRARY_PATH=/usr/lib64/qtcreator:/opt/kde4/lib:</value>
+    <value type="QString" >LD_LIBRARY_PATH=/usr/lib64/qtcreator:</value>
     <value type="QString" >LOGNAME=matthew</value>
-    <value type="QString" >MALLOC_CHECK_=2</value>
-    <value type="QString" >PATH=/usr/bin:/opt/kde4/bin:/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/games</value>
+    <value type="QString" >PATH=/usr/bin:/usr/local/bin:/usr/bin:/bin:/usr/games</value>
     <value type="QString" >PWD=/home/matthew</value>
     <value type="QString" >QTDIR=/usr</value>
     <value type="QString" >QT_PLUGIN_PATH=/home/matthew/.kde/lib/kde4/plugins/:/usr/lib/kde4/plugins/</value>
-    <value type="QString" >SESSION_MANAGER=local/pingwinek:@/tmp/.ICE-unix/3178,unix/pingwinek:/tmp/.ICE-unix/3178</value>
+    <value type="QString" >SESSION_MANAGER=local/pingwinek:@/tmp/.ICE-unix/3025,unix/pingwinek:/tmp/.ICE-unix/3025</value>
     <value type="QString" >SHELL=/bin/bash</value>
     <value type="QString" >SHLVL=1</value>
-    <value type="QString" >SSH_AGENT_PID=3103</value>
-    <value type="QString" >SSH_AUTH_SOCK=/tmp/ssh-HfnRql2986/agent.2986</value>
+    <value type="QString" >SSH_AGENT_PID=2950</value>
+    <value type="QString" >SSH_AUTH_SOCK=/tmp/ssh-KNWXAE2830/agent.2830</value>
     <value type="QString" >USER=matthew</value>
     <value type="QString" >WINDOWPATH=7</value>
-    <value type="QString" >XCURSOR_PATH=/opt/kde4/share/icons::~/.icons:/usr/share/icons:/usr/share/pixmaps:/usr/X11R6/lib/X11/icons</value>
     <value type="QString" >XCURSOR_THEME=Oxygen_Black</value>
     <value type="QString" >XDG_DATA_DIRS=/usr/share:/usr/share:/usr/local/share</value>
-    <value type="QString" >XDG_SESSION_COOKIE=10dcfc32dee50cadc4be377a49eb44ed-1244189863.852219-1268654064</value>
+    <value type="QString" >XDG_SESSION_COOKIE=837810aef5b3e1bc97b8314b4a47a5cc-1246901775.482971-1579589563</value>
     <value type="QString" >XDM_MANAGED=method=classic</value>
    </valuelist>
    <valuelist key="abstractProcess.arguments" type="QVariantList" >
@@ -103,40 +99,36 @@
   <valuemap type="QVariantMap" >
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Release</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList" >
-    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-2DV9W8kBfY,guid=33a238026d77f9e109cb98054a28d4a8</value>
+    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-PlnJZKjsUe,guid=64751b4f66a4f40c38d697304a523610</value>
     <value type="QString" >DESKTOP_SESSION=kde</value>
     <value type="QString" >DESKTOP_STARTUP_ID=</value>
     <value type="QString" >DISPLAY=:0.0</value>
     <value type="QString" >DM_CONTROL=/var/run/xdmctl</value>
     <value type="QString" >GS_LIB=/home/matthew/.fonts</value>
-    <value type="QString" >GTK2_RC_FILES=/etc/gtk-2.0/gtkrc:/home/matthew/.gtkrc-2.0::/home/matthew/.kde4/share/config/gtkrc-2.0</value>
-    <value type="QString" >GTK_RC_FILES=/etc/gtk/gtkrc:/home/matthew/.gtkrc::/home/matthew/.kde4/share/config/gtkrc</value>
+    <value type="QString" >GTK2_RC_FILES=/etc/gtk-2.0/gtkrc:/home/matthew/.gtkrc-2.0::/home/matthew/.kde/share/config/gtkrc-2.0</value>
+    <value type="QString" >GTK_RC_FILES=/etc/gtk/gtkrc:/home/matthew/.gtkrc::/home/matthew/.kde/share/config/gtkrc</value>
     <value type="QString" >HOME=/home/matthew</value>
-    <value type="QString" >KDEDIR=/opt/kde4</value>
-    <value type="QString" >KDEHOME=/home/matthew/.kde4</value>
     <value type="QString" >KDE_FULL_SESSION=true</value>
     <value type="QString" >KDE_MULTIHEAD=false</value>
     <value type="QString" >KDE_SESSION_UID=1000</value>
     <value type="QString" >KDE_SESSION_VERSION=4</value>
     <value type="QString" >LANG=pl_PL.UTF-8</value>
-    <value type="QString" >LD_LIBRARY_PATH=/usr/lib64/qtcreator:/opt/kde4/lib:</value>
+    <value type="QString" >LD_LIBRARY_PATH=/usr/lib64/qtcreator:</value>
     <value type="QString" >LOGNAME=matthew</value>
-    <value type="QString" >MALLOC_CHECK_=2</value>
-    <value type="QString" >PATH=/usr/bin:/opt/kde4/bin:/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/games</value>
+    <value type="QString" >PATH=/usr/bin:/usr/local/bin:/usr/bin:/bin:/usr/games</value>
     <value type="QString" >PWD=/home/matthew</value>
     <value type="QString" >QTDIR=/usr</value>
     <value type="QString" >QT_PLUGIN_PATH=/home/matthew/.kde/lib/kde4/plugins/:/usr/lib/kde4/plugins/</value>
-    <value type="QString" >SESSION_MANAGER=local/pingwinek:@/tmp/.ICE-unix/3178,unix/pingwinek:/tmp/.ICE-unix/3178</value>
+    <value type="QString" >SESSION_MANAGER=local/pingwinek:@/tmp/.ICE-unix/3025,unix/pingwinek:/tmp/.ICE-unix/3025</value>
     <value type="QString" >SHELL=/bin/bash</value>
     <value type="QString" >SHLVL=1</value>
-    <value type="QString" >SSH_AGENT_PID=3103</value>
-    <value type="QString" >SSH_AUTH_SOCK=/tmp/ssh-HfnRql2986/agent.2986</value>
+    <value type="QString" >SSH_AGENT_PID=2950</value>
+    <value type="QString" >SSH_AUTH_SOCK=/tmp/ssh-KNWXAE2830/agent.2830</value>
     <value type="QString" >USER=matthew</value>
     <value type="QString" >WINDOWPATH=7</value>
-    <value type="QString" >XCURSOR_PATH=/opt/kde4/share/icons::~/.icons:/usr/share/icons:/usr/share/pixmaps:/usr/X11R6/lib/X11/icons</value>
     <value type="QString" >XCURSOR_THEME=Oxygen_Black</value>
     <value type="QString" >XDG_DATA_DIRS=/usr/share:/usr/share:/usr/local/share</value>
-    <value type="QString" >XDG_SESSION_COOKIE=10dcfc32dee50cadc4be377a49eb44ed-1244189863.852219-1268654064</value>
+    <value type="QString" >XDG_SESSION_COOKIE=837810aef5b3e1bc97b8314b4a47a5cc-1246901775.482971-1579589563</value>
     <value type="QString" >XDM_MANAGED=method=classic</value>
    </valuelist>
    <valuelist key="abstractProcess.arguments" type="QVariantList" >

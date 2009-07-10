@@ -1,9 +1,12 @@
 #include "fooaudiostruct.hpp"
 #include <cstring>
 
-#define sound_format_ok(f) (((f) & SFMT_MASK_FORMAT) && (((f) & (SFMT_S8 | SFMT_U8 | SFMT_FLOAT)) || (f) & SFMT_MASK_ENDIANES))
+inline bool soundFormatOk(const long f)
+{
+	return (((f) & SFMT_MASK_FORMAT) && (((f) & (SFMT_S8 | SFMT_U8 | SFMT_FLOAT)) || (f) & SFMT_MASK_ENDIANES))
+}
 
-char *sfmt_str (const long format, char *msg, size_t buf_size)
+char *sfmtStr (const long format, char *msg, size_t buf_size)
 {
 	assert (sound_format_ok(format));
 
@@ -45,7 +48,7 @@ char *sfmt_str (const long format, char *msg, size_t buf_size)
 	return (((f) & SFMT_MASK_FORMAT) && (((f) & (SFMT_S8 | SFMT_U8 | SFMT_FLOAT)) || (f) & SFMT_MASK_ENDIANES));
 }*/
 
-int sfmt_Bps (const long format)
+int sfmtBps (const long format)
 {
 	int Bps = -1;
 
@@ -75,7 +78,7 @@ int sfmt_Bps (const long format)
 	return Bps;
 }
 
-static int audioGetBps ()
+int audioGetBps ()
 {
 	return driverSoundParams.rate * driverSoundParams.channels
 		* (driverSoundParams.fmt ? sfmt_Bps(driverSoundParams.fmt)
