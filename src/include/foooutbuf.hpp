@@ -17,9 +17,7 @@ private:
 	pthread_cond_t playCond;	/* Something was written to the buffer. */
 	pthread_cond_t readyCond;	/* There is some space in the buffer. */
 
-	/* Optional callback called when there is some free space in
-	 * the buffer. */
-	out_buf_free_callback *free_callback;
+
 
 	/* State flags of the buffer. */
 	int pause_;
@@ -48,6 +46,10 @@ public:
 	int getFree ();
 	int getFill ();
 	void wait ();
+
+	/* Optional callback called when there is some free space in
+	 * the buffer. */
+	out_buf_free_callback *freeCallback;
 };
 
 #endif // _FOOOUTBUF_HPP_

@@ -1,15 +1,18 @@
 #ifndef _FOOAUDIOENGINE_HPP_
 #define _FOOAUDIOENGINE_HPP_
 
+#include <QList>
 #include <QDir>
 #include "fooplaylistwidget.hpp"
 #include "../include/fooplugininterfaces.hpp"
 #include "../include/foooutbuf.hpp"
 #include "../include/foodecoder.hpp"
 #include "../include/fooaudiostruct.hpp"
+#include "../include/footags.hpp"
 #include <pthread.h>
 
 #define PCM_BUF_SIZE		(32 * 1024)
+#define PREBUFFER_THRESHOLD	(16 * 1024)
 
 #define soundParamsEq(p1, p2) ((p1).fmt == (p2).fmt && (p1).channels == (p2).channels && (p1).rate == (p2).rate)
 
@@ -31,32 +34,25 @@ enum State
 
 struct BitrateListNode
 {
-	BitrateListNode *next;
 	int time;
 	int bitrate;
 };
 
-struct BitrateList
-{
-	BitrateListNode *head;
-	BitrateListNode *tail;
-	pthread_mutex_t mutex;
-};
-
-struct Precache
+class Precache
 {
 public:
 	void wait();
 	int isOk();
-	char * getFile();
 	FooMusicFormatInterface * getDecoder();
 	SoundParams getSoundParams();
 	char * getBuf();
 	int getBufFill();
-	BitrateList getBitrateList();
+	QList<BitrateListNode> getBitrateList();
 	int getDecodedTime();
 	void *getDecoderData();
 	void reset();
+	char *getFile();
+	void startPrecache(const char *file);
 
 private:
 	char *file; /* the file to precache */
@@ -68,7 +64,7 @@ private:
 	void *decoderData;
 	int running; /* if the precache thread is running */
 	pthread_t tid; /* tid of the precache thread */
-	BitrateList bitrateList;
+	QList <BitrateListNode> bitrateList;
 	int decodedTime; /* how much sound we decoded in seconds */
 };
 
@@ -90,8 +86,8 @@ public:
 	QDir getPluginsDir ();
 	QStringList getPluginFileNames ();
 
-	void audioPlay (const char *, FooPlaylistWidget *);
-	void audioStop ();
+	void play (const char *, FooPlaylistWidget *);
+	void stop ();
 	int currPlaying;
 	void *playThread (void *);
 
@@ -99,17 +95,19 @@ public:
 	void playerStop ();
 
 	void playFile (const char *, const char *);
-	int audioOpen (SoundParams *);
+	int open (SoundParams *);
 
 	void resetSoundParams(SoundParams *);
-	int audioSendBuf (const char *, const size_t);
+	int sendBuf (const char *, const size_t);
 
-	void audioPlistSetTime (const char *, const int);
+	void plistSetTime (const char *, const int);
 
 // sygnały?
 	void setInfoAvgBitrate (const int);
 
-	decodeLoop (void *, const char *, OutBuf *, SoundParams, const float);
+	void decodeLoop (void *, const char *, SoundParams, const float);
+
+	void stateStartedPlaying();
 
 private:
 	QDir pluginsDir;
@@ -127,6 +125,8 @@ private:
 	int playPrev;
 	FooOutBuf outBuf;
 	pthread_mutex_t decoderStreamMut;
+	pthread_mutex_t requestCondMutex;
+	SoundParams reqSoundParams;
 
 	void loadPlugins();
 
@@ -148,13 +148,18 @@ private:
 	void setInfoChannels(const int);
 	void stateChange();
 	void goToAnotherFile();
-	void audioClose();
+	void close();
 
 	Precache precache;
 	SoundInfo soundInfo;
 
-	int audioOpened;
+	int opened;
 	OutputDriverCaps hwCaps;
+
+	QList <BitrateListNode> bitrateList;
+	pthread_mutex_t bitrateListMutex;
+
+	pthread_cond_t requestCond;
 };
 
 #endif // _FOOAUDIOENGINE_HPP_

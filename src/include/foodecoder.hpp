@@ -23,7 +23,6 @@ public:
 
 #warning "poprawić na prywatne"
 	char *err;  /*!< malloc()ed error string or NULL. */
-private:
 	DecoderErrorType type; /*!< Type of the error. */
 
 };

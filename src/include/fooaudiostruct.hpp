@@ -58,7 +58,7 @@ char *sfmtStr (const long, char *, size_t);
 int sfmtBps (const long);
 int audioGetBps ();
 inline bool soundFormatOk (const long);
-//int audioGetBps ();
+long sfmtBestMatching (const long, const long);
 
 #endif // _FOOAUDIOSTRUCT_HPP_
 

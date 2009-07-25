@@ -84,3 +84,75 @@ int audioGetBps ()
 		* (driverSoundParams.fmt ? sfmt_Bps(driverSoundParams.fmt)
 				: 0);
 }
+
+long sfmtBestMatching (const long formats_with_endian, const long req_with_endian)
+{
+	long formats = formats_with_endian & SFMT_MASK_FORMAT;
+	long req = req_with_endian & SFMT_MASK_FORMAT;
+	long best = 0;
+
+	if (formats & req)
+		best = req;
+	else if (req == SFMT_S8 || req == SFMT_U8) {
+		if (formats & SFMT_S8)
+			best = SFMT_S8;
+		else if (formats & SFMT_U8)
+			best = SFMT_U8;
+		else if (formats & SFMT_S16)
+			best = SFMT_S16;
+		else if (formats & SFMT_U16)
+			best = SFMT_U16;
+		else if (formats & SFMT_S32)
+			best = SFMT_S32;
+		else if (formats & SFMT_U32)
+			best = SFMT_U32;
+		else if (formats & SFMT_FLOAT)
+			best = SFMT_FLOAT;
+	}
+	else if (req == SFMT_S16 || req == SFMT_U16) {
+		if (formats & SFMT_S16)
+			best = SFMT_S16;
+		else if (formats & SFMT_U16)
+			best = SFMT_U16;
+		else if (formats & SFMT_S32)
+			best = SFMT_S32;
+		else if (formats & SFMT_U32)
+			best = SFMT_U32;
+		else if (formats & SFMT_FLOAT)
+			best = SFMT_FLOAT;
+		else if (formats & SFMT_S8)
+			best = SFMT_S8;
+		else if (formats & SFMT_U8)
+			best = SFMT_U8;
+	}
+	else if (req == SFMT_S32 || req == SFMT_U32 || req == SFMT_FLOAT) {
+		if (formats & SFMT_S32)
+			best = SFMT_S32;
+		else if (formats & SFMT_U32)
+			best = SFMT_U32;
+		else if (formats & SFMT_S16)
+			best = SFMT_S16;
+		else if (formats & SFMT_U16)
+			best = SFMT_U16;
+		else if (formats & SFMT_FLOAT)
+			best = SFMT_FLOAT;
+		else if (formats & SFMT_S8)
+			best = SFMT_S8;
+		else if (formats & SFMT_U8)
+			best = SFMT_U8;
+	}
+
+	assert (best != 0);
+
+	if (!(best & (SFMT_S8 | SFMT_U8))) {
+		if ((formats_with_endian & SFMT_LE)
+				&& (formats_with_endian & SFMT_BE))
+			best |= SFMT_NE;
+		else
+			best |= formats_with_endian & SFMT_MASK_ENDIANES;
+	}
+
+	cout << "Choosed " << sfmtStr(best, fmt_name1, sizeof(fmt_name1)) << " as the best matching " << sfmtStr(req_with_endian, fmt_name2, sizeof(fmt_name2)) << endl;
+
+	return best;
+}

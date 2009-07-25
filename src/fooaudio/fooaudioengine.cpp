@@ -7,6 +7,7 @@ using namespace std;
 
 #include "../include/fooio.hpp"
 #include "../include/foodecoder.hpp"
+#include "../include/footags.hpp"
 #include "fooaudioengine.hpp"
 
 const int SFMT_STR_MAX = 265;
@@ -32,7 +33,11 @@ FooAudioEngine::FooAudioEngine ()
 	soundInfo.channels = -1;
 	soundInfo.rate = -1;
 
-	audioOpened = 0;
+	opened = 0;
+
+	reqSoundParams.channels = 0;
+	reqSoundParams.fmt = 0;
+	reqSoundParams.rate = 0;
 
 	loadPlugins ();
 }
@@ -97,9 +102,9 @@ QStringList FooAudioEngine::getPluginFileNames ()
 	return pluginFileNames;
 }
 
-void FooAudioEngine::audioPlay (const char *fname, FooPlaylistWidget *playlist)
+void FooAudioEngine::play (const char *fname, FooPlaylistWidget *playlist)
 {
-	audioStop ();
+	stop ();
 	playerReset ();
 
 	pthread_mutex_lock (&currPlayingMut);
@@ -131,7 +136,7 @@ void FooAudioEngine::audioPlay (const char *fname, FooPlaylistWidget *playlist)
 	pthread_mutex_unlock (&currPlayingMut);
 }
 
-void FooAudioEngine::audioStop ()
+void FooAudioEngine::stop ()
 {
 	if (playThreadRunning)
 	{
@@ -253,7 +258,7 @@ void *FooAudioEngine::playThread (void *unused)
 		currPlayingFname = NULL;
 	}
 
-	audioClose ();
+	close ();
 	clog << "exiting" << endl;
 
 	return NULL;
@@ -300,12 +305,12 @@ void FooAudioEngine::playFile (const char *file, const char *next_file)
 		setInfoChannels (soundParams.channels);
 		setInfoRate (soundParams.rate / 1000);
 
-		if (!audioOpen(&soundParams))
+		if (!open(&soundParams))
 		{
 			return;
 		}
 
-		audioSendBuf (precache.getBuf(), precache.getBufFill());
+		sendBuf (precache.getBuf(), precache.getBufFill());
 #warning "poprawić dekoder, getError(), decoderData is private";
 //		precache.getDecoder()->getError (precache.decoderData, &err);
 
@@ -330,26 +335,25 @@ void FooAudioEngine::playFile (const char *file, const char *next_file)
 			setInfoAvgBitrate (0);
 		}
 
-		bitrateListInit (&bitrateList);
-		bitrateList.head = precache.getBitrateList().head;
-		bitrateList.tail = precache.getBitrateList().tail;
+		bitrateList= precache.getBitrateList();
+
 
 		/* don't free list elements when reseting precache */
-		precache.getBitrateList().head = NULL;
-		precache.getBitrateList().tail = NULL;
+		precache.getBitrateList().clear();
 	}
 	else
 	{
 		DecoderError err;
 
-		statusMsg("Opening...");
+//		statusMsg("Opening...");
 		decoderData = musicFormatInterface->open(file);
 		musicFormatInterface->getError (decoderData, &err);
 		if (err.getType() != ERROR_OK)
 		{
 			musicFormatInterface->close(decoderData);
-			error ("%s", err.err);
-			decoderErrorClear (&err);
+#warning "error() - do wysyłania tekstowych errorów do klienta lub serwera"
+//			error ("%s", err.err);
+			err.clear();
 			clog << "Can't open file, exiting" << endl;
 			return;
 		}
@@ -357,16 +361,15 @@ void FooAudioEngine::playFile (const char *file, const char *next_file)
 		alreadyDecodedTime = 0.0;
 		if (musicFormatInterface->getAvgBitrate(0))
 		{
-			setInfoAvgBitrate (musicFormatInterface->getAvgBitrate(decoderData));
+			setInfoAvgBitrate(musicFormatInterface->getAvgBitrate(decoderData));
 		}
-		bitrateListInit (&bitrateList);
 	}
 
-	audioPlistSetTime (file, musicFormatInterface->getDuration(decoderData));
-	audioStateStartedPlaying ();
+	plistSetTime(file, musicFormatInterface->getDuration(decoderData));
+	stateStartedPlaying();
 	precache.reset();
 
-	decodeLoop(musicFormatInterface, decoderData, next_file, soundParams, alreadyDecodedTime);
+	decodeLoop(decoderData, next_file, soundParams, alreadyDecodedTime);
 }
 
 void FooAudioEngine::playerStop ()
@@ -421,9 +424,9 @@ void FooAudioEngine::goToAnotherFile()
 {
 }
 
-void FooAudioEngine::audioClose()
+void FooAudioEngine::close()
 {
-	if (audioOpened)
+	if (opened)
 	{
 		resetSoundParams (&reqSoundParams);
 		resetSoundParams (&driverSoundParams);
@@ -433,7 +436,7 @@ void FooAudioEngine::audioClose()
 			audio_conv_destroy (&sound_conv);
 			need_audio_conversion = 0;
 		}*/
-		audioOpened = 0;
+		opened = 0;
 	}
 }
 
@@ -485,7 +488,7 @@ int Precache::getBufFill()
 	return bufFill;
 }
 
-BitrateList Precache::getBitrateList()
+QList<BitrateListNode> Precache::getBitrateList()
 {
 	return bitrateList;
 }
@@ -497,7 +500,7 @@ void Precache::reset()
 	if (file) {
 		delete[] file;
 		file = NULL;
-		bitrateListDestroy (&bitrateList);
+		bitrateList.clear();
 	}
 }
 
@@ -512,7 +515,7 @@ void *Precache::getDecoderData()
 
 /* Return 0 on error. If sound params == NULL, open the device with the last
  * parameters. */
-int FooAudioEngine::audioOpen (SoundParams *sound_params)
+int FooAudioEngine::open (SoundParams *sound_params)
 {
 	int res;
 	static SoundParams last_params = { 0, 0, 0 };
@@ -528,7 +531,7 @@ int FooAudioEngine::audioOpen (SoundParams *sound_params)
 
 	assert (soundFormatOk(sound_params->fmt));
 
-	if (audioOpened && soundParamsEq(reqSoundParams, *sound_params))
+	if (opened && soundParamsEq(reqSoundParams, *sound_params))
 	{
 		if (audioGetBps() < 88200)
 		{
@@ -537,7 +540,7 @@ int FooAudioEngine::audioOpen (SoundParams *sound_params)
 			/* Not closing the device would cause that much
 			 * sound from the previuous file stays in the buffer
 			 * and the user will see old data, so close it. */
-			audioClose ();
+			close ();
 		}
 		else
 		{
@@ -546,9 +549,9 @@ int FooAudioEngine::audioOpen (SoundParams *sound_params)
 			return 1;
 		}
 	}
-	else if (audioOpened)
+	else if (opened)
 	{
-		audioClose ();
+		close ();
 	}
 
 	reqSoundParams = *sound_params;
@@ -592,7 +595,7 @@ int FooAudioEngine::audioOpen (SoundParams *sound_params)
 		if (driverSoundParams.fmt != reqSoundParams.fmt || driverSoundParams.channels != reqSoundParams.channels || (!sampleRateCompat(reqSoundParams.rate, driverSoundParams.rate)))
 		{
 			clog << "Conversion of the sound is needed." << endl;
-			if (!audioConvNew (&soundConv, &reqSoundParams, &driverSoundParams))
+			if (!convNew (&soundConv, &reqSoundParams, &driverSoundParams))
 			{
 				audioInterface->close();
 				resetSoundParams (&reqSoundParams);
@@ -601,7 +604,7 @@ int FooAudioEngine::audioOpen (SoundParams *sound_params)
 #warning "needAudioConversion = 1; ???"
 //			needAudioConversion = 1;
 		}
-		audioOpened = 1;
+		opened = 1;
 
 		clog << "Requested sound parameters: " << sfmtStr(reqSoundParams.fmt, fmtName, sizeof(fmtName)) << ", " << reqSoundParams.channels << " channels, " << reqSoundParams.rate << "Hz" << endl;
 		clog << "Driver sound parameters: " << sfmtStr(driverSoundParams.fmt, fmtName, sizeof(fmtName)) << ", " << driverSoundParams.channels <<  "channels, " << driverSoundParams.rate << "Hz" << endl;
@@ -617,7 +620,7 @@ void FooAudioEngine::resetSoundParams(SoundParams *params)
 	params->fmt = 0;
 }
 
-int FooAudioEngine::audioSendBuf (const char *buf, const size_t size)
+int FooAudioEngine::sendBuf (const char *buf, const size_t size)
 {
 	size_t out_data_len = size;
 	int res;
@@ -653,7 +656,7 @@ void FooAudioEngine::setInfoAvgBitrate (const int avg_bitrate)
 	// sygnał do ustawiania bitrate w odtwarzaczu
 }
 
-void FooAudioEngine::audioPlistSetTime (const char *file, const int time)
+void FooAudioEngine::plistSetTime (const char *file, const int time)
 {
 	int i;
 
@@ -672,21 +675,20 @@ void FooAudioEngine::audioPlistSetTime (const char *file, const int time)
 	pthread_mutex_unlock(&plistMut);
 }
 
-void FooAudioEngine::decodeLoop(void *decoder_data, const char *next_file, OutBuf *out_buf, SoundParams sound_params, const float already_decoded_sec)
+void FooAudioEngine::decodeLoop(void *decoder_data, const char *next_file, SoundParams sound_params, const float already_decoded_sec)
 {
 	int eof = 0;
 	char buf[PCM_BUF_SIZE];
 	int decoded = 0;
 	SoundParams new_sound_params;
 	int sound_params_change = 0;
-	float decode_time = already_decoded_sec; /* the position of the decoder
-							 (in seconds) */
+	float decode_time = already_decoded_sec; /* the position of the decoder (in seconds) */
 
-	outBufSetFreeCallback (out_buf, bufFreeCallback);
+	outBuf.setFreeCallback (outBuf.freeCallback);
 
-	pthread_mutex_lock (&currTagsMut);
-	currTags = tagsNew ();
-	pthread_mutex_unlock (&currTagsMut);
+	pthread_mutex_lock (&curr_tags_mut);
+	curr_tags = tagsNew ();
+	pthread_mutex_unlock (&curr_tags_mut);
 /*
 	if (musicFormatInterface->getStream())
 	{
@@ -713,10 +715,10 @@ void FooAudioEngine::decodeLoop(void *decoder_data, const char *next_file, OutBu
 
 			pthread_mutex_unlock(&requestCondMutex);
 
-			if (decoderStream && outBufGetFill(out_buf) < PREBUFFER_THRESHOLD)
+			if (decoderStream && outBuf.getFill() < PREBUFFER_THRESHOLD)
 			{
 				prebuffering = 1;
-				ioPrebuffer (decoderStream, optionsGetInt("Prebuffering") * 1024);
+				ioPrebuffer (decoderStream, 10 /*optionsGetInt("Prebuffering")*/ * 1024);
 				prebuffering = 0;
 #warning "status_msg()"
 //				status_msg ("Playing...");
@@ -729,14 +731,16 @@ void FooAudioEngine::decodeLoop(void *decoder_data, const char *next_file, OutBu
 				decode_time += decoded / (float)(sfmtBps(new_sound_params.fmt) * new_sound_params.rate * new_sound_params.channels);
 			}
 
-			musicFormatInterface->getError (decoderData, &err);
+			musicFormatInterface->getError (decoder_data, &err);
 			if (err.type != ERROR_OK)
 			{
-				if (err.type != ERROR_STREAM || optionsGetnt("ShowStreamErrors"))
+#warning "optionsGetInt"
+				if (err.type != ERROR_STREAM || true /*optionsGetInt("ShowStreamErrors")*/)
 				{
-					error ("%s", err.err);
+#warning "error(...)"
+//					error ("%s", err.err);
 				}
-				decoderErrorClear (&err);
+				err.clear();
 			}
 
 			if (!decoded)
@@ -747,108 +751,148 @@ void FooAudioEngine::decodeLoop(void *decoder_data, const char *next_file, OutBu
 			else
 			{
 				clog << "decoded " << decoded << " bytes" << endl;
-				if (!soundParamsEq(newSoundParams, soundParams))
+				if (!soundParamsEq(new_sound_params, sound_params))
 				{
-					soundParamsChange = 1;
+					sound_params_change = 1;
 				}
 
-				bitrateListAdd (&bitrateList, decodeTime, musicFormatInterface->getBitrate(decoderData));
+				BitrateListNode *foo = new BitrateListNode();
+				foo->time = decode_time;
+				foo->bitrate = musicFormatInterface->getBitrate(decoder_data);
+				bitrateList.push_back(*foo);
 				updateTags (musicFormatInterface, decoder_data, decoder_stream);
 			}
 		}
 
 		/* Wait, if there is no space in the buffer to put the decoded
 		 * data or EOF occured and there is something in the buffer. */
-		else if (decoded > out_buf->getFree() || (eof && out_buf->getFill()))
+		else if (decoded > outBuf.getFree() || (eof && outBuf.getFill()))
 		{
 			cout << "waiting..." << endl;
-			if (eof && !precache.file && next_file && fileType(next_file) == F_SOUND && optionsGetInt("Precache"))
+#warning "optionsGetInt"
+			if (eof && !precache.getFile() && next_file && true /*fileType(next_file) == F_SOUND*/ && true /*optionsGetInt("Precache")*/)
 			{
-				precache->startPrecache (next_file);
+				precache.startPrecache (next_file);
 			}
 			pthread_cond_wait (&requestCond, &requestCondMutex);
-			pthread_mutex_unlock (&request_cond_mutex);
+			pthread_mutex_unlock (&requestCondMutex);
 		}
 		else
 		{
-			pthread_mutex_unlock (&request_cond_mutex);
+			pthread_mutex_unlock (&requestCondMutex);
 		}
 
 		/* When clearing request, we must make sure, that another
 		 * request will not arrive at the moment, so we check if
 		 * the request has changed. */
 		if (request == REQ_STOP) {
-			logit ("stop");
-			out_buf_stop (out_buf);
+			clog << "stop" << endl;
+			outBuf.stop();
 
-			LOCK (request_cond_mutex);
+			pthread_mutex_lock (&requestCondMutex);
+
 			if (request == REQ_STOP)
+			{
 				request = REQ_NOTHING;
-			UNLOCK (request_cond_mutex);
+			}
+
+			pthread_mutex_unlock (&requestCondMutex);
 
 			break;
 		}
-		else if (request == REQ_SEEK) {
+		else if (request == REQ_SEEK)
+		{
 			int decoder_seek;
 
-			logit ("seeking");
-			if ((decoder_seek = f->seek(decoder_data, req_seek))
-					== -1)
-				logit ("error when seeking");
-			else {
-				out_buf_stop (out_buf);
-				out_buf_reset (out_buf);
-				out_buf_time_set (out_buf, decoder_seek);
-				bitrate_list_empty (&bitrate_list);
+			clog  << "seeking" << endl;
+
+			if ((decoder_seek = musicFormatInterface->seek(decoder_data, req_seek)) == -1)
+			{
+				clog << "error when seeking" << endl;
+			}
+			else
+			{
+				outBuf.stop();
+				outBuf.reset();
+				outBuf.timeSet(decoder_seek);
+				bitrateList.empty();
 				decode_time = decoder_seek;
 				eof = 0;
 				decoded = 0;
 			}
 
-			LOCK (request_cond_mutex);
+			pthread_mutex_lock(&requestCondMutex);
 			if (request == REQ_SEEK)
+			{
 				request = REQ_NOTHING;
-			UNLOCK (request_cond_mutex);
+			}
+			pthread_mutex_unlock(&requestCondMutex);
 
 		}
-		else if (!eof && decoded <= out_buf_get_free(out_buf)
-				&& !sound_params_change) {
-			debug ("putting into the buffer %d bytes", decoded);
-			audio_send_buf (buf, decoded);
+		else if (!eof && decoded <= outBuf.getFree() && !sound_params_change)
+		{
+			cout << "putting into the buffer " << decoded << " bytes";
+			sendBuf(buf, decoded);
 			decoded = 0;
 		}
-		else if (!eof && sound_params_change
-				&& out_buf_get_fill(out_buf) == 0) {
-			logit ("sound parameters has changed.");
+		else if (!eof && sound_params_change && outBuf.getFill() == 0)
+		{
+			clog << "sound parameters has changed." << endl;
 			sound_params = new_sound_params;
 			sound_params_change = 0;
-			set_info_channels (sound_params.channels);
-			set_info_rate (sound_params.rate / 1000);
-			out_buf_wait (out_buf);
-			if (!audio_open(&sound_params))
+			setInfoChannels(sound_params.channels);
+			setInfoRate(sound_params.rate / 1000);
+			outBuf.wait();
+			if (!open(&sound_params))
 				break;
 		}
-		else if (eof && out_buf_get_fill(out_buf) == 0) {
-			logit ("played everything");
+		else if (eof && outBuf.getFill() == 0)
+		{
+			clog << "played everything" << endl;
 			break;
 		}
 	}
+#warning "statusMsg()"
+//	statusMsg ("");
 
-	status_msg ("");
+	pthread_mutex_lock(&decoderStreamMut);
+	decoderStream = NULL;
+	musicFormatInterface->close (decoder_data);
+	pthread_mutex_unlock(&decoderStreamMut);
 
-	LOCK (decoder_stream_mut);
-	decoder_stream = NULL;
-	f->close (decoder_data);
-	UNLOCK (decoder_stream_mut);
+	bitrateList.clear();
 
-	bitrate_list_destroy (&bitrate_list);
-
-	LOCK (curr_tags_mut);
-	if (curr_tags) {
-		tags_free (curr_tags);
+	pthread_mutex_lock(&currTagsMut);
+	if (curr_tags)
+	{
+		tagsFree (curr_tags);
 		curr_tags = NULL;
 	}
-	UNLOCK (curr_tags_mut);
+	pthread_mutex_lock(&currTagsMut);
 
-	out_buf_wait (out_buf);
+	outBuf.wait();
+}
+
+void FooAudioEngine::stateStartedPlaying()
+{
+	state = STATE_PLAY;
+	stateChange();
+}
+
+void Precache::startPrecache(const char *file)
+{
+	assert (!running);
+	assert (file != NULL);
+
+	file = strdup (file);
+	clog << "Precaching file " << file << endl;
+	ok = 0;
+	if (pthread_create(&tid, NULL, precache_thread, precache))
+	{
+		clog << "Could not run precache thread" << endl;
+	}
+	else
+	{
+		running = 1;
+	}
 }
