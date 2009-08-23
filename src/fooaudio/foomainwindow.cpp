@@ -4,7 +4,6 @@ using namespace std;
 
 #include <QtGui>
 #include "fooplaylistwidget.hpp"
-#include "fooplugindialog.hpp"
 #include "foomainwindow.hpp"
 
 class FooTabWidget;
