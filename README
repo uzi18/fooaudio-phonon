@@ -1,3 +1,13 @@
 --- README ---
 
-Hello :)
+pingwinek: Hello :)
+uzi: Hi ;)
+
+* compilation :
+
+    cd src/fooaudio
+    qmake-qt4
+    make
+
+    (you will find fooaudio in ../.. )
+
