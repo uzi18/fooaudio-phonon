@@ -38,6 +38,7 @@ Module.symvers
 Makefile
 moc_*.cpp
 qrc_*.cpp
+fooaudio
 
 # stgit generated dirs
 patches-*
