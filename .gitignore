@@ -36,6 +36,7 @@ Module.symvers
 
 # host specyfic files
 Makefile
+moc_*.cpp
 
 # stgit generated dirs
 patches-*
