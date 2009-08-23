@@ -34,9 +34,10 @@ Module.symvers
 !.gitignore
 !.mailmap
 
-# host specyfic files
+# files generated automaticly
 Makefile
 moc_*.cpp
+qrc_*.cpp
 
 # stgit generated dirs
 patches-*
