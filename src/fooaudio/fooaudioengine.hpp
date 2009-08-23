@@ -3,8 +3,8 @@
 
 #include <QList>
 #include <QDir>
-#include <phonon/Phonon/AudioOutput>
-#include <phonon/Phonon/MediaObject>
+#include <phonon/audiooutput.h>
+#include <phonon/mediaobject.h>
 #include "fooplaylistwidget.hpp"
 
 class FooAudioEngine : public QObject
