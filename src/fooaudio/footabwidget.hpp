@@ -7,18 +7,16 @@
 
 class FooTabBar;
 
-/*
- *
- */
-
 class FooTabWidget : public QTabWidget
 {
-   Q_OBJECT
+	Q_OBJECT
 
 signals:
 	// tabwidget signals
 	void tabsChanged ();
 	void lastTabClosed ();
+
+	void itemDoubleClickedSignal(QTreeWidgetItem *, int);
 
 public:
 	FooTabWidget (QWidget *parent = 0);
@@ -35,6 +33,8 @@ public slots:
 	void closeOtherTabs (int);
 	void nextTab ();
 	void previousTab ();
+
+	void itemClicked(QTreeWidgetItem *, int);
 
 private:
 	QAction *m_recentlyClosedTabAction;

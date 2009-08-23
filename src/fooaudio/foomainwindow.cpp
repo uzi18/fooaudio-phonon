@@ -18,6 +18,10 @@ FooMainWindow::FooMainWindow(FooAudioEngine *fae) : QMainWindow ()
 	fooTabWidget = new FooTabWidget ();
 	setCentralWidget (fooTabWidget);
 	setWindowTitle (tr ("fooaudio"));
+
+	createActions();
+
+	connect (fooTabWidget, SIGNAL (itemDoubleClickedSignal(QTreeWidgetItem *, int)), this, SLOT (itemDoubleClicked(QTreeWidgetItem *, int)));
 }
 
 FooMainWindow::~FooMainWindow ()
@@ -326,6 +330,36 @@ void FooMainWindow::createToolBars ()
 	addToolBar (playbackToolBar);
 }
 
+void FooMainWindow::createActions()
+{
+	connect(this, SIGNAL(playSignal()), fooAudioEngine->getMediaObject(), SLOT(play()));
+	connect(this, SIGNAL(pauseSignal()), fooAudioEngine->getMediaObject(), SLOT(pause()) );
+	connect(this, SIGNAL(stopSignal()), fooAudioEngine->getMediaObject(), SLOT(stop()));
+}
+
+void FooMainWindow::itemDoubleClicked(QTreeWidgetItem * item, int column)
+{
+	bool wasPlaying = fooAudioEngine->getMediaObject()->state() == Phonon::PlayingState;
+
+	QTreeWidget * foo = (QTreeWidget*)fooTabWidget->currentWidget();
+	QLabel * bar = (QLabel*)foo->itemWidget(item, 0);
+	cout << bar->text().toStdString() << endl;
+
+	fooAudioEngine->getMediaObject()->stop();
+	fooAudioEngine->getMediaObject()->clearQueue();
+
+	Phonon::MediaSource source(bar->text());
+
+	fooAudioEngine->getMediaObject()->setCurrentSource(source);
+
+	  if (wasPlaying)
+			fooAudioEngine->getMediaObject()->play();
+	  else
+			fooAudioEngine->getMediaObject()->stop();
+
+	  emit playSignal();
+}
+
 void FooMainWindow::open ()
 {
 }
@@ -348,6 +382,10 @@ void FooMainWindow::addFiles ()
 
 		FooPlaylistWidget *wid = static_cast<FooPlaylistWidget *> (fooTabWidget->currentWidget());
 		wid->addFile (string);
+
+		Phonon::MediaSource source(string);
+
+		fooAudioEngine->getSources()->append(source);
 	}
 }
 
@@ -373,8 +411,6 @@ void FooMainWindow::savePlaylist ()
 
 void FooMainWindow::preferences ()
 {
-	FooPluginDialog dialog(fooAudioEngine->getPluginsDir().path(), fooAudioEngine->getPluginFileNames(), this);
-	dialog.exec ();
 }
 
 void FooMainWindow::exit ()
@@ -479,7 +515,7 @@ void FooMainWindow::paste ()
 
 void FooMainWindow::stop ()
 {
-	emit stopSignal ();
+	emit stopSignal();
 }
 
 void FooMainWindow::pause ()

@@ -8,6 +8,9 @@ int main (int argc, char * argv [])
 
 	FooaudioApp fooApp (argc, argv);
 
+	fooApp.setApplicationName("fooaudio");
+	fooApp.setQuitOnLastWindowClosed(true);
+
 	FooAudioEngine fooAudioEngine;
 
 	FooMainWindow fooWindow (&fooAudioEngine);

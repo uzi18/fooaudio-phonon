@@ -67,6 +67,9 @@ void FooTabWidget::newTab()
 {
 	FooPlaylistWidget *fpw = new FooPlaylistWidget ();
 	addTab (fpw, "dupa");
+
+		connect(fpw, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)),
+				 this, SLOT(itemClicked(QTreeWidgetItem *, int)));
 }
 
 void FooTabWidget::closeTab (int index)
@@ -110,3 +113,7 @@ void FooTabWidget::previousTab()
 	setCurrentIndex(next);
 }
 
+void FooTabWidget::itemClicked(QTreeWidgetItem * item, int column)
+{
+	emit itemDoubleClickedSignal(item, column);
+}

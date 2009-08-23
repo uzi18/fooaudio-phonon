@@ -12,7 +12,7 @@ public:
 	int plistFindFname (const char *);
 	int plistNext (int);
 	int plistCount();
-	char *plistGetFile(int);
+	QString plistGetFile(int);
 };
 
 #endif // _FOOPLAYLIST_HPP_

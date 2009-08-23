@@ -81,6 +81,9 @@ private slots:
 
 	void about ();
 
+
+	void itemDoubleClicked(QTreeWidgetItem *, int column);
+
 private:
 	FooAudioEngine *fooAudioEngine;
 
@@ -173,6 +176,7 @@ private:
 
 	void createMenus ();
 	void createToolBars ();
+	void createActions();
 };
 
 #endif // _FOOMAINWINDOW_HPP_

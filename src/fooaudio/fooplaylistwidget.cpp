@@ -32,7 +32,7 @@ int FooPlaylistWidget::plistFindFname (const char *fname)
 	{
 		QTreeWidgetItem *wid = topLevelItem(i);
 
-		QLabel *lab = itemWidget(wid, 0);
+		QLabel *lab = &((QLabel) itemWidget(wid, 0));
 
 		if (lab->text() == fname)
 		{
@@ -42,9 +42,9 @@ int FooPlaylistWidget::plistFindFname (const char *fname)
 	}
 }
 
-char *FooPlaylistWidget::plistGetFile(int i)
+QString FooPlaylistWidget::plistGetFile(int i)
 {
-	return topLevelItem(i)->text()->toStdString();
+	return topLevelItem(i)->text(0);
 }
 
 int FooPlaylistWidget::plistCount()
@@ -54,5 +54,5 @@ int FooPlaylistWidget::plistCount()
 
 int FooPlaylistWidget::plistNext(int i)
 {
-	return (topLeverItemCount() == i) ? 1 : ++i;
+	return (topLevelItemCount() == i) ? 1 : ++i;
 }
