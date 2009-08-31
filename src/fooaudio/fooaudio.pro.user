@@ -54,7 +54,7 @@
   <valuemap type="QVariantMap" >
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Release</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList" >
-    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-Dt7rhYI1pC,guid=ef235d894bb99846a146eacb4a9b6ca6</value>
+    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-Ak21xcbflh,guid=2fa00fc8f710ccd2ee845ca34a9beb93</value>
     <value type="QString" >DESKTOP_SESSION=kde</value>
     <value type="QString" >DESKTOP_STARTUP_ID=</value>
     <value type="QString" >DISPLAY=:0.0</value>
@@ -68,23 +68,22 @@
     <value type="QString" >KDE_SESSION_UID=1000</value>
     <value type="QString" >KDE_SESSION_VERSION=4</value>
     <value type="QString" >LANG=pl_PL.UTF-8</value>
-    <value type="QString" >LC_ALL=pl_PL.utf8</value>
     <value type="QString" >LD_LIBRARY_PATH=/usr/lib/qtcreator:</value>
     <value type="QString" >LOGNAME=matthew</value>
     <value type="QString" >PATH=/usr/bin:/usr/local/bin:/usr/bin:/bin:/usr/games</value>
     <value type="QString" >PWD=/home/matthew</value>
     <value type="QString" >QTDIR=/usr</value>
     <value type="QString" >QT_PLUGIN_PATH=/home/matthew/.kde/lib/kde4/plugins/:/usr/lib/kde4/plugins/</value>
-    <value type="QString" >SESSION_MANAGER=local/erwin:@/tmp/.ICE-unix/5704,unix/erwin:/tmp/.ICE-unix/5704</value>
+    <value type="QString" >SESSION_MANAGER=local/pingwinek:@/tmp/.ICE-unix/3214,unix/pingwinek:/tmp/.ICE-unix/3214</value>
     <value type="QString" >SHELL=/bin/bash</value>
     <value type="QString" >SHLVL=0</value>
-    <value type="QString" >SSH_AGENT_PID=5603</value>
-    <value type="QString" >SSH_AUTH_SOCK=/tmp/ssh-WoAqmS5481/agent.5481</value>
+    <value type="QString" >SSH_AGENT_PID=3139</value>
+    <value type="QString" >SSH_AUTH_SOCK=/tmp/ssh-jTSMLY3005/agent.3005</value>
     <value type="QString" >USER=matthew</value>
     <value type="QString" >WINDOWPATH=7</value>
     <value type="QString" >XCURSOR_THEME=Oxygen_Black</value>
     <value type="QString" >XDG_DATA_DIRS=/usr/share:/usr/share:/usr/local/share</value>
-    <value type="QString" >XDG_SESSION_COOKIE=a6aa0f0593b57627448b311b4a47773e-1251699877.118040-1043235256</value>
+    <value type="QString" >XDG_SESSION_COOKIE=837810aef5b3e1bc97b8314b4a47a5cc-1251732370.621792-240002942</value>
     <value type="QString" >XDM_MANAGED=method=classic</value>
    </valuelist>
    <valuelist key="abstractProcess.arguments" type="QVariantList" >
@@ -104,7 +103,7 @@
   <valuemap type="QVariantMap" >
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Release</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList" >
-    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-Dt7rhYI1pC,guid=ef235d894bb99846a146eacb4a9b6ca6</value>
+    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-Ak21xcbflh,guid=2fa00fc8f710ccd2ee845ca34a9beb93</value>
     <value type="QString" >DESKTOP_SESSION=kde</value>
     <value type="QString" >DESKTOP_STARTUP_ID=</value>
     <value type="QString" >DISPLAY=:0.0</value>
@@ -118,23 +117,22 @@
     <value type="QString" >KDE_SESSION_UID=1000</value>
     <value type="QString" >KDE_SESSION_VERSION=4</value>
     <value type="QString" >LANG=pl_PL.UTF-8</value>
-    <value type="QString" >LC_ALL=pl_PL.utf8</value>
     <value type="QString" >LD_LIBRARY_PATH=/usr/lib/qtcreator:</value>
     <value type="QString" >LOGNAME=matthew</value>
     <value type="QString" >PATH=/usr/bin:/usr/local/bin:/usr/bin:/bin:/usr/games</value>
     <value type="QString" >PWD=/home/matthew</value>
     <value type="QString" >QTDIR=/usr</value>
     <value type="QString" >QT_PLUGIN_PATH=/home/matthew/.kde/lib/kde4/plugins/:/usr/lib/kde4/plugins/</value>
-    <value type="QString" >SESSION_MANAGER=local/erwin:@/tmp/.ICE-unix/5704,unix/erwin:/tmp/.ICE-unix/5704</value>
+    <value type="QString" >SESSION_MANAGER=local/pingwinek:@/tmp/.ICE-unix/3214,unix/pingwinek:/tmp/.ICE-unix/3214</value>
     <value type="QString" >SHELL=/bin/bash</value>
     <value type="QString" >SHLVL=0</value>
-    <value type="QString" >SSH_AGENT_PID=5603</value>
-    <value type="QString" >SSH_AUTH_SOCK=/tmp/ssh-WoAqmS5481/agent.5481</value>
+    <value type="QString" >SSH_AGENT_PID=3139</value>
+    <value type="QString" >SSH_AUTH_SOCK=/tmp/ssh-jTSMLY3005/agent.3005</value>
     <value type="QString" >USER=matthew</value>
     <value type="QString" >WINDOWPATH=7</value>
     <value type="QString" >XCURSOR_THEME=Oxygen_Black</value>
     <value type="QString" >XDG_DATA_DIRS=/usr/share:/usr/share:/usr/local/share</value>
-    <value type="QString" >XDG_SESSION_COOKIE=a6aa0f0593b57627448b311b4a47773e-1251699877.118040-1043235256</value>
+    <value type="QString" >XDG_SESSION_COOKIE=837810aef5b3e1bc97b8314b4a47a5cc-1251732370.621792-240002942</value>
     <value type="QString" >XDM_MANAGED=method=classic</value>
    </valuelist>
    <valuelist key="abstractProcess.arguments" type="QVariantList" >

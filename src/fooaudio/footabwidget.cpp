@@ -115,22 +115,24 @@ void FooTabWidget::previousTab()
 
 void FooTabWidget::itemClicked(QTreeWidgetItem * item, int column)
 {
+	cout << "FooTabWidget::itemClicked" << endl << flush;
 	nowPlayingItem = item;
 	emit itemDoubleClickedSignal(item, column);
 }
 
 QUrl FooTabWidget::nextFile()
 {
+	cout << "FooTabWidget::nextFile" << endl << flush;
 	int c = count();
 
-	cout << "TabWidget: nextFile: c: " << c << endl;
+	cout << "TabWidget: nextFile: c: " << c << endl << flush;
 
 	for (int i = 0; i < c; i++)
 	{
-		cout << "TabWidget: nextFile: for: i: " << i << endl;
+		cout << "TabWidget: nextFile: for: i: " << i << endl << flush;
 		FooPlaylistWidget *wid = static_cast<FooPlaylistWidget *> (widget(i));
 		int index = wid->indexOfTopLevelItem(nowPlayingItem);
-		cout << "TabWidget: nextFile: for: index: " << index << endl;
+		cout << "TabWidget: nextFile: for: index: " << index << endl << flush;
 		if (index >= 0)
 		{
 			return wid->nextFile(i);

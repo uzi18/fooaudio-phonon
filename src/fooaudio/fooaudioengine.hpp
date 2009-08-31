@@ -14,10 +14,12 @@ class FooAudioEngine : public QObject
 	Q_OBJECT
 
 public:
-	FooAudioEngine (FooMainWindow *, QObject *);
+	FooAudioEngine (QObject *);
 
 	Phonon::MediaObject * getMediaObject();
 	QList<Phonon::MediaSource> * getSources();
+
+	void setFooMainWindow(FooMainWindow *);
 
 private:
 	FooMainWindow *fooMainWindow;

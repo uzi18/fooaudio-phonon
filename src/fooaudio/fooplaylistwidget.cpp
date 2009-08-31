@@ -20,6 +20,7 @@ FooPlaylistWidget::FooPlaylistWidget ()
 
 void FooPlaylistWidget::addFile (QString path)
 {
+	cout << "FooPlaylistWidget::addFile" << endl << flush;
 	QTreeWidgetItem *wid = new QTreeWidgetItem (this);
 	QLabel *lab = new QLabel (path, this);
 	setItemWidget (wid, 0, lab);
@@ -28,6 +29,7 @@ void FooPlaylistWidget::addFile (QString path)
 
 int FooPlaylistWidget::plistFindFname (const char *fname)
 {
+	cout << "FooPlaylistWidget::plistFindFname" << endl << flush;
 	for (int i = 0; i < topLevelItemCount(); i++)
 	{
 		QTreeWidgetItem *wid = topLevelItem(i);
@@ -59,7 +61,11 @@ int FooPlaylistWidget::plistNext(int i)
 
 QUrl FooPlaylistWidget::nextFile(int i)
 {
+	cout << "FooPlaylistWidget::nextFile" << endl << flush;
+	cout << this->topLevelItemCount() << endl << flush;
 	QLabel *lab = &((QLabel) itemWidget(topLevelItem(++i), 0));
+	cout << "Dostałem labela" << endl << flush;
 	QUrl url = lab->text();
+	cout << "Label ma text" << endl << flush;
 	return url;
 }

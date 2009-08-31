@@ -339,6 +339,7 @@ void FooMainWindow::createActions()
 
 void FooMainWindow::itemDoubleClicked(QTreeWidgetItem * item, int column)
 {
+	cout << "FooMainWindow::itemDoubleClicked" << endl << flush;
 	bool wasPlaying = fooAudioEngine->getMediaObject()->state() == Phonon::PlayingState;
 
 	FooPlaylistWidget * foo = (FooPlaylistWidget*)fooTabWidget->currentWidget();
@@ -372,6 +373,7 @@ void FooMainWindow::openAudioCD ()
 
 void FooMainWindow::addFiles ()
 {
+	cout << "FooMainWindow::addFiles" << endl << flush;
 	QStringList files = QFileDialog::getOpenFileNames(this, tr("Select Music Files"), QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
 
 	if (files.isEmpty())
@@ -517,26 +519,31 @@ void FooMainWindow::paste ()
 
 void FooMainWindow::stop ()
 {
+	cout << "FooMainWindow::stop" << endl << flush;
 	emit stopSignal();
 }
 
 void FooMainWindow::pause ()
 {
+	cout << "FooMainWindow::pause" << endl << flush;
 	emit pauseSignal ();
 }
 
 void FooMainWindow::play ()
 {
+	cout << "FooMainWindow::play" << endl << flush;
 	emit playSignal();
 }
 
 void FooMainWindow::previous ()
 {
+	cout << "FooMainWindow::previous" << endl << flush;
 	emit prevSignal ();
 }
 
 void FooMainWindow::next ()
 {
+	cout << "FooMainWindow::next" << endl << flush;
 	emit nextSignal ();
 }
 
