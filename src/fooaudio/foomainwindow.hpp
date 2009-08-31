@@ -14,6 +14,8 @@ public:
 	FooMainWindow (FooAudioEngine *);
 	~FooMainWindow ();
 
+	FooTabWidget *fooTabWidget;
+
 signals:
 	void playSignal ();
 	void prevSignal ();
@@ -86,8 +88,6 @@ private slots:
 
 private:
 	FooAudioEngine *fooAudioEngine;
-
-	FooTabWidget *fooTabWidget;
 
 	QMenu *fileMenu;
 		QAction *openAction;

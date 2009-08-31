@@ -14,7 +14,7 @@ FooPlaylistWidget::FooPlaylistWidget ()
 	setIndentation(0);
 	setAlternatingRowColors (true);
 	QStringList l;
-	l << tr("File") << tr("Track") << tr("Title") << tr("Artist") << tr("Album") << tr("Comment") << tr("Genre") << tr("Year") << tr("Length") << tr("Rating");
+	l << tr("File") << tr("Playback") << tr("Track") << tr("Title") << tr("Artist") << tr("Album") << tr("Comment") << tr("Genre") << tr("Year") << tr("Length") << tr("Rating");
 	setHeaderLabels(l);
 }
 
@@ -57,8 +57,9 @@ int FooPlaylistWidget::plistNext(int i)
 	return (topLevelItemCount() == i) ? 1 : ++i;
 }
 
-QUrl FooPlaylistWidget::nextFile()
+QUrl FooPlaylistWidget::nextFile(int i)
 {
-	QUrl url;
+	QLabel *lab = &((QLabel) itemWidget(topLevelItem(++i), 0));
+	QUrl url = lab->text();
 	return url;
 }

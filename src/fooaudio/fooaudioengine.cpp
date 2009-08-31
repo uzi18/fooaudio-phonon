@@ -31,4 +31,6 @@ QList<Phonon::MediaSource> * FooAudioEngine::getSources()
 
 void FooAudioEngine::enqueueNextFile()
 {
+	cout << "Kolejkowanie kolejnego utworu " << fooMainWindow->fooTabWidget->nextFile().toString().toStdString() << endl;
+	mediaObject->enqueue(fooMainWindow->fooTabWidget->nextFile());
 }

@@ -341,7 +341,7 @@ void FooMainWindow::itemDoubleClicked(QTreeWidgetItem * item, int column)
 {
 	bool wasPlaying = fooAudioEngine->getMediaObject()->state() == Phonon::PlayingState;
 
-	QTreeWidget * foo = (QTreeWidget*)fooTabWidget->currentWidget();
+	FooPlaylistWidget * foo = (FooPlaylistWidget*)fooTabWidget->currentWidget();
 	QLabel * bar = (QLabel*)foo->itemWidget(item, 0);
 	cout << bar->text().toStdString() << endl;
 
@@ -358,6 +358,8 @@ void FooMainWindow::itemDoubleClicked(QTreeWidgetItem * item, int column)
 			fooAudioEngine->getMediaObject()->stop();
 
 	  emit playSignal();
+
+	  foo->setItemWidget(item, 1, new QLabel(">"));
 }
 
 void FooMainWindow::open ()

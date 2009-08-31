@@ -26,6 +26,8 @@ public:
 	QAction *nextTabAction () const;
 	QAction *previousTabAction () const;
 
+
+
 public slots:
 	void newTab ();
 //	void cloneTab (int index = -1);
@@ -36,6 +38,8 @@ public slots:
 
 	void itemClicked(QTreeWidgetItem *, int);
 
+	QUrl nextFile();
+
 private:
 	QAction *m_recentlyClosedTabAction;
 	QAction *m_newTabAction;
@@ -44,6 +48,8 @@ private:
 	QAction *m_previousTabAction;
 
 	FooTabBar *m_tabBar;
+
+	QTreeWidgetItem * nowPlayingItem;
 };
 
 #endif // _FOOTABWIDGET_HPP_
