@@ -11,7 +11,7 @@ class FooMainWindow;
 
 class FooAudioEngine : public QObject
 {
-//	Q_OBJECT
+	Q_OBJECT
 
 public:
 	FooAudioEngine (FooMainWindow *, QObject *);
