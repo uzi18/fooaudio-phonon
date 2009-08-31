@@ -6,7 +6,7 @@ TEMPLATE = app
 TARGET = fooaudio
 DESTDIR = ../../.
 DEPENDPATH += .
-INCLUDEPATH += /home/matthew/project/fooaudio/src/fooaudio/. \
+INCLUDEPATH += /home/matthew/project/fooaudio-phonon/src/fooaudio/. \
 	 .
 
 # Input

@@ -7,19 +7,27 @@
 #include <phonon/mediaobject.h>
 #include "fooplaylistwidget.hpp"
 
+class FooMainWindow;
+
 class FooAudioEngine : public QObject
 {
+//	Q_OBJECT
+
 public:
-	FooAudioEngine ();
+	FooAudioEngine (FooMainWindow *, QObject *);
 
 	Phonon::MediaObject * getMediaObject();
 	QList<Phonon::MediaSource> * getSources();
 
 private:
+	FooMainWindow *fooMainWindow;
+
 	Phonon::MediaObject *mediaObject;
 	Phonon::AudioOutput *audioOutput;
 	QList<Phonon::MediaSource> sources;
+
+public slots:
+	void enqueueNextFile();
 };
 
 #endif // _FOOAUDIOENGINE_HPP_
-

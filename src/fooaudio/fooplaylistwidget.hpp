@@ -13,6 +13,8 @@ public:
 	int plistNext (int);
 	int plistCount();
 	QString plistGetFile(int);
+
+	QUrl nextFile();
 };
 
 #endif // _FOOPLAYLIST_HPP_

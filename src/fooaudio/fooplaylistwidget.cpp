@@ -3,7 +3,7 @@
 #include <QStringList>
 #include <QLabel>
 #include <QDebug>
-
+#include <QUrl>
 #include <iostream>
 
 using namespace std;
@@ -55,4 +55,10 @@ int FooPlaylistWidget::plistCount()
 int FooPlaylistWidget::plistNext(int i)
 {
 	return (topLevelItemCount() == i) ? 1 : ++i;
+}
+
+QUrl FooPlaylistWidget::nextFile()
+{
+	QUrl url;
+	return url;
 }

@@ -2,8 +2,9 @@
 #define _FOOMAINWINDOW_HPP_
 
 #include <QtGui>
-#include "fooaudioengine.hpp"
 #include "footabwidget.hpp"
+
+class FooAudioEngine;
 
 class FooMainWindow : public QMainWindow
 {
@@ -80,7 +81,6 @@ private slots:
 	void configure ();
 
 	void about ();
-
 
 	void itemDoubleClicked(QTreeWidgetItem *, int column);
 

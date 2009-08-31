@@ -5,12 +5,13 @@ using namespace std;
 #include <QtGui>
 #include "fooplaylistwidget.hpp"
 #include "foomainwindow.hpp"
+#include "fooaudioengine.hpp"
 
 class FooTabWidget;
 
 FooMainWindow::FooMainWindow(FooAudioEngine *fae) : QMainWindow ()
 {
-	fooAudioEngine = fae;
+	this->fooAudioEngine = fae;
 
 	createMenus ();
 	createToolBars ();

@@ -2,7 +2,6 @@
 #define _FOOAUDIOAPP_HPP_
 
 #include <QApplication>
-#include "foomainwindow.hpp"
 
 class FooaudioApp : public QApplication
 {
