@@ -4,7 +4,7 @@ using namespace std;
 
 #include <QtGui>
 
-#include "fooabout.h"
+#include "fooabout.hpp"
 #include "fooaudioengine.hpp"
 #include "foomainwindow.hpp"
 #include "fooplaylistwidget.hpp"
