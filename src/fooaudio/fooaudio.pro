@@ -8,17 +8,19 @@ DEPENDPATH += .
 INCLUDEPATH += .
 
 # Input
-HEADERS += fooaudioapp.hpp \
-			  fooaudioengine.hpp \
-			  foomainwindow.hpp \
-			  fooplaylistwidget.hpp \
-			  footabbar.hpp \
-			  footabwidget.hpp
-SOURCES += fooaudio.cpp \
-			  fooaudioapp.cpp \
-			  fooaudioengine.cpp \
-			  foomainwindow.cpp \
-			  fooplaylistwidget.cpp \
-			  footabbar.cpp \
-			  footabwidget.cpp
+HEADERS += fooabout.h \
+	fooaudioapp.hpp \
+	fooaudioengine.hpp \
+	foomainwindow.hpp \
+	fooplaylistwidget.hpp \
+	footabbar.hpp \
+	footabwidget.hpp
+SOURCES +=  fooabout.cpp \
+	fooaudio.cpp \
+	fooaudioapp.cpp \
+	fooaudioengine.cpp \
+	foomainwindow.cpp \
+	fooplaylistwidget.cpp \
+	footabbar.cpp \
+	footabwidget.cpp
 RESOURCES += resource.qrc
