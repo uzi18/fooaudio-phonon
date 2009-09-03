@@ -17,7 +17,6 @@ public:
 	FooAudioEngine (QObject *);
 
 	Phonon::MediaObject * getMediaObject();
-	QList<Phonon::MediaSource> * getSources();
 
 	void setFooMainWindow(FooMainWindow *);
 
@@ -26,7 +25,6 @@ private:
 
 	Phonon::MediaObject *mediaObject;
 	Phonon::AudioOutput *audioOutput;
-	QList<Phonon::MediaSource> sources;
 
 public slots:
 	void enqueueNextFile();

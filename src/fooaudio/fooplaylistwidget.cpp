@@ -63,7 +63,9 @@ QUrl FooPlaylistWidget::nextFile(int i)
 {
 	cout << "FooPlaylistWidget::nextFile" << endl << flush;
 	cout << this->topLevelItemCount() << endl << flush;
-	QLabel *lab = &((QLabel) itemWidget(topLevelItem(++i), 0));
+	cout << i << endl << flush;
+	// QLabel * bar = (QLabel*)foo->itemWidget(item, 0);
+	QLabel *lab = (QLabel*) itemWidget(topLevelItem(++i), 0);
 	cout << "Dostałem labela" << endl << flush;
 	QUrl url = lab->text();
 	cout << "Label ma text" << endl << flush;

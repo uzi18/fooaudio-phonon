@@ -26,12 +26,6 @@ Phonon::MediaObject * FooAudioEngine::getMediaObject()
 	return mediaObject;
 }
 
-QList<Phonon::MediaSource> * FooAudioEngine::getSources()
-{
-	cout << "FooAudioEngine::getSources" << endl << flush;
-	return &sources;
-}
-
 void FooAudioEngine::enqueueNextFile()
 {
 	cout << "FooAudioEngine::enqueueNextFile" << endl << flush;
@@ -46,7 +40,9 @@ void FooAudioEngine::enqueueNextFile()
 		cout << "fooMainWindow->fooTabWidget nie jest null" << endl << flush;
 
 	cout << "Kolejkowanie kolejnego utworu " << fooMainWindow->fooTabWidget->nextFile().toString().toStdString() << endl << flush;
-	mediaObject->enqueue(fooMainWindow->fooTabWidget->nextFile());
+	QUrl foo = fooMainWindow->fooTabWidget->nextFile();
+	cout << "Kolejna piosenka: " << foo.toString().toStdString() << endl << flush;
+	mediaObject->enqueue(foo.toLocalFile());
 }
 
 void FooAudioEngine::setFooMainWindow(FooMainWindow *fmw)

@@ -349,9 +349,7 @@ void FooMainWindow::itemDoubleClicked(QTreeWidgetItem * item, int column)
 	fooAudioEngine->getMediaObject()->stop();
 	fooAudioEngine->getMediaObject()->clearQueue();
 
-	Phonon::MediaSource source(bar->text());
-
-	fooAudioEngine->getMediaObject()->setCurrentSource(source);
+	fooAudioEngine->getMediaObject()->setCurrentSource(bar->text());
 
 	  if (wasPlaying)
 			fooAudioEngine->getMediaObject()->play();
@@ -386,10 +384,6 @@ void FooMainWindow::addFiles ()
 
 		FooPlaylistWidget *wid = static_cast<FooPlaylistWidget *> (fooTabWidget->currentWidget());
 		wid->addFile (string);
-
-		Phonon::MediaSource source(string);
-
-		fooAudioEngine->getSources()->append(source);
 	}
 }
 
