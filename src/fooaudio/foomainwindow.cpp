@@ -3,9 +3,11 @@
 using namespace std;
 
 #include <QtGui>
-#include "fooplaylistwidget.hpp"
-#include "foomainwindow.hpp"
+
+#include "fooabout.h"
 #include "fooaudioengine.hpp"
+#include "foomainwindow.hpp"
+#include "fooplaylistwidget.hpp"
 
 class FooTabWidget;
 
@@ -605,5 +607,5 @@ void FooMainWindow::configure ()
 
 void FooMainWindow::about ()
 {
+	(new FooAbout(this))->show();
 }
-
