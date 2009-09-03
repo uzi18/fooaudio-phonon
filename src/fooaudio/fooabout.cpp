@@ -14,7 +14,7 @@
 #include <QtGui/QTabWidget>
 #include <QtGui/QTextEdit>
 
-#include "fooabout.h"
+#include "fooabout.hpp"
 
 FooAbout::FooAbout(QWidget *parent)
 	: QWidget(parent, Qt::Window)
@@ -62,9 +62,9 @@ FooAbout::FooAbout(QWidget *parent)
 	tb_authors->setWordWrapMode(QTextOption::NoWrap);
 	QString authors_text;
 	authors_text += "Mateusz \'Matthew\' Marek\n";
-	authors_text += "email: matthew at matthew.org.pl\n\n";
+	authors_text += "email: matthew@matthew.org.pl\n\n";
 	authors_text += "Bartłomiej \'uzi\' Zimoń\n";
-	authors_text += "email: uzi18 at o2.pl\n";
+	authors_text += "email: uzi18@o2.pl\n";
 	tb_authors->setText(authors_text);
 
 	// people to thank

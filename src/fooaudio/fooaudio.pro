@@ -8,7 +8,7 @@ DEPENDPATH += .
 INCLUDEPATH += .
 
 # Input
-HEADERS += fooabout.h \
+HEADERS += fooabout.hpp \
 	fooaudioapp.hpp \
 	fooaudioengine.hpp \
 	foomainwindow.hpp \
