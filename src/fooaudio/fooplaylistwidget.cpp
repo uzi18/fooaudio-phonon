@@ -59,15 +59,15 @@ int FooPlaylistWidget::plistNext(int i)
 	return (topLevelItemCount() == i) ? 1 : ++i;
 }
 
-QUrl FooPlaylistWidget::nextFile(int i)
+QUrl FooPlaylistWidget::file(int i)
 {
 	cout << "FooPlaylistWidget::nextFile" << endl << flush;
 	cout << this->topLevelItemCount() << endl << flush;
 	cout << i << endl << flush;
 	// QLabel * bar = (QLabel*)foo->itemWidget(item, 0);
-	QLabel *lab = (QLabel*) itemWidget(topLevelItem(++i), 0);
+	QLabel *lab = (QLabel*) itemWidget(topLevelItem(i), 0);
 	cout << "Dostałem labela" << endl << flush;
 	QUrl url = lab->text();
-	cout << "Label ma text" << endl << flush;
+	cout << "Label ma text " << lab->text().toStdString() << endl << flush;
 	return url;
 }

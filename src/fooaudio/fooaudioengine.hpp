@@ -26,6 +26,8 @@ private:
 	Phonon::MediaObject *mediaObject;
 	Phonon::AudioOutput *audioOutput;
 
+	bool repeat;
+
 public slots:
 	void enqueueNextFile();
 	void progress(qint64 time);

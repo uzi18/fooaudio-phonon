@@ -120,7 +120,7 @@ void FooTabWidget::itemClicked(QTreeWidgetItem * item, int column)
 	emit itemDoubleClickedSignal(item, column);
 }
 
-QUrl FooTabWidget::nextFile()
+QUrl FooTabWidget::nextFile(bool repeat)
 {
 	cout << "FooTabWidget::nextFile" << endl << flush;
 	int c = count();
@@ -132,10 +132,36 @@ QUrl FooTabWidget::nextFile()
 		cout << "TabWidget: nextFile: for: i: " << i << endl << flush;
 		FooPlaylistWidget *wid = static_cast<FooPlaylistWidget *> (widget(i));
 		int index = wid->indexOfTopLevelItem(nowPlayingItem);
+		int max = wid->topLevelItemCount();
 		cout << "TabWidget: nextFile: for: index: " << index << endl << flush;
-		if (index >= 0)
-		{
-			return wid->nextFile(i);
-		}
+		cout << "TabWidget: nextFile: for: max: " << max << endl << flush;
+
+			if (index >= 0)
+			{
+				cout << "TabWidget: nextFile: for: if: index >= 0" << endl << flush;
+
+				if (index == max && repeat)
+				{
+					cout << "TabWidget: nextFile: for: if: repeat" << endl << flush;
+
+					nowPlayingItem = wid->topLevelItem(0);
+					return wid->file(0);
+				}
+				else if (index < max)
+				{
+					cout << "TabWidget: nextFile: for: if: index < max" << endl << flush;
+
+					nowPlayingItem = wid->itemBelow(nowPlayingItem);
+					return wid->file(++i);
+				}
+				else if (index == max && !repeat)
+				{
+					cout << "TabWidget: nextFile: for: if: !repeat" << endl << flush;
+
+					return QUrl();
+				}
+			}
 	}
+
+	return QUrl();
 }

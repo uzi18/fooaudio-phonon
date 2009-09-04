@@ -18,6 +18,8 @@ FooAudioEngine::FooAudioEngine (QObject* parent) : QObject(parent)
 	Phonon::createPath(mediaObject, audioOutput);
 
 	connect (mediaObject, SIGNAL (aboutToFinish()), this, SLOT (enqueueNextFile()));
+
+	repeat = true;
 }
 
 Phonon::MediaObject * FooAudioEngine::getMediaObject()
@@ -39,10 +41,13 @@ void FooAudioEngine::enqueueNextFile()
 	else
 		cout << "fooMainWindow->fooTabWidget nie jest null" << endl << flush;
 
-	cout << "Kolejkowanie kolejnego utworu " << fooMainWindow->fooTabWidget->nextFile().toString().toStdString() << endl << flush;
-	QUrl foo = fooMainWindow->fooTabWidget->nextFile();
+	cout << "Kolejkowanie kolejnego utworu " << fooMainWindow->fooTabWidget->nextFile(repeat).toString().toStdString() << endl << flush;
+	QUrl foo = fooMainWindow->fooTabWidget->nextFile(repeat);
 	cout << "Kolejna piosenka: " << foo.toString().toStdString() << endl << flush;
-	mediaObject->enqueue(foo.toLocalFile());
+	if (!foo.isEmpty())
+	{
+		mediaObject->enqueue(foo.toLocalFile());
+	}
 }
 
 void FooAudioEngine::setFooMainWindow(FooMainWindow *fmw)
