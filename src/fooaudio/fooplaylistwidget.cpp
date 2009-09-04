@@ -67,6 +67,9 @@ QUrl FooPlaylistWidget::file(int i)
 	// QLabel * bar = (QLabel*)foo->itemWidget(item, 0);
 	QLabel *lab = (QLabel*) itemWidget(topLevelItem(i), 0);
 	cout << "Dostałem labela" << endl << flush;
+	if (!lab)
+		return QUrl();
+
 	QUrl url = lab->text();
 	cout << "Label ma text " << lab->text().toStdString() << endl << flush;
 	return url;
