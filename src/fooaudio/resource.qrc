@@ -7,5 +7,6 @@
 	<file>../../images/prev.png</file>
 	<file>../../images/next.png</file>
 	<file>../../images/random.png</file>
+	<file>../../images/vol.png</file>
 </qresource>
 </RCC>
