@@ -299,10 +299,10 @@ void FooMainWindow::createToolBars ()
 
 	volumeToolBar = new QToolBar ("Volume ToolBar", this);
 	volumeToolBar->setFloatable (false);
-	QLabel *volumeIcon = new QLabel;
-	volumeIcon->setPixmap(QPixmap(":images/vol.png"));
+	volumeToolBarAction = new QAction (QIcon (":images/vol.png"), tr ("mute"),this);
+	connect (volumeToolBarAction, SIGNAL (triggered ()), this, SLOT (mute()));
+	volumeToolBar->addAction (volumeToolBarAction);
 	volumeSlider = new QSlider (Qt::Horizontal);
-	volumeToolBar->addWidget (volumeIcon);
 	volumeToolBar->addWidget (volumeSlider);
 	addToolBar (volumeToolBar);
 
@@ -514,6 +514,10 @@ void FooMainWindow::copy ()
 }
 
 void FooMainWindow::paste ()
+{
+}
+
+void FooMainWindow::mute ()
 {
 }
 

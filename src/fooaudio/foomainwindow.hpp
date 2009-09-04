@@ -66,6 +66,7 @@ private slots:
 	void copy ();
 	void paste ();
 
+	void mute ();
 	void stop ();
 	void pause ();
 	void play ();
@@ -165,6 +166,7 @@ private:
 		QAction *aboutAction;
 		QAction *aboutQtAction;
 
+	QAction *volumeToolBarAction;
 	QAction *stopToolBarAction;
 	QAction *playToolBarAction;
 	QAction *pauseToolBarAction;
