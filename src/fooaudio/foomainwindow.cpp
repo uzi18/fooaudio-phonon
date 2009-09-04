@@ -11,7 +11,7 @@ using namespace std;
 
 class FooTabWidget;
 
-FooMainWindow::FooMainWindow(FooAudioEngine *fae) : QMainWindow ()
+FooMainWindow::FooMainWindow(FooAudioEngine *fae) : QMainWindow (), maxProgress(1000)
 {
 	this->fooAudioEngine = fae;
 
@@ -293,7 +293,7 @@ void FooMainWindow::createToolBars ()
 	trackToolBar = new QToolBar ("Track ToolBar", this);
 	trackToolBar->setFloatable (false);
 	trackSlider = new QSlider (Qt::Horizontal);
-	trackSlider->setRange(0, MAX_PROGRESS);
+	trackSlider->setRange(0, maxProgress);
 	trackToolBar->addWidget (trackSlider);
 	addToolBar (trackToolBar);
 
@@ -610,4 +610,9 @@ void FooMainWindow::configure ()
 void FooMainWindow::about ()
 {
 	(new FooAbout(this))->show();
+}
+
+int FooMainWindow::getMaxProgress()
+{
+	return maxProgress;
 }

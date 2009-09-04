@@ -4,8 +4,6 @@
 #include <QtGui>
 #include "footabwidget.hpp"
 
-#define	MAX_PROGRESS 1000
-
 class FooAudioEngine;
 
 class FooMainWindow : public QMainWindow
@@ -20,6 +18,8 @@ public:
 
 	QSlider *trackSlider;
 	QSlider *volumeSlider;
+
+	int getMaxProgress();
 
 signals:
 	void playSignal ();
@@ -93,6 +93,7 @@ private slots:
 	void itemDoubleClicked(QTreeWidgetItem *, int column);
 
 private:
+	const int maxProgress;
 	FooAudioEngine *fooAudioEngine;
 
 	QMenu *fileMenu;

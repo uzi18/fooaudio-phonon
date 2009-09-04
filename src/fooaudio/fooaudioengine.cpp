@@ -65,7 +65,7 @@ void FooAudioEngine::setFooMainWindow(FooMainWindow *fmw)
 
 void FooAudioEngine::progress(qint64 time)
 {
-	int progress = (int) (time*MAX_PROGRESS/mediaObject->totalTime());
+	int progress = (int) (time*fooMainWindow->getMaxProgress()/mediaObject->totalTime());
 	QSlider *slider = this->fooMainWindow->trackSlider;
 	if (progress >= 0 && !slider->isSliderDown())
 		slider->setValue(progress);
@@ -81,6 +81,6 @@ void FooAudioEngine::sliderReleased()
 	if (slider_pos == -1)
 		return;
 	// think to check if value is valid for seek
-	mediaObject->seek(mediaObject->totalTime()*slider_pos/MAX_PROGRESS);
+	mediaObject->seek(mediaObject->totalTime()*slider_pos/fooMainWindow->getMaxProgress());
 	slider_pos = -1;
 }
