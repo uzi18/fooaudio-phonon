@@ -25,13 +25,16 @@ private:
 
 	Phonon::MediaObject *mediaObject;
 	Phonon::AudioOutput *audioOutput;
+	int slider_pos;
 
 	bool repeat;
 
 public slots:
 	void enqueueNextFile();
+
 	void progress(qint64 time);
 	void seek(int value);
+	void sliderReleased();
 };
 
 #endif // _FOOAUDIOENGINE_HPP_
