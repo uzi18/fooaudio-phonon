@@ -4,6 +4,8 @@
 #include <QtGui>
 #include "footabwidget.hpp"
 
+#define	MAX_PROGRESS 1000
+
 class FooAudioEngine;
 
 class FooMainWindow : public QMainWindow
@@ -15,6 +17,9 @@ public:
 	~FooMainWindow ();
 
 	FooTabWidget *fooTabWidget;
+
+	QSlider *trackSlider;
+	QSlider *volumeSlider;
 
 signals:
 	void playSignal ();
@@ -170,9 +175,6 @@ private:
 	QToolBar *trackToolBar;
 	QToolBar *playbackToolBar;
 	QToolBar *volumeToolBar;
-
-	QSlider *trackSlider;
-	QSlider *volumeSlider;
 
 	void createMenus ();
 	void createToolBars ();

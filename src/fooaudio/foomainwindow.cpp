@@ -293,6 +293,7 @@ void FooMainWindow::createToolBars ()
 	trackToolBar = new QToolBar ("Track ToolBar", this);
 	trackToolBar->setFloatable (false);
 	trackSlider = new QSlider (Qt::Horizontal);
+	trackSlider->setRange(0, MAX_PROGRESS);
 	trackToolBar->addWidget (trackSlider);
 	addToolBar (trackToolBar);
 
