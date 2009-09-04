@@ -50,6 +50,7 @@ void FooAudioEngine::setFooMainWindow(FooMainWindow *fmw)
 	this->fooMainWindow = fmw;
 	// to move progress bar
 	connect (mediaObject, SIGNAL (tick(qint64)), this, SLOT (progress(qint64)));
+	connect (this->fooMainWindow->trackSlider, SIGNAL (sliderMoved(int)), this, SLOT (seek(int)));
 	// this is needed - default = 0 => no ticks
 	mediaObject->setTickInterval(10);
 }
@@ -59,4 +60,9 @@ void FooAudioEngine::progress(qint64 time)
 	int progress = (int) (time*MAX_PROGRESS/mediaObject->totalTime());
 	if (progress >= 0)
 		this->fooMainWindow->trackSlider->setValue(progress);
+}
+void FooAudioEngine::seek(int value)
+{
+	// think to check if value is valid for seek
+	mediaObject->seek(mediaObject->totalTime()*value/MAX_PROGRESS);
 }

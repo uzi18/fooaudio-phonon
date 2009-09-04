@@ -29,6 +29,7 @@ private:
 public slots:
 	void enqueueNextFile();
 	void progress(qint64 time);
+	void seek(int value);
 };
 
 #endif // _FOOAUDIOENGINE_HPP_
