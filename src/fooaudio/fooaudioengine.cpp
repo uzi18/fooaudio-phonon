@@ -43,7 +43,7 @@ void FooAudioEngine::enqueueNextFile()
 	else
 		cout << "fooMainWindow->fooTabWidget nie jest null" << endl << flush;
 
-	cout << "Kolejkowanie kolejnego utworu " << fooMainWindow->fooTabWidget->nextFile(repeat).toString().toStdString() << endl << flush;
+	cout << "Kolejkowanie kolejnego utworu " << endl << flush;
 	QUrl foo = fooMainWindow->fooTabWidget->nextFile(repeat);
 	cout << "Kolejna piosenka: " << foo.toString().toStdString() << endl << flush;
 	if (!foo.isEmpty())

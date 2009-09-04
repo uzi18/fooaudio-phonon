@@ -140,21 +140,21 @@ QUrl FooTabWidget::nextFile(bool repeat)
 			{
 				cout << "TabWidget: nextFile: for: if: index >= 0" << endl << flush;
 
-				if (index == max && repeat)
+				if (index == (max - 1) && repeat)
 				{
 					cout << "TabWidget: nextFile: for: if: repeat" << endl << flush;
 
 					nowPlayingItem = wid->topLevelItem(0);
 					return wid->file(0);
 				}
-				else if (index < max)
+				else if (index < (max - 1))
 				{
 					cout << "TabWidget: nextFile: for: if: index < max" << endl << flush;
 
 					nowPlayingItem = wid->itemBelow(nowPlayingItem);
-					return wid->file(++i);
+					return wid->file(++index);
 				}
-				else if (index == max && !repeat)
+				else if (index == (max - 1) && !repeat)
 				{
 					cout << "TabWidget: nextFile: for: if: !repeat" << endl << flush;
 
