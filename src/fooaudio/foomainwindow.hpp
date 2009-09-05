@@ -179,9 +179,10 @@ private:
 	QToolBar *playbackToolBar;
 	QToolBar *volumeToolBar;
 
-	void createMenus ();
-	void createToolBars ();
+	void createMenus();
+	void createToolBars();
 	void createActions();
+	void createStatusBar();
 };
 
 #endif // _FOOMAINWINDOW_HPP_

@@ -15,11 +15,12 @@ FooMainWindow::FooMainWindow(FooAudioEngine *fae) : QMainWindow (), maxProgress(
 {
 	this->fooAudioEngine = fae;
 
-	createMenus ();
-	createToolBars ();
-	fooTabWidget = new FooTabWidget ();
-	setCentralWidget (fooTabWidget);
-	setWindowTitle (tr ("fooaudio"));
+	createMenus();
+	createToolBars();
+	createStatusBar();
+	fooTabWidget = new FooTabWidget();
+	setCentralWidget(fooTabWidget);
+	setWindowTitle(tr("fooaudio"));
 
 	createActions();
 
@@ -395,6 +396,11 @@ void FooMainWindow::createActions()
 	connect(this, SIGNAL(stopSignal()), fooAudioEngine->getMediaObject(), SLOT(stop()));
 	connect(this, SIGNAL(nextSignal()), fooAudioEngine, SLOT(nextFile()));
 	connect(this, SIGNAL(prevSignal()), fooAudioEngine, SLOT(previousFile()));
+}
+
+void FooMainWindow::createStatusBar()
+{
+	statusBar()->showMessage(tr("Ready"));
 }
 
 void FooMainWindow::itemDoubleClicked(QTreeWidgetItem * item, int column)
