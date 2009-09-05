@@ -423,8 +423,6 @@ void FooMainWindow::itemDoubleClicked(QTreeWidgetItem * item, int column)
 			fooAudioEngine->getMediaObject()->stop();
 
 	  emit playSignal();
-
-	  foo->setItemWidget(item, 1, new QLabel("|>"));
 }
 
 void FooMainWindow::open ()

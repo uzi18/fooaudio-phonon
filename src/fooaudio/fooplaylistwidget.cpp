@@ -14,7 +14,7 @@ FooPlaylistWidget::FooPlaylistWidget ()
 	setIndentation(0);
 	setAlternatingRowColors (true);
 	QStringList l;
-	l << tr("File") << tr("Playback") << tr("Track") << tr("Title") << tr("Artist") << tr("Album") << tr("Comment") << tr("Genre") << tr("Year") << tr("Length") << tr("Rating");
+	l << tr("File");
 	setHeaderLabels(l);
 }
 

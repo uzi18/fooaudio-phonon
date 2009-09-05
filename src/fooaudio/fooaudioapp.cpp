@@ -10,6 +10,7 @@ FooaudioApp::FooaudioApp (int argc, char *argv[]) : QApplication (argc, argv)
 {
 	cerr << "FooaudioApp" << endl;
 
+//	setOrganizationName("fooaudio Team");
 	setApplicationName ("fooaudio");
 	setQuitOnLastWindowClosed (true);
 
