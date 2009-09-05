@@ -74,7 +74,8 @@ void FooTabWidget::newTab()
 
 void FooTabWidget::closeTab (int index)
 {
-	removeTab(index);
+	QWidget* current = widget(index);
+	delete current;
 }
 
 void FooTabWidget::closeOtherTabs(int index)
@@ -163,10 +164,12 @@ QUrl FooTabWidget::nextFile(bool repeat)
 				}
 			}
 	}
+
+	return QUrl();
 }
 
-	QUrl FooTabWidget::previousFile(bool repeat)
-	{
+QUrl FooTabWidget::previousFile(bool repeat)
+{
 	cerr << "FooTabWidget::previousFile" << endl;
 	int c = count();
 
