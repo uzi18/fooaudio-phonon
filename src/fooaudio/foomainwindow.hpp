@@ -21,6 +21,9 @@ public:
 
 	int getMaxProgress();
 
+	void readSettings();
+	void writeSettings();
+
 signals:
 	void playSignal ();
 	void prevSignal ();
@@ -183,6 +186,9 @@ private:
 	void createToolBars();
 	void createActions();
 	void createStatusBar();
+
+protected:
+	void closeEvent(QCloseEvent *);
 };
 
 #endif // _FOOMAINWINDOW_HPP_

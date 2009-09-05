@@ -71,7 +71,8 @@ void FooTabBar::closeTab()
 {
 	if (QAction *action = qobject_cast<QAction *> (sender ()))
 	{
-	  int index = action->data ().toInt ();
+		cerr << "FooTabBar::closeTab" << endl;
+	  int index = action->data().toInt();
 	  emit closeTab (index);
 	}
 }

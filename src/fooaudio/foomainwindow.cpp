@@ -425,6 +425,20 @@ void FooMainWindow::itemDoubleClicked(QTreeWidgetItem * item, int column)
 	  emit playSignal();
 }
 
+void FooMainWindow::writeSettings()
+{
+}
+
+void FooMainWindow::readSettings()
+{
+}
+
+ void FooMainWindow::closeEvent(QCloseEvent *event)
+ {
+	writeSettings();
+	event->accept();
+ }
+
 void FooMainWindow::open ()
 {
 }

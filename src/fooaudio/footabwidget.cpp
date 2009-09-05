@@ -74,6 +74,7 @@ void FooTabWidget::newTab()
 
 void FooTabWidget::closeTab (int index)
 {
+	removeTab(index);
 }
 
 void FooTabWidget::closeOtherTabs(int index)
