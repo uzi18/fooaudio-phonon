@@ -87,9 +87,9 @@ void FooTabBar::closeOtherTabs()
 
 void FooTabBar::mouseDoubleClickEvent (QMouseEvent *event)
 {
-	if (!childAt(event->pos ())
-		 // Remove the line beloe when QTabWidget does not have a one pixel frame
-		 && event->pos().y() < (y() + height()))
+	// Remove the line beloe when QTabWidget does not have a one pixel frame
+	//  && event->pos().y() < (y() + height()))
+	if (!childAt(event->pos ()))
 	{
 		int i = tabAt(event->pos());
 		if (i < 0)
@@ -99,7 +99,6 @@ void FooTabBar::mouseDoubleClickEvent (QMouseEvent *event)
 		else
 		{
 			FooChangeName *fooChangeName = new FooChangeName(i, this);
-			fooChangeName->show();
 		}
 
 		return;

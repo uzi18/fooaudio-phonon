@@ -15,7 +15,7 @@ FooChangeName::FooChangeName(int index, QWidget *parent)
 	Qt::WindowFlags flag = Qt::Dialog;
 	setWindowFlags(flag);
 
-	setWindowTitle(tr("Change name: "));
+	setWindowTitle(tr("Change name"));
 
 	QSizePolicy::Policy fixed = QSizePolicy::Preferred;
 	QSizePolicy sizePolicy(fixed, fixed);

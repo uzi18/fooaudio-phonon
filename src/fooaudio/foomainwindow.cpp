@@ -340,16 +340,16 @@ void FooMainWindow::createMenus()
 
 void FooMainWindow::createToolBars ()
 {
-	trackToolBar = new QToolBar ("Track ToolBar", this);
+	trackToolBar = new QToolBar ("TrackToolBar", this);
 	trackToolBar->setFloatable (false);
 	trackSlider = new QSlider (Qt::Horizontal);
 	trackSlider->setRange(0, maxProgress);
 	trackToolBar->addWidget (trackSlider);
 	addToolBar (trackToolBar);
 
-	volumeToolBar = new QToolBar ("Volume ToolBar", this);
+	volumeToolBar = new QToolBar ("VolumeToolBar", this);
 	volumeToolBar->setFloatable (false);
-	volumeToolBarAction = new QAction (QIcon (":images/vol.png"), tr ("mute"),this);
+	volumeToolBarAction = new QAction (QIcon (":images/vol.png"), tr("Mute"),this);
 	connect (volumeToolBarAction, SIGNAL (triggered ()), this, SLOT (mute()));
 	volumeToolBar->addAction (volumeToolBarAction);
 	volumeSlider = new QSlider (Qt::Horizontal);
