@@ -24,6 +24,8 @@ FooMainWindow::FooMainWindow(FooAudioEngine *fae) : QMainWindow (), maxProgress(
 
 	createActions();
 
+	readSettings();
+
 	connect (fooTabWidget, SIGNAL (itemDoubleClickedSignal(QTreeWidgetItem *, int)), this, SLOT (itemDoubleClicked(QTreeWidgetItem *, int)));
 }
 
@@ -39,8 +41,6 @@ void FooMainWindow::createMenus()
 	connect (openAction, SIGNAL (triggered ()), this, SLOT (open ()));
 	fileMenu->addAction (openAction);
 	openAction->setEnabled(false);
-
-
 
 	openAudioCDAction = new QAction (tr ("Open Audio &CD"), this);
 	connect (openAudioCDAction, SIGNAL (triggered ()), this, SLOT (openAudioCD ()));
@@ -427,10 +427,26 @@ void FooMainWindow::itemDoubleClicked(QTreeWidgetItem * item, int column)
 
 void FooMainWindow::writeSettings()
 {
+	cerr << "Save Settings" << endl;
+	QSettings settings("fooaudio", "fooaudio");
+
+	settings.beginGroup("FooMainWindow");
+	settings.setValue("trackToolBar", trackToolBar->geometry());
+	settings.setValue("playbackToolBar", playbackToolBar->geometry());
+	settings.setValue("volumeToolBar", volumeToolBar->geometry());
+	settings.endGroup();
 }
 
 void FooMainWindow::readSettings()
 {
+	cerr << "Read Settings" << endl;
+	QSettings settings("fooaudio", "fooaudio");
+
+	settings.beginGroup("FooMainWindow");
+	trackToolBar->setGeometry(settings.value("trackToolBar", QRect()).toRect());
+	playbackToolBar->setGeometry(settings.value("playbackToolBar", QRect()).toRect());
+	volumeToolBar->setGeometry(settings.value("volumeToolBar", QRect()).toRect());
+	settings.endGroup();
 }
 
  void FooMainWindow::closeEvent(QCloseEvent *event)
