@@ -162,10 +162,12 @@ QUrl FooTabWidget::nextFile(bool repeat)
 				}
 			}
 	}
+
+	return QUrl();
 }
 
-	QUrl FooTabWidget::previousFile(bool repeat)
-	{
+QUrl FooTabWidget::previousFile(bool repeat)
+{
 	cerr << "FooTabWidget::previousFile" << endl;
 	int c = count();
 
