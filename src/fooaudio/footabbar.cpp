@@ -45,6 +45,16 @@ void FooTabBar::contextMenuRequested (const QPoint &position)
 
 	  menu.addSeparator ();
 
+	  action = menu.addAction (tr ("&Close Other Tabs"), this, SLOT (closeOtherTabs()), QKeySequence::Close);
+	  action->setData (index);
+
+	  menu.addSeparator ();
+
+	  action = menu.addAction (tr ("&Rename Tab"), this, SLOT (renameTab ()));
+	  action->setData (index);
+
+	  menu.addSeparator ();
+
 	  action->setData (index);
 
 	  menu.addSeparator ();
@@ -83,6 +93,15 @@ void FooTabBar::closeOtherTabs()
 	{
 	  int index = action->data().toInt();
 	  emit closeOtherTabs(index);
+	}
+}
+
+void FooTabBar::renameTab ()
+{
+	if (QAction *action = qobject_cast<QAction *> (sender ()))
+	{
+	  int index = action->data().toInt();
+	  emit renameTab(index);
 	}
 }
 

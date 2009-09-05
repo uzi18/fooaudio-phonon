@@ -16,9 +16,10 @@ class FooTabBar : public QTabBar
 
 signals:
 	void newTab ();
-	void cloneTab (int);
-	void closeTab (int);
-	void closeOtherTabs (int);
+	void cloneTab (int index);
+	void closeTab (int index);
+	void closeOtherTabs (int index);
+	void renameTab (int index);
 
 public:
 	FooTabBar (QWidget *parent = 0);
@@ -30,14 +31,15 @@ protected:
 	void mousePressEvent (QMouseEvent *);
 	void mouseMoveEvent (QMouseEvent *);
 
-	QSize tabSizeHint (int) const;
-	void tabInserted (int);
-	void tabRemoved (int);
+	QSize tabSizeHint (int index) const;
+	void tabInserted (int position);
+	void tabRemoved (int position);
 
 private slots:
 	void cloneTab ();
 	void closeTab ();
 	void closeOtherTabs ();
+	void renameTab ();
 	void contextMenuRequested (const QPoint &);
 //	void updateViewToolBarAction();
 
