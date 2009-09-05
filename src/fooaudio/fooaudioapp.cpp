@@ -1,14 +1,14 @@
 #include <QTextCodec>
+#include <iostream>
+
+using namespace std;
 
 #include "fooaudioapp.hpp"
 #include "foomainwindow.hpp"
 
-#include <iostream>
-using namespace std;
-
 FooaudioApp::FooaudioApp (int argc, char *argv[]) : QApplication (argc, argv)
 {
-	cout << "FooaudioApp" << endl << flush;
+	cerr << "FooaudioApp" << endl;
 
 	setApplicationName ("fooaudio");
 	setQuitOnLastWindowClosed (true);

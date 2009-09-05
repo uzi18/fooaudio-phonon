@@ -9,8 +9,7 @@ using namespace std;
 
 FooAudioEngine::FooAudioEngine (QObject* parent) : QObject(parent)
 {
-	cout << "FooAudioEngine" << endl << flush;
-//	fooMainWindow = fmw;
+	cerr << "FooAudioEngine" << endl;
 
 	slider_pos = -1;
 
@@ -26,26 +25,26 @@ FooAudioEngine::FooAudioEngine (QObject* parent) : QObject(parent)
 
 Phonon::MediaObject * FooAudioEngine::getMediaObject()
 {
-	cout << "FooAudioEngine::getMediaObject" << endl << flush;
+	cerr << "FooAudioEngine::getMediaObject" << endl;
 	return mediaObject;
 }
 
 void FooAudioEngine::enqueueNextFile()
 {
-	cout << "FooAudioEngine::enqueueNextFile" << endl << flush;
+	cerr << "FooAudioEngine::enqueueNextFile" << endl;
 	if (fooMainWindow == NULL)
-		cout << "fooMainWindow jest null" << endl << flush;
+		cerr << "fooMainWindow jest null" << endl;
 	else
-		cout << "fooMainWindow nie jest null" << endl << flush;
+		cerr << "fooMainWindow nie jest null" << endl;
 
 	if (fooMainWindow->fooTabWidget == NULL)
-		cout << "fooMainWindow->fooTabWidget jest null" << endl << flush;
+		cerr << "fooMainWindow->fooTabWidget jest null" << endl;
 	else
-		cout << "fooMainWindow->fooTabWidget nie jest null" << endl << flush;
+		cerr << "fooMainWindow->fooTabWidget nie jest null" << endl;
 
-	cout << "Kolejkowanie kolejnego utworu " << endl << flush;
+	cerr << "Kolejkowanie kolejnego utworu ";
 	QUrl foo = fooMainWindow->fooTabWidget->nextFile(repeat);
-	cout << "Kolejna piosenka: " << foo.toString().toStdString() << endl << flush;
+	cerr << "Kolejna piosenka: " << foo.toString().toStdString() << endl;
 	if (!foo.isEmpty())
 	{
 		mediaObject->enqueue(foo.toLocalFile());

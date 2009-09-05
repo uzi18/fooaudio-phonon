@@ -66,7 +66,7 @@ QAction *FooTabWidget::previousTabAction() const
 void FooTabWidget::newTab()
 {
 	FooPlaylistWidget *fpw = new FooPlaylistWidget ();
-	addTab (fpw, "dupa");
+	addTab (fpw, "New Playlist");
 
 		connect(fpw, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)),
 				 this, SLOT(itemClicked(QTreeWidgetItem *, int)));
@@ -115,48 +115,48 @@ void FooTabWidget::previousTab()
 
 void FooTabWidget::itemClicked(QTreeWidgetItem * item, int column)
 {
-	cout << "FooTabWidget::itemClicked" << endl << flush;
+	cerr << "FooTabWidget::itemClicked" << endl;
 	nowPlayingItem = item;
 	emit itemDoubleClickedSignal(item, column);
 }
 
 QUrl FooTabWidget::nextFile(bool repeat)
 {
-	cout << "FooTabWidget::nextFile" << endl << flush;
+	cerr << "FooTabWidget::nextFile" << endl;
 	int c = count();
 
-	cout << "TabWidget: nextFile: c: " << c << endl << flush;
+	cerr << "TabWidget: nextFile: c: " << c << endl;
 
 	for (int i = 0; i < c; i++)
 	{
-		cout << "TabWidget: nextFile: for: i: " << i << endl << flush;
+		cout << "TabWidget: nextFile: for: i: " << i << endl;
 		FooPlaylistWidget *wid = static_cast<FooPlaylistWidget *> (widget(i));
 		int index = wid->indexOfTopLevelItem(nowPlayingItem);
 		int max = wid->topLevelItemCount();
-		cout << "TabWidget: nextFile: for: index: " << index << endl << flush;
-		cout << "TabWidget: nextFile: for: max: " << max << endl << flush;
+		cerr << "TabWidget: nextFile: for: index: " << index << endl;
+		cerr << "TabWidget: nextFile: for: max: " << max << endl;
 
 			if (index >= 0)
 			{
-				cout << "TabWidget: nextFile: for: if: index >= 0" << endl << flush;
+				cerr << "TabWidget: nextFile: for: if: index >= 0" << endl;
 
 				if (index == (max - 1) && repeat)
 				{
-					cout << "TabWidget: nextFile: for: if: repeat" << endl << flush;
+					cerr << "TabWidget: nextFile: for: if: repeat" << endl;
 
 					nowPlayingItem = wid->topLevelItem(0);
 					return wid->file(0);
 				}
 				else if (index < (max - 1))
 				{
-					cout << "TabWidget: nextFile: for: if: index < max" << endl << flush;
+					cerr << "TabWidget: nextFile: for: if: index < max" << endl;
 
 					nowPlayingItem = wid->itemBelow(nowPlayingItem);
 					return wid->file(++index);
 				}
 				else if (index == (max - 1) && !repeat)
 				{
-					cout << "TabWidget: nextFile: for: if: !repeat" << endl << flush;
+					cerr << "TabWidget: nextFile: for: if: !repeat" << endl;
 
 					return QUrl();
 				}
