@@ -16,7 +16,7 @@ signals:
 	void tabsChanged ();
 	void lastTabClosed ();
 
-	void itemDoubleClickedSignal(QTreeWidgetItem *, int);
+	void itemDoubleClickedSignal(QTreeWidgetItem *item, int column);
 
 public:
 	FooTabWidget (QWidget *parent = 0);
@@ -32,14 +32,14 @@ public slots:
 	void newTab ();
 //	void cloneTab (int index = -1);
 	void closeTab (int index = -1);
-	void closeOtherTabs (int);
+	void closeOtherTabs (int index);
 	void nextTab ();
 	void previousTab ();
 
 	void itemClicked(QTreeWidgetItem *, int);
 
-	QUrl nextFile(bool);
-	QUrl previousFile(bool);
+	QUrl nextFile(bool repeat);
+	QUrl previousFile(bool repeat);
 
 private:
 	QAction *m_recentlyClosedTabAction;
