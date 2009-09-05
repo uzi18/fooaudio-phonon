@@ -2,6 +2,7 @@
 using namespace std;
 
 #include "footabbar.hpp"
+#include "foochangename.hpp"
 
 #include <QAction>
 #include <QApplication>
@@ -97,7 +98,8 @@ void FooTabBar::mouseDoubleClickEvent (QMouseEvent *event)
 		}
 		else
 		{
-
+			FooChangeName *fooChangeName = new FooChangeName(i, this);
+			fooChangeName->show();
 		}
 
 		return;

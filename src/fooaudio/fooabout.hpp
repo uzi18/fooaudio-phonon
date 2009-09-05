@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FOOABOUT_H
-#define FOOABOUT_H
+#ifndef FOOABOUT_HPP
+#define FOOABOUT_HPP
 
 #include <QtGui/QWidget>
 
