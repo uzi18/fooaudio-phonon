@@ -6,6 +6,7 @@ TEMPLATE = app
 TARGET =
 DEPENDPATH += .
 INCLUDEPATH += .
+DESTDIR = ../..
 
 # Input
 HEADERS += fooabout.hpp \

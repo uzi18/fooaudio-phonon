@@ -162,6 +162,50 @@ QUrl FooTabWidget::nextFile(bool repeat)
 				}
 			}
 	}
+}
+
+	QUrl FooTabWidget::previousFile(bool repeat)
+	{
+	cerr << "FooTabWidget::previousFile" << endl;
+	int c = count();
+
+	cerr << "TabWidget: previousFile: c: " << c << endl;
+
+	for (int i = 0; i < c; i++)
+	{
+		cout << "TabWidget: previousFile: for: i: " << i << endl;
+		FooPlaylistWidget *wid = static_cast<FooPlaylistWidget *> (widget(i));
+		int index = wid->indexOfTopLevelItem(nowPlayingItem);
+		int max = wid->topLevelItemCount();
+		cerr << "TabWidget: previousFile: for: index: " << index << endl;
+		cerr << "TabWidget: previousFile: for: max: " << max << endl;
+
+			if (index >= 0)
+			{
+				cerr << "TabWidget: previousFile: for: if: index >= 0" << endl;
+
+				if (index == 0 && repeat)
+				{
+					cerr << "TabWidget: previousFile: for: if: repeat" << endl;
+
+					nowPlayingItem = wid->topLevelItem(wid->topLevelItemCount());
+					return wid->file(wid->topLevelItemCount() - 1);
+				}
+				else if (index > 0)
+				{
+					cerr << "TabWidget: previousFile: for: if: index > 0" << endl;
+
+					nowPlayingItem = wid->itemAbove(nowPlayingItem);
+					return wid->file(--index);
+				}
+				else if (index == 0 && !repeat)
+				{
+					cerr << "TabWidget: previousFile: for: if: !repeat" << endl;
+
+					return QUrl();
+				}
+			}
+	}
 
 	return QUrl();
 }

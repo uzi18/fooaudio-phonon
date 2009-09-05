@@ -31,6 +31,8 @@ private:
 
 public slots:
 	void enqueueNextFile();
+	void nextFile();
+	void previousFile();
 
 	void progress(qint64 time);
 	void seek(int value);

@@ -51,6 +51,46 @@ void FooAudioEngine::enqueueNextFile()
 	}
 }
 
+void FooAudioEngine::nextFile()
+{
+	cerr << "FooAudioEngine::nextFile" << endl;
+	QUrl nextFile = fooMainWindow->fooTabWidget->nextFile(repeat);
+
+	if (!nextFile.isEmpty())
+	{
+		cerr << "FooAudioEngine::nextFile: is not Empty: " << nextFile.toLocalFile().toStdString() << endl;
+		mediaObject->stop();
+		mediaObject->clearQueue();
+		mediaObject->setCurrentSource(nextFile.toLocalFile());
+		mediaObject->play();
+	}
+	else
+	{
+		cerr << "FooAudioEngine::nextFile: is Empty" << endl;
+		mediaObject->stop();
+	}
+}
+
+void FooAudioEngine::previousFile()
+{
+	cerr << "FooAudioEngine::previousFile" << endl;
+	QUrl previousFile = fooMainWindow->fooTabWidget->previousFile(repeat);
+
+	if (!previousFile.isEmpty())
+	{
+		cerr << "FooAudioEngine::previousFile: is not Empty: " << previousFile.toLocalFile().toStdString() << endl;
+		mediaObject->stop();
+		mediaObject->clearQueue();
+		mediaObject->setCurrentSource(previousFile.toLocalFile());
+		mediaObject->play();
+	}
+	else
+	{
+		cerr << "FooAudioEngine::previousFile: is Empty" << endl;
+		mediaObject->stop();
+	}
+}
+
 void FooAudioEngine::setFooMainWindow(FooMainWindow *fmw)
 {
 	this->fooMainWindow = fmw;

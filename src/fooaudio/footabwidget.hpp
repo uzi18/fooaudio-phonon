@@ -39,6 +39,7 @@ public slots:
 	void itemClicked(QTreeWidgetItem *, int);
 
 	QUrl nextFile(bool);
+	QUrl previousFile(bool);
 
 private:
 	QAction *m_recentlyClosedTabAction;
