@@ -99,8 +99,9 @@ void FooTabBar::renameTab ()
 {
 	if (QAction *action = qobject_cast<QAction *> (sender ()))
 	{
-	  int index = action->data().toInt();
-	  emit renameTab(index);
+		int index = action->data().toInt();
+		FooChangeName *fooChangeName = new FooChangeName(index, this);
+		fooChangeName->show();
 	}
 }
 
