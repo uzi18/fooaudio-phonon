@@ -98,6 +98,11 @@ private slots:
 
 	void about ();
 
+	// Queue
+	void addToQueue ();
+	void removeFromQueue();
+	void clearQueue ();
+
 	void itemDoubleClicked(QTreeWidgetItem *, int column);
 
 	// progress slider
@@ -125,8 +130,13 @@ private:
 	QMenu *editMenu;
 		QAction *undoAction;
 		QAction *redoAction;
+		QAction *removeAction;
 		QAction *clearAction;
 		QAction *selectAllAction;
+		QMenu *queueMenu;
+			QAction *addToQueueAction;
+			QAction *removeFromQueueAction;
+			QAction *clearQueueAction;
 		QMenu *sortMenu;
 			QAction *sortByAction;
 			QAction *randomizeAction;

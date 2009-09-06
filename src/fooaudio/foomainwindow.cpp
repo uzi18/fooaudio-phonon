@@ -116,6 +116,11 @@ void FooMainWindow::createMenus()
 	editMenu->addAction (redoAction);
 	redoAction->setEnabled(false);
 
+	removeAction = new QAction (tr ("R&emove"), this);
+	connect (removeAction, SIGNAL (triggered ()), this, SLOT (remove ()));
+	editMenu->addAction (removeAction);
+	removeAction->setEnabled(false);
+
 	clearAction = new QAction (tr ("&Clear"), this);
 	connect (clearAction, SIGNAL (triggered ()), this, SLOT (clear ()));
 	editMenu->addAction (clearAction);
@@ -126,6 +131,26 @@ void FooMainWindow::createMenus()
 	editMenu->addAction (selectAllAction);
 	selectAllAction->setEnabled(false);
 
+	// Queue SubMenu
+	queueMenu = new QMenu (tr ("&Queue"), editMenu);
+	editMenu->addAction (queueMenu->menuAction ());
+
+	addToQueueAction = new QAction (tr ("&add to queue"), this);
+	connect (addToQueueAction, SIGNAL (triggered ()), this, SLOT (addToQueue ()));
+	queueMenu->addAction (addToQueueAction);
+	addToQueueAction->setEnabled(true);
+
+	removeFromQueueAction = new QAction (tr ("&remove from queue"), this);
+	connect (removeFromQueueAction, SIGNAL (triggered ()), this, SLOT (removeFromQueue()));
+	queueMenu->addAction (removeFromQueueAction);
+	removeFromQueueAction->setEnabled(true);
+
+	clearQueueAction = new QAction (tr ("&clear queue"), this);
+	connect (clearQueueAction, SIGNAL (triggered ()), fooAudioEngine, SLOT (clearQueue ()));
+	queueMenu->addAction (clearQueueAction);
+	clearQueueAction->setEnabled(true);
+
+	// Sort SubMenu
 	sortMenu = new QMenu (tr ("&Sort"), editMenu);
 	editMenu->addAction (sortMenu->menuAction ());
 
@@ -746,6 +771,44 @@ void FooMainWindow::next ()
 {
 	cerr << "FooMainWindow::next" << endl;
 	emit nextSignal (fooTabWidget->nextFile(true));
+}
+
+void FooMainWindow::addToQueue ()
+{
+      	FooPlaylistWidget * foo = (FooPlaylistWidget*)fooTabWidget->currentWidget();
+	if (!foo)
+		return;
+
+	foreach (QTreeWidgetItem * item, foo->selectedItems())
+	{
+		if (item)
+		{
+			QLabel * bar = (QLabel*)foo->itemWidget(item, 0);
+			fooAudioEngine->addFileToQueue(bar->text());
+		}
+	}
+}
+
+void FooMainWindow::removeFromQueue()
+{
+      	FooPlaylistWidget * foo = (FooPlaylistWidget*)fooTabWidget->currentWidget();
+	if (!foo)
+		return;
+
+	foreach (QTreeWidgetItem * item, foo->selectedItems())
+	{
+		if (item)
+		{
+			QLabel * bar = (QLabel*)foo->itemWidget(item, 0);
+			fooAudioEngine->removeFileFromQueue(bar->text());
+		}
+	}
+}
+
+void FooMainWindow::clearQueue ()
+{
+      // do wywalenia ?
+      fooAudioEngine->clearQueue();
 }
 
 void FooMainWindow::random ()

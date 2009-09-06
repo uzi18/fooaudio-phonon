@@ -37,24 +37,33 @@ Phonon::AudioOutput * FooAudioEngine::getAudioOutput ()
 void FooAudioEngine::prepareNextFile()
 {
 	if (queue.isEmpty())
+	{
 		emit aboutToFinish();
+		return;
+	}
 
+	cerr << "FooAudioEngine::Queue" << endl;
 	enqueueNextFile(queue.takeFirst());
 }
 
 void FooAudioEngine::addFileToQueue (QUrl file)
 {
+	cerr << "FooAudioEngine::addToQueue" << endl;
+	cerr << "plik dodany do kolejki: " << file.toString().toStdString() << endl;
 	queue.append(file);
 }
 
 void FooAudioEngine::removeFileFromQueue (QUrl file)
 {
+	cerr << "FooAudioEngine::removeFromQueue" << endl;
+	cerr << "plik usuniety z kolejki: " << file.toString().toStdString() << endl;
 	queue.removeOne(file);
 }
 
 void FooAudioEngine::clearQueue ()
 {
-	queue.erase(queue.begin(), queue.end());
+	cerr << "FooAudioEngine::clearQueue" << endl;
+	queue.clear();
 }
 
 void FooAudioEngine::enqueueNextFile (QUrl path)
