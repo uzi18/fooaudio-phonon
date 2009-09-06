@@ -21,15 +21,15 @@ FooAudioEngine::FooAudioEngine (QObject* parent) : QObject(parent)
 	mediaObject->setTickInterval(10);
 
 	connect(mediaObject, SIGNAL (tick(qint64)), this, SIGNAL (progress(qint64)));
-	connect (mediaObject, SIGNAL(aboutToFinish()), this, SIGNAL(aboutToFinish()));
+	connect (mediaObject, SIGNAL(aboutToFinish()), this, SLOT(prepareNextFile()));
 }
 
-Phonon::MediaObject * FooAudioEngine::getMediaObject()
+Phonon::MediaObject * FooAudioEngine::getMediaObject ()
 {
 	return mediaObject;
 }
 
-Phonon::AudioOutput * FooAudioEngine::getAudioOutput()
+Phonon::AudioOutput * FooAudioEngine::getAudioOutput ()
 {
 	return audioOutput;
 }
@@ -54,7 +54,30 @@ void FooAudioEngine::setMuted(bool mute)
 	audioOutput->setMuted(mute);
 }
 
-void FooAudioEngine::enqueueNextFile(QUrl path)
+void FooAudioEngine::prepareNextFile()
+{
+	if (queue.isEmpty())
+		emit aboutToFinish();
+
+	enqueueNextFile(queue.takeFirst());
+}
+
+void FooAudioEngine::addFileToQueue (QUrl file)
+{
+	queue.append(file);
+}
+
+void FooAudioEngine::removeFileFromQueue (QUrl file)
+{
+	queue.removeOne(file);
+}
+
+void FooAudioEngine::clearMusicQueue()
+{
+	queue.erase(queue.begin(), queue.end());
+}
+
+void FooAudioEngine::enqueueNextFile (QUrl path)
 {
 	cerr << "FooAudioEngine::enqueueNextFile" << endl;
 
@@ -65,7 +88,7 @@ void FooAudioEngine::enqueueNextFile(QUrl path)
 	}
 }
 
-void FooAudioEngine::playFile(QUrl path)
+void FooAudioEngine::playFile (QUrl path)
 {
 	cerr << "FooAudioEngine::playFile" << endl;
 
@@ -84,7 +107,7 @@ void FooAudioEngine::playFile(QUrl path)
 	}
 }
 
-void FooAudioEngine::setVolume(int vol)
+void FooAudioEngine::setVolume (int vol)
 {
 	qreal v = vol;
 	qreal d = v / 100;
