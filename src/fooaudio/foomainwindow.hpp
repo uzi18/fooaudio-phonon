@@ -71,6 +71,7 @@ private slots:
 	void enableLayoutEditionMode ();
 	void createScratchbox ();
 	void cut ();
+	void remove ();
 	void copy ();
 	void paste ();
 

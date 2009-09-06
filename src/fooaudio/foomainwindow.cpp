@@ -119,7 +119,7 @@ void FooMainWindow::createMenus()
 	removeAction = new QAction (tr ("R&emove"), this);
 	connect (removeAction, SIGNAL (triggered ()), this, SLOT (remove ()));
 	editMenu->addAction (removeAction);
-	removeAction->setEnabled(false);
+	removeAction->setEnabled(true);
 
 	clearAction = new QAction (tr ("&Clear"), this);
 	connect (clearAction, SIGNAL (triggered ()), this, SLOT (clear ()));
@@ -707,6 +707,22 @@ void FooMainWindow::createScratchbox ()
 
 void FooMainWindow::cut ()
 {
+}
+
+void FooMainWindow::remove ()
+{
+      	FooPlaylistWidget * foo = (FooPlaylistWidget*)fooTabWidget->currentWidget();
+	if (!foo)
+		return;
+
+	foreach (QTreeWidgetItem * item, foo->selectedItems())
+	{
+		if (item)
+		{
+			//foo->removeItemWidget(item,0);
+			delete item;
+		}
+	}
 }
 
 void FooMainWindow::copy ()
