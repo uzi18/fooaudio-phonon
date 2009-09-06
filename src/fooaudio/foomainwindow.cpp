@@ -20,7 +20,7 @@ FooMainWindow::FooMainWindow(FooAudioEngine *fae) : QMainWindow (), maxProgress(
 	createStatusBar();
 	fooTabWidget = new FooTabWidget();
 	setCentralWidget(fooTabWidget);
-	setWindowTitle(tr("fooaudio"));
+	//setWindowTitle(tr("fooaudio"));
 
 	createActions();
 
@@ -340,14 +340,14 @@ void FooMainWindow::createMenus()
 
 void FooMainWindow::createToolBars ()
 {
-	trackToolBar = new QToolBar ("TrackToolBar", this);
+	trackToolBar = new QToolBar (this);
 	trackToolBar->setFloatable (false);
 	trackSlider = new QSlider (Qt::Horizontal);
 	trackSlider->setRange(0, maxProgress);
 	trackToolBar->addWidget (trackSlider);
 	addToolBar (trackToolBar);
 
-	volumeToolBar = new QToolBar ("VolumeToolBar", this);
+	volumeToolBar = new QToolBar (this);
 	volumeToolBar->setFloatable (false);
 	volumeToolBarAction = new QAction (QIcon (":images/vol.png"), tr("Mute"),this);
 	connect (volumeToolBarAction, SIGNAL (triggered ()), this, SLOT (mute()));
@@ -357,7 +357,7 @@ void FooMainWindow::createToolBars ()
 	volumeToolBar->addWidget (volumeSlider);
 	addToolBar (volumeToolBar);
 
-	playbackToolBar = new QToolBar ("Playback ToolBar", this);
+	playbackToolBar = new QToolBar (this);
 	playbackToolBar->setFloatable (false);
 
 	stopToolBarAction = new QAction (QIcon (":images/stop.png"), tr ("Stop"),this);
@@ -637,6 +637,8 @@ void FooMainWindow::paste ()
 
 void FooMainWindow::mute ()
 {
+	bool mute = fooAudioEngine->getAudioOutput()->isMuted();
+	fooAudioEngine->getAudioOutput()->setMuted(!mute);
 }
 
 void FooMainWindow::stop ()
