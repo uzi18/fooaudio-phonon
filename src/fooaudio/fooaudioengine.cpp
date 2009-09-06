@@ -17,16 +17,13 @@ FooAudioEngine::FooAudioEngine (QObject* parent) : QObject(parent)
 	audioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
 	mediaObject = new Phonon::MediaObject(this);
 
+	Phonon::createPath(mediaObject, audioOutput);
+
 	// this is needed - default = 0 => no ticks
 	mediaObject->setTickInterval(10);
 
 	connect(mediaObject, SIGNAL (tick(qint64)), this, SLOT (progress(qint64)));
-
-	Phonon::createPath(mediaObject, audioOutput);
-
-	connect (mediaObject, SIGNAL (aboutToFinish()), this, SLOT (aboutToFinish()));
-
-	repeat = true;
+	connect (mediaObject, SIGNAL(aboutToFinish()), this, SIGNAL(aboutToFinish()));
 }
 
 Phonon::MediaObject * FooAudioEngine::getMediaObject()
@@ -44,18 +41,7 @@ Phonon::AudioOutput * FooAudioEngine::getAudioOutput()
 void FooAudioEngine::enqueueNextFile(QUrl path)
 {
 	cerr << "FooAudioEngine::enqueueNextFile" << endl;
-	if (fooMainWindow == NULL)
-		cerr << "fooMainWindow jest null" << endl;
-	else
-		cerr << "fooMainWindow nie jest null" << endl;
 
-	if (fooMainWindow->fooTabWidget == NULL)
-		cerr << "fooMainWindow->fooTabWidget jest null" << endl;
-	else
-		cerr << "fooMainWindow->fooTabWidget nie jest null" << endl;
-
-	cerr << "Kolejkowanie kolejnego utworu ";
-//	QUrl foo = fooMainWindow->fooTabWidget->nextFile(repeat);
 	cerr << "Kolejna piosenka: " << path.toString().toStdString() << endl;
 	if (!path.isEmpty())
 	{
@@ -115,9 +101,4 @@ void FooAudioEngine::setVolume(int vol)
 	qreal d = v / 100;
 
 	audioOutput->setVolume(d);
-}
-
-void FooAudioEngine::aboutToFinish()
-{
-	emit enqueueNextFile();
 }

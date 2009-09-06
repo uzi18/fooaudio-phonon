@@ -29,13 +29,10 @@ private:
 	Phonon::AudioOutput *audioOutput;
 	int slider_pos;
 
-	bool repeat;
-
 signals:
-	void enqueueNextFile();
+	void aboutToFinish();
 
 public slots:
-	void aboutToFinish();
 	void enqueueNextFile(QUrl);
 	void playFile(QUrl);
 
