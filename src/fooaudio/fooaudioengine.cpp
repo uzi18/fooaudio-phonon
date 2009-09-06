@@ -12,8 +12,6 @@ FooAudioEngine::FooAudioEngine (QObject* parent) : QObject(parent)
 {
 	cerr << "FooAudioEngine" << endl;
 
-	slider_pos = -1;
-
 	audioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
 	mediaObject = new Phonon::MediaObject(this);
 
@@ -22,19 +20,17 @@ FooAudioEngine::FooAudioEngine (QObject* parent) : QObject(parent)
 	// this is needed - default = 0 => no ticks
 	mediaObject->setTickInterval(10);
 
-	connect(mediaObject, SIGNAL (tick(qint64)), this, SLOT (progress(qint64)));
+	connect(mediaObject, SIGNAL (tick(qint64)), this, SIGNAL (progress(qint64)));
 	connect (mediaObject, SIGNAL(aboutToFinish()), this, SIGNAL(aboutToFinish()));
 }
 
 Phonon::MediaObject * FooAudioEngine::getMediaObject()
 {
-	cerr << "FooAudioEngine::getMediaObject" << endl;
 	return mediaObject;
 }
 
 Phonon::AudioOutput * FooAudioEngine::getAudioOutput()
 {
-	cerr << "FooAudioEngine::getAudioOutput" << endl;
 	return audioOutput;
 }
 
@@ -86,33 +82,6 @@ void FooAudioEngine::playFile(QUrl path)
 		cerr << "FooAudioEngine::playFile: is Empty" << endl;
 		mediaObject->stop();
 	}
-}
-
-void FooAudioEngine::setFooMainWindow(FooMainWindow *fmw)
-{
-	this->fooMainWindow = fmw;
-}
-
-void FooAudioEngine::progress(qint64 time)
-{
-	int progress = (int) (time*fooMainWindow->getMaxProgress()/mediaObject->totalTime());
-	QSlider *slider = this->fooMainWindow->trackSlider;
-	if (progress >= 0 && !slider->isSliderDown())
-		slider->setValue(progress);
-}
-void FooAudioEngine::seek(int value)
-{
-	if (slider_pos != value)
-		slider_pos = value;
-}
-
-void FooAudioEngine::sliderReleased()
-{
-	if (slider_pos == -1)
-		return;
-	// think to check if value is valid for seek
-	mediaObject->seek(mediaObject->totalTime()*slider_pos/fooMainWindow->getMaxProgress());
-	slider_pos = -1;
 }
 
 void FooAudioEngine::setVolume(int vol)

@@ -15,8 +15,6 @@ int main (int argc, char * argv [])
 
 	FooMainWindow *fooMainWindow = new FooMainWindow(fooAudioEngine);
 
-	fooAudioEngine->setFooMainWindow(fooMainWindow);
-
 	fooMainWindow->show();
 
 	return fooApp.exec ();

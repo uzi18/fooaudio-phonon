@@ -100,6 +100,12 @@ private slots:
 
 	void itemDoubleClicked(QTreeWidgetItem *, int column);
 
+	// progress slider
+	void progress (qint64 time);
+	void seek (int value);
+	// volume slider
+	void sliderReleased ();
+
 private:
 	const int maxProgress;
 	FooAudioEngine *fooAudioEngine;
@@ -186,6 +192,8 @@ private:
 	QToolBar *trackToolBar;
 	QToolBar *playbackToolBar;
 	QToolBar *volumeToolBar;
+
+	int slider_pos;
 
 	void createMenus();
 	void createToolBars();
