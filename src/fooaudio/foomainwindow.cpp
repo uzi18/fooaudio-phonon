@@ -347,7 +347,9 @@ void FooMainWindow::createToolBars ()
 
 	volumeToolBar = new QToolBar (this);
 	volumeToolBar->setFloatable (false);
-	volumeToolBarAction = new QAction (QIcon (":images/vol.png"), tr("Mute"),this);
+	volumeToolBarAction = new QAction (tr("Mute"),this);
+	bool mute = fooAudioEngine->getAudioOutput()->isMuted();
+	volumeToolBarAction->setIcon(QIcon (mute ? ":images/mute.png" : ":images/vol.png"));
 	connect (volumeToolBarAction, SIGNAL (triggered ()), this, SLOT (mute()));
 	volumeToolBar->addAction (volumeToolBarAction);
 	volumeSlider = new QSlider (Qt::Horizontal);
@@ -674,8 +676,9 @@ void FooMainWindow::paste ()
 
 void FooMainWindow::mute ()
 {
-	bool mute = fooAudioEngine->getAudioOutput()->isMuted();
-	fooAudioEngine->getAudioOutput()->setMuted(!mute);
+	bool new_mute = !fooAudioEngine->getAudioOutput()->isMuted();
+	fooAudioEngine->getAudioOutput()->setMuted(new_mute);
+	volumeToolBarAction->setIcon(QIcon (new_mute ? ":images/mute.png" : ":images/vol.png"));
 }
 
 void FooMainWindow::stop ()
