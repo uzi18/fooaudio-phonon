@@ -23,6 +23,9 @@ public:
 	void setFooMainWindow(FooMainWindow *);
 
 	bool isPlaying();
+	bool isStopped();
+	bool isMuted();
+	void setMuted(bool);
 
 private:
 	FooMainWindow *fooMainWindow;

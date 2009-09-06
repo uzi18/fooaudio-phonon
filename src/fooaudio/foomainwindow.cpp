@@ -424,12 +424,16 @@ void FooMainWindow::itemDoubleClicked(QTreeWidgetItem * item, int column)
 
 	fooAudioEngine->getMediaObject()->setCurrentSource(bar->text());
 
-	  if (wasPlaying)
-			fooAudioEngine->play();
-	  else
-			fooAudioEngine->stop();
+	if (wasPlaying)
+	{
+		fooAudioEngine->play();
+	}
+	else
+	{
+		fooAudioEngine->stop();
+	}
 
-	  emit playSignal();
+	emit playSignal();
 }
 
 void FooMainWindow::enqueueNextFile()
@@ -454,7 +458,7 @@ void FooMainWindow::writeSettings()
 
 	settings.beginGroup("Volume");
 	settings.setValue("volume", volumeSlider->value());
-	settings.setValue("muted", fooAudioEngine->getAudioOutput()->isMuted());
+	settings.setValue("muted", fooAudioEngine->isMuted());
 	settings.endGroup();
 
 	QSettings playlists("fooaudio", "playlists");
@@ -496,7 +500,7 @@ void FooMainWindow::readSettings()
 	settings.beginGroup("Volume");
 	fooAudioEngine->setVolume(settings.value("volume", 100).toInt());
 	volumeSlider->setValue(settings.value("volume", 100).toInt());
-	fooAudioEngine->getAudioOutput()->setMuted(settings.value("muted", false).toBool());
+	fooAudioEngine->setMuted(settings.value("muted", false).toBool());
 	settings.endGroup();
 
 	QSettings playlists("fooaudio", "playlists");
@@ -688,9 +692,9 @@ void FooMainWindow::paste ()
 
 void FooMainWindow::mute ()
 {
-	bool new_mute = !fooAudioEngine->getAudioOutput()->isMuted();
-	fooAudioEngine->getAudioOutput()->setMuted(new_mute);
-	volumeToolBarAction->setIcon(QIcon (new_mute ? ":images/mute.png" : ":images/vol.png"));
+	bool newMute = !fooAudioEngine->isMuted();
+	fooAudioEngine->setMuted(newMute);
+	volumeToolBarAction->setIcon(QIcon (newMute ? ":images/mute.png" : ":images/vol.png"));
 }
 
 void FooMainWindow::stop ()
@@ -715,7 +719,7 @@ void FooMainWindow::play ()
 		cerr << "PausedState" << endl;
 		fooAudioEngine->getMediaObject()->play();
 	}
-	else if (fooAudioEngine->getMediaObject()->state() == Phonon::StoppedState || fooAudioEngine->getMediaObject()->state() == Phonon::LoadingState)
+	else if (fooAudioEngine->isStopped())
 	{
 		cerr << "StoppedState" << endl;
 		fooAudioEngine->clearQueue();
@@ -727,7 +731,6 @@ void FooMainWindow::play ()
 	}
 	else
 	{
-		cerr << fooAudioEngine->getMediaObject()->state() << endl;
 		cerr << "Inny state" << endl;
 	}
 
