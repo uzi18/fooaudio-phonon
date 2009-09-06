@@ -240,12 +240,10 @@ void FooMainWindow::createMenus()
 	previousAction = new QAction (tr ("Pr&evious"), this);
 	connect (previousAction, SIGNAL (triggered ()), this, SLOT (previous ()));
 	playbackMenu->addAction (previousAction);
-	previousAction->setEnabled(false);
 
 	nextAction = new QAction (tr ("&Next"), this);
 	connect (nextAction, SIGNAL (triggered ()), this, SLOT (next ()));
 	playbackMenu->addAction (nextAction);
-	nextAction->setEnabled(false);
 
 	randomAction = new QAction (tr ("&Random"), this);
 	connect (randomAction, SIGNAL (triggered ()), this, SLOT (random ()));
@@ -444,23 +442,25 @@ void FooMainWindow::writeSettings()
 	settings.setValue("muted", fooAudioEngine->getAudioOutput()->isMuted());
 	settings.endGroup();
 
-	settings.beginWriteArray("playlists");
+	QSettings playlists("fooaudio", "playlists");
+
+	playlists.beginWriteArray("playlists");
 	for (int i = 0; i < fooTabWidget->count(); ++i)
 	{
-		settings.setArrayIndex(i);
-		settings.setValue("name", fooTabWidget->tabText(i));
+		playlists.setArrayIndex(i);
+		playlists.setValue("name", fooTabWidget->tabText(i));
 
-		settings.beginWriteArray("playlist");
+		playlists.beginWriteArray("playlist");
 
 		FooPlaylistWidget * fooPlaylistWidget = (FooPlaylistWidget*) fooTabWidget->widget(i);
 		for (int j = 0; j < fooPlaylistWidget->topLevelItemCount(); ++j)
 		{
-			settings.setArrayIndex(j);
-			settings.setValue("path", fooPlaylistWidget->file(j).toString());
+			playlists.setArrayIndex(j);
+			playlists.setValue("path", fooPlaylistWidget->file(j).toString());
 		}
-		settings.endArray();
+		playlists.endArray();
 	}
-	settings.endArray();
+	playlists.endArray();
 }
 
 void FooMainWindow::readSettings()
@@ -484,32 +484,34 @@ void FooMainWindow::readSettings()
 	fooAudioEngine->getAudioOutput()->setMuted(settings.value("muted", false).toBool());
 	settings.endGroup();
 
-	int tabsCount = settings.beginReadArray("playlists");
+	QSettings playlists("fooaudio", "playlists");
+
+	int tabsCount = playlists.beginReadArray("playlists");
 
 	if (tabsCount > 0)
 	{
 		for (int i = 0; i < tabsCount; ++i)
 		{
-			settings.setArrayIndex(i);
-			fooTabWidget->newTab(settings.value("name").toString());
+			playlists.setArrayIndex(i);
+			fooTabWidget->newTab(playlists.value("name").toString());
 
-			int songsCount = settings.beginReadArray("playlist");
+			int songsCount = playlists.beginReadArray("playlist");
 
 			FooPlaylistWidget * fooPlaylistWidget = (FooPlaylistWidget*) fooTabWidget->widget(i);
 			for (int j = 0; j < songsCount; ++j)
 			{
-				settings.setArrayIndex(j);
+				playlists.setArrayIndex(j);
 
-				fooPlaylistWidget->addFile(settings.value("path").toString());
+				fooPlaylistWidget->addFile(playlists.value("path").toString());
 			}
-			settings.endArray();
+			playlists.endArray();
 		}
 	}
 	else
 	{
 		fooTabWidget->newTab("Default");
 	}
-	settings.endArray();
+	playlists.endArray();
 }
 
  void FooMainWindow::closeEvent(QCloseEvent *event)

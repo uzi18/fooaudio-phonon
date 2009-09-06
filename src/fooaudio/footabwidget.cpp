@@ -75,6 +75,11 @@ void FooTabWidget::closeTab (int index)
 {
 	QWidget* current = widget(index);
 	delete current;
+
+	if (count() == 0)
+	{
+		newTab("Default");
+	}
 }
 
 void FooTabWidget::closeOtherTabs(int index)
