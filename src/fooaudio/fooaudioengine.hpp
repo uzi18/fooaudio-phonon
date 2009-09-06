@@ -17,18 +17,26 @@ class FooAudioEngine : public QObject
 public:
 	FooAudioEngine (QObject * parent = 0);
 
-	Phonon::MediaObject * getMediaObject();
-	Phonon::AudioOutput * getAudioOutput();
+	Phonon::MediaObject * getMediaObject ();
+	Phonon::AudioOutput * getAudioOutput ();
+
+	void addFileToQueue (QUrl file);
+	void removeFileFromQueue (QUrl file);
+	void clearQueue ();
+	QList<QUrl> getQueue () {return queue;}
 
 private:
 	Phonon::MediaObject *mediaObject;
 	Phonon::AudioOutput *audioOutput;
 
+	QList<QUrl> queue;
+
 signals:
-	void aboutToFinish();
+	void aboutToFinish ();
 	void progress (qint64 time);
 
 public slots:
+	void prepareNextFile();
 	void enqueueNextFile (QUrl path);
 	void playFile (QUrl path);
 
