@@ -432,6 +432,8 @@ void FooMainWindow::writeSettings()
 	settings.clear();
 
 	settings.beginGroup("FooMainWindow");
+	settings.setValue("pos", pos());
+	settings.setValue("size", size());
 	settings.setValue("trackToolBar", trackToolBar->geometry());
 	settings.setValue("playbackToolBar", playbackToolBar->geometry());
 	settings.setValue("volumeToolBar", volumeToolBar->geometry());
@@ -467,6 +469,10 @@ void FooMainWindow::readSettings()
 	QSettings settings("fooaudio", "fooaudio");
 
 	settings.beginGroup("FooMainWindow");
+	QPoint pos = settings.value("pos", QPoint(200, 200)).toPoint();
+	QSize size = settings.value("size", QSize(400, 400)).toSize();
+	resize(size);
+	move(pos);
 	trackToolBar->setGeometry(settings.value("trackToolBar", QRect()).toRect());
 	playbackToolBar->setGeometry(settings.value("playbackToolBar", QRect()).toRect());
 	volumeToolBar->setGeometry(settings.value("volumeToolBar", QRect()).toRect());
