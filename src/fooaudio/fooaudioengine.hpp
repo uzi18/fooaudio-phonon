@@ -3,6 +3,7 @@
 
 #include <QList>
 #include <QDir>
+#include <QUrl>
 #include <phonon/audiooutput.h>
 #include <phonon/mediaobject.h>
 #include "fooplaylistwidget.hpp"
@@ -14,7 +15,7 @@ class FooAudioEngine : public QObject
 	Q_OBJECT
 
 public:
-	FooAudioEngine (QObject *);
+	FooAudioEngine (QObject * parent = 0);
 
 	Phonon::MediaObject * getMediaObject();
 	Phonon::AudioOutput * getAudioOutput();
@@ -30,10 +31,13 @@ private:
 
 	bool repeat;
 
-public slots:
+signals:
 	void enqueueNextFile();
-	void nextFile();
-	void previousFile();
+
+public slots:
+	void aboutToFinish();
+	void enqueueNextFile(QUrl);
+	void playFile(QUrl);
 
 	void progress(qint64 time);
 	void seek(int value);

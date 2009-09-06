@@ -2,6 +2,7 @@
 #define _FOOMAINWINDOW_HPP_
 
 #include <QtGui>
+#include <QUrl>
 #include "footabwidget.hpp"
 
 class FooAudioEngine;
@@ -25,11 +26,15 @@ public:
 	void writeSettings();
 
 signals:
-	void playSignal ();
-	void prevSignal ();
-	void stopSignal ();
-	void nextSignal ();
-	void pauseSignal ();
+	void playSignal();
+	void prevSignal(QUrl);
+	void stopSignal();
+	void nextSignal(QUrl);
+	void pauseSignal();
+	void enqueueNextFile(QUrl);
+
+public slots:
+	void enqueueNextFile();
 
 private slots:
 	void open ();

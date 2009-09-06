@@ -3,6 +3,7 @@
 using namespace std;
 
 #include <QtGui>
+#include <QUrl>
 
 #include "fooabout.hpp"
 #include "fooaudioengine.hpp"
@@ -20,13 +21,21 @@ FooMainWindow::FooMainWindow(FooAudioEngine *fae) : QMainWindow (), maxProgress(
 	createStatusBar();
 	fooTabWidget = new FooTabWidget();
 	setCentralWidget(fooTabWidget);
-	//setWindowTitle(tr("fooaudio"));
 
 	createActions();
 
 	readSettings();
 
-	connect (fooTabWidget, SIGNAL (itemDoubleClickedSignal(QTreeWidgetItem *, int)), this, SLOT (itemDoubleClicked(QTreeWidgetItem *, int)));
+	connect(fooTabWidget, SIGNAL (itemDoubleClickedSignal(QTreeWidgetItem *, int)), this, SLOT (itemDoubleClicked(QTreeWidgetItem *, int)));
+	connect(this->volumeSlider, SIGNAL(valueChanged(int)), fooAudioEngine, SLOT(setVolume(int)));
+
+	connect(this->trackSlider, SIGNAL(sliderMoved(int)), fooAudioEngine, SLOT (seek(int)));
+	connect(this->trackSlider, SIGNAL(sliderReleased()), fooAudioEngine, SLOT (sliderReleased()));
+
+	connect(this, SIGNAL(nextSignal(QUrl)), fooAudioEngine, SLOT(playFile(QUrl)));
+	connect(this, SIGNAL(prevSignal(QUrl)), fooAudioEngine, SLOT(playFile(QUrl)));
+	connect(fooAudioEngine, SIGNAL(enqueueNextFile()), this, SLOT(enqueueNextFile()));
+	connect(this, SIGNAL(enqueueNextFile(QUrl)), fooAudioEngine, SLOT(enqueueNextFile(QUrl)));
 }
 
 FooMainWindow::~FooMainWindow ()
@@ -394,8 +403,6 @@ void FooMainWindow::createActions()
 	connect(this, SIGNAL(playSignal()), fooAudioEngine->getMediaObject(), SLOT(play()));
 	connect(this, SIGNAL(pauseSignal()), fooAudioEngine->getMediaObject(), SLOT(pause()) );
 	connect(this, SIGNAL(stopSignal()), fooAudioEngine->getMediaObject(), SLOT(stop()));
-	connect(this, SIGNAL(nextSignal()), fooAudioEngine, SLOT(nextFile()));
-	connect(this, SIGNAL(prevSignal()), fooAudioEngine, SLOT(previousFile()));
 }
 
 void FooMainWindow::createStatusBar()
@@ -423,6 +430,11 @@ void FooMainWindow::itemDoubleClicked(QTreeWidgetItem * item, int column)
 			fooAudioEngine->getMediaObject()->stop();
 
 	  emit playSignal();
+}
+
+void FooMainWindow::enqueueNextFile()
+{
+	emit enqueueNextFile(fooTabWidget->nextFile(true));
 }
 
 void FooMainWindow::writeSettings()
@@ -725,13 +737,13 @@ void FooMainWindow::play ()
 void FooMainWindow::previous ()
 {
 	cerr << "FooMainWindow::previous" << endl;
-	emit prevSignal ();
+	emit prevSignal (fooTabWidget->previousFile(true));
 }
 
 void FooMainWindow::next ()
 {
 	cerr << "FooMainWindow::next" << endl;
-	emit nextSignal ();
+	emit nextSignal (fooTabWidget->nextFile(true));
 }
 
 void FooMainWindow::random ()

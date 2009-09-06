@@ -1,5 +1,6 @@
 #include <QApplication>
 #include <QPluginLoader>
+#include <QUrl>
 #include <iostream>
 
 using namespace std;
@@ -16,9 +17,14 @@ FooAudioEngine::FooAudioEngine (QObject* parent) : QObject(parent)
 	audioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
 	mediaObject = new Phonon::MediaObject(this);
 
+	// this is needed - default = 0 => no ticks
+	mediaObject->setTickInterval(10);
+
+	connect(mediaObject, SIGNAL (tick(qint64)), this, SLOT (progress(qint64)));
+
 	Phonon::createPath(mediaObject, audioOutput);
 
-	connect (mediaObject, SIGNAL (aboutToFinish()), this, SLOT (enqueueNextFile()));
+	connect (mediaObject, SIGNAL (aboutToFinish()), this, SLOT (aboutToFinish()));
 
 	repeat = true;
 }
@@ -35,7 +41,7 @@ Phonon::AudioOutput * FooAudioEngine::getAudioOutput()
 	return audioOutput;
 }
 
-void FooAudioEngine::enqueueNextFile()
+void FooAudioEngine::enqueueNextFile(QUrl path)
 {
 	cerr << "FooAudioEngine::enqueueNextFile" << endl;
 	if (fooMainWindow == NULL)
@@ -49,50 +55,29 @@ void FooAudioEngine::enqueueNextFile()
 		cerr << "fooMainWindow->fooTabWidget nie jest null" << endl;
 
 	cerr << "Kolejkowanie kolejnego utworu ";
-	QUrl foo = fooMainWindow->fooTabWidget->nextFile(repeat);
-	cerr << "Kolejna piosenka: " << foo.toString().toStdString() << endl;
-	if (!foo.isEmpty())
+//	QUrl foo = fooMainWindow->fooTabWidget->nextFile(repeat);
+	cerr << "Kolejna piosenka: " << path.toString().toStdString() << endl;
+	if (!path.isEmpty())
 	{
-		mediaObject->enqueue(foo.toLocalFile());
+		mediaObject->enqueue(path.toLocalFile());
 	}
 }
 
-void FooAudioEngine::nextFile()
+void FooAudioEngine::playFile(QUrl path)
 {
-	cerr << "FooAudioEngine::nextFile" << endl;
-	QUrl nextFile = fooMainWindow->fooTabWidget->nextFile(repeat);
+	cerr << "FooAudioEngine::playFile" << endl;
 
-	if (!nextFile.isEmpty())
+	if (!path.isEmpty())
 	{
-		cerr << "FooAudioEngine::nextFile: is not Empty: " << nextFile.toLocalFile().toStdString() << endl;
+		cerr << "FooAudioEngine::playFile: is not Empty: " << path.toLocalFile().toStdString() << endl;
 		mediaObject->stop();
 		mediaObject->clearQueue();
-		mediaObject->setCurrentSource(nextFile.toLocalFile());
+		mediaObject->setCurrentSource(path.toLocalFile());
 		mediaObject->play();
 	}
 	else
 	{
-		cerr << "FooAudioEngine::nextFile: is Empty" << endl;
-		mediaObject->stop();
-	}
-}
-
-void FooAudioEngine::previousFile()
-{
-	cerr << "FooAudioEngine::previousFile" << endl;
-	QUrl previousFile = fooMainWindow->fooTabWidget->previousFile(repeat);
-
-	if (!previousFile.isEmpty())
-	{
-		cerr << "FooAudioEngine::previousFile: is not Empty: " << previousFile.toLocalFile().toStdString() << endl;
-		mediaObject->stop();
-		mediaObject->clearQueue();
-		mediaObject->setCurrentSource(previousFile.toLocalFile());
-		mediaObject->play();
-	}
-	else
-	{
-		cerr << "FooAudioEngine::previousFile: is Empty" << endl;
+		cerr << "FooAudioEngine::playFile: is Empty" << endl;
 		mediaObject->stop();
 	}
 }
@@ -100,14 +85,6 @@ void FooAudioEngine::previousFile()
 void FooAudioEngine::setFooMainWindow(FooMainWindow *fmw)
 {
 	this->fooMainWindow = fmw;
-	// to move progress bar
-	connect(mediaObject, SIGNAL (tick(qint64)), this, SLOT (progress(qint64)));
-	connect(this->fooMainWindow->trackSlider, SIGNAL (sliderMoved(int)), this, SLOT (seek(int)));
-	connect(this->fooMainWindow->trackSlider, SIGNAL (sliderReleased()), this, SLOT (sliderReleased()));
-	// this is needed - default = 0 => no ticks
-	mediaObject->setTickInterval(10);
-
-	connect(this->fooMainWindow->volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(setVolume(int)));
 }
 
 void FooAudioEngine::progress(qint64 time)
@@ -138,4 +115,9 @@ void FooAudioEngine::setVolume(int vol)
 	qreal d = v / 100;
 
 	audioOutput->setVolume(d);
+}
+
+void FooAudioEngine::aboutToFinish()
+{
+	emit enqueueNextFile();
 }
