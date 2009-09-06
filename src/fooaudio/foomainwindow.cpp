@@ -429,6 +429,8 @@ void FooMainWindow::writeSettings()
 	cerr << "Save Settings" << endl;
 	QSettings settings("fooaudio", "fooaudio");
 
+	settings.clear();
+
 	settings.beginGroup("FooMainWindow");
 	settings.setValue("trackToolBar", trackToolBar->geometry());
 	settings.setValue("playbackToolBar", playbackToolBar->geometry());
@@ -439,6 +441,24 @@ void FooMainWindow::writeSettings()
 	settings.setValue("volume", volumeSlider->value());
 	settings.setValue("muted", fooAudioEngine->getAudioOutput()->isMuted());
 	settings.endGroup();
+
+	settings.beginWriteArray("playlists");
+	for (int i = 0; i < fooTabWidget->count(); ++i)
+	{
+		settings.setArrayIndex(i);
+		settings.setValue("name", fooTabWidget->tabText(i));
+
+		settings.beginWriteArray("playlist");
+
+		FooPlaylistWidget * fooPlaylistWidget = (FooPlaylistWidget*) fooTabWidget->widget(i);
+		for (int j = 0; j < fooPlaylistWidget->topLevelItemCount(); ++j)
+		{
+			settings.setArrayIndex(j);
+			settings.setValue("path", fooPlaylistWidget->file(j).toString());
+		}
+		settings.endArray();
+	}
+	settings.endArray();
 }
 
 void FooMainWindow::readSettings()
