@@ -354,6 +354,7 @@ void FooMainWindow::createToolBars ()
 	volumeToolBar->addAction (volumeToolBarAction);
 	volumeSlider = new QSlider (Qt::Horizontal);
 	volumeSlider->setRange(0, 100);
+	volumeSlider->setTracking(true);
 	volumeToolBar->addWidget (volumeSlider);
 	addToolBar (volumeToolBar);
 
