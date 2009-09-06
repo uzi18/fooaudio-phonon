@@ -29,7 +29,7 @@ public:
 
 
 public slots:
-	void newTab ();
+	void newTab (QString name = QString());
 //	void cloneTab (int index = -1);
 	void closeTab (int index = -1);
 	void closeOtherTabs (int index);

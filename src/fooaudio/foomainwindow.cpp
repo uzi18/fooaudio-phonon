@@ -477,6 +477,33 @@ void FooMainWindow::readSettings()
 	volumeSlider->setValue(settings.value("volume", 100).toInt());
 	fooAudioEngine->getAudioOutput()->setMuted(settings.value("muted", false).toBool());
 	settings.endGroup();
+
+	int tabsCount = settings.beginReadArray("playlists");
+
+	if (tabsCount > 0)
+	{
+		for (int i = 0; i < tabsCount; ++i)
+		{
+			settings.setArrayIndex(i);
+			fooTabWidget->newTab(settings.value("name").toString());
+
+			int songsCount = settings.beginReadArray("playlist");
+
+			FooPlaylistWidget * fooPlaylistWidget = (FooPlaylistWidget*) fooTabWidget->widget(i);
+			for (int j = 0; j < songsCount; ++j)
+			{
+				settings.setArrayIndex(j);
+
+				fooPlaylistWidget->addFile(settings.value("path").toString());
+			}
+			settings.endArray();
+		}
+	}
+	else
+	{
+		fooTabWidget->newTab("Default");
+	}
+	settings.endArray();
 }
 
  void FooMainWindow::closeEvent(QCloseEvent *event)

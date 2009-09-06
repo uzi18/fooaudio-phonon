@@ -39,8 +39,6 @@ FooTabWidget::FooTabWidget (QWidget *parent) : QTabWidget (parent), m_newTabActi
 
 	m_tabBar->setTabsClosable(false);
 	m_tabBar->setSelectionBehaviorOnRemove(QTabBar::SelectPreviousTab);
-
-	newTab ();
 }
 
 QAction *FooTabWidget::newTabAction() const
@@ -63,10 +61,11 @@ QAction *FooTabWidget::previousTabAction() const
 	return m_previousTabAction;
 }
 
-void FooTabWidget::newTab()
+void FooTabWidget::newTab(QString name)
 {
 	FooPlaylistWidget *fpw = new FooPlaylistWidget ();
-	addTab (fpw, "New Playlist");
+
+	addTab (fpw, (name.isEmpty() ? "New Playlist" : name));
 
 		connect(fpw, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)),
 				 this, SLOT(itemClicked(QTreeWidgetItem *, int)));
