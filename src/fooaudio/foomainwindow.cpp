@@ -34,7 +34,7 @@ FooMainWindow::FooMainWindow(FooAudioEngine *fae) : QMainWindow (), maxProgress(
 
 	connect(this, SIGNAL(nextSignal(QUrl)), fooAudioEngine, SLOT(playFile(QUrl)));
 	connect(this, SIGNAL(prevSignal(QUrl)), fooAudioEngine, SLOT(playFile(QUrl)));
-	connect(fooAudioEngine, SIGNAL(enqueueNextFile()), this, SLOT(enqueueNextFile()));
+	connect(fooAudioEngine, SIGNAL(aboutToFinish()), this, SLOT(enqueueNextFile()));
 	connect(this, SIGNAL(enqueueNextFile(QUrl)), fooAudioEngine, SLOT(enqueueNextFile(QUrl)));
 }
 
@@ -400,9 +400,9 @@ void FooMainWindow::createToolBars ()
 
 void FooMainWindow::createActions()
 {
-	connect(this, SIGNAL(playSignal()), fooAudioEngine->getMediaObject(), SLOT(play()));
-	connect(this, SIGNAL(pauseSignal()), fooAudioEngine->getMediaObject(), SLOT(pause()) );
-	connect(this, SIGNAL(stopSignal()), fooAudioEngine->getMediaObject(), SLOT(stop()));
+	connect(this, SIGNAL(playSignal()), fooAudioEngine, SLOT(play()));
+	connect(this, SIGNAL(pauseSignal()), fooAudioEngine, SLOT(pause()) );
+	connect(this, SIGNAL(stopSignal()), fooAudioEngine, SLOT(stop()));
 }
 
 void FooMainWindow::createStatusBar()
@@ -413,21 +413,21 @@ void FooMainWindow::createStatusBar()
 void FooMainWindow::itemDoubleClicked(QTreeWidgetItem * item, int column)
 {
 	cerr << "FooMainWindow::itemDoubleClicked" << endl;
-	bool wasPlaying = fooAudioEngine->getMediaObject()->state() == Phonon::PlayingState;
+	bool wasPlaying = fooAudioEngine->isPlaying();
 
 	FooPlaylistWidget * foo = (FooPlaylistWidget*)fooTabWidget->currentWidget();
 	QLabel * bar = (QLabel*)foo->itemWidget(item, 0);
 	cerr << bar->text().toStdString() << endl;
 
-	fooAudioEngine->getMediaObject()->stop();
-	fooAudioEngine->getMediaObject()->clearQueue();
+	fooAudioEngine->stop();
+	fooAudioEngine->clearQueue();
 
 	fooAudioEngine->getMediaObject()->setCurrentSource(bar->text());
 
 	  if (wasPlaying)
-			fooAudioEngine->getMediaObject()->play();
+			fooAudioEngine->play();
 	  else
-			fooAudioEngine->getMediaObject()->stop();
+			fooAudioEngine->stop();
 
 	  emit playSignal();
 }
@@ -718,11 +718,11 @@ void FooMainWindow::play ()
 	else if (fooAudioEngine->getMediaObject()->state() == Phonon::StoppedState || fooAudioEngine->getMediaObject()->state() == Phonon::LoadingState)
 	{
 		cerr << "StoppedState" << endl;
-		fooAudioEngine->getMediaObject()->clearQueue();
+		fooAudioEngine->clearQueue();
 		FooPlaylistWidget *playlist = (FooPlaylistWidget*)fooTabWidget->currentWidget();
 		fooAudioEngine->getMediaObject()->setCurrentSource(playlist->file(0).toLocalFile());
 		cerr << playlist->file(0).toString().toStdString() << endl;
-		fooAudioEngine->getMediaObject()->play();
+		fooAudioEngine->play();
 		fooTabWidget->nowPlayingItem = playlist->topLevelItem(0);
 	}
 	else

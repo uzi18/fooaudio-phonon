@@ -38,6 +38,11 @@ Phonon::AudioOutput * FooAudioEngine::getAudioOutput()
 	return audioOutput;
 }
 
+bool FooAudioEngine::isPlaying()
+{
+	return mediaObject->state() == Phonon::PlayingState;
+}
+
 void FooAudioEngine::enqueueNextFile(QUrl path)
 {
 	cerr << "FooAudioEngine::enqueueNextFile" << endl;
@@ -101,4 +106,24 @@ void FooAudioEngine::setVolume(int vol)
 	qreal d = v / 100;
 
 	audioOutput->setVolume(d);
+}
+
+void FooAudioEngine::stop()
+{
+	mediaObject->stop();
+}
+
+void FooAudioEngine::play()
+{
+	mediaObject->play();
+}
+
+void FooAudioEngine::pause()
+{
+	mediaObject->pause();
+}
+
+void FooAudioEngine::clearQueue()
+{
+	mediaObject->clearQueue();
 }

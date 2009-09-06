@@ -22,6 +22,8 @@ public:
 
 	void setFooMainWindow(FooMainWindow *);
 
+	bool isPlaying();
+
 private:
 	FooMainWindow *fooMainWindow;
 
@@ -33,6 +35,12 @@ signals:
 	void aboutToFinish();
 
 public slots:
+	void stop();
+	void play();
+	void pause();
+
+	void clearQueue();
+
 	void enqueueNextFile(QUrl);
 	void playFile(QUrl);
 
