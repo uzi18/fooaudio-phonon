@@ -107,7 +107,7 @@ void FooAudioEngine::setFooMainWindow(FooMainWindow *fmw)
 	// this is needed - default = 0 => no ticks
 	mediaObject->setTickInterval(10);
 
-	connect(this->fooMainWindow->volumeSlider, SIGNAL(sliderMoved(int)), this, SLOT(setVolume(int)));
+	connect(this->fooMainWindow->volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(setVolume(int)));
 }
 
 void FooAudioEngine::progress(qint64 time)
