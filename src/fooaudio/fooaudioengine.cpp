@@ -29,6 +29,12 @@ Phonon::MediaObject * FooAudioEngine::getMediaObject()
 	return mediaObject;
 }
 
+Phonon::AudioOutput * FooAudioEngine::getAudioOutput()
+{
+	cerr << "FooAudioEngine::getAudioOutput" << endl;
+	return audioOutput;
+}
+
 void FooAudioEngine::enqueueNextFile()
 {
 	cerr << "FooAudioEngine::enqueueNextFile" << endl;
@@ -130,6 +136,6 @@ void FooAudioEngine::setVolume(int vol)
 {
 	qreal v = vol;
 	qreal d = v / 100;
-	cerr << d << endl;
+
 	audioOutput->setVolume(d);
 }

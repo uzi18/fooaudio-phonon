@@ -434,6 +434,11 @@ void FooMainWindow::writeSettings()
 	settings.setValue("playbackToolBar", playbackToolBar->geometry());
 	settings.setValue("volumeToolBar", volumeToolBar->geometry());
 	settings.endGroup();
+
+	settings.beginGroup("Volume");
+	settings.setValue("volume", volumeSlider->value());
+	settings.setValue("muted", fooAudioEngine->getAudioOutput()->isMuted());
+	settings.endGroup();
 }
 
 void FooMainWindow::readSettings()
@@ -445,6 +450,12 @@ void FooMainWindow::readSettings()
 	trackToolBar->setGeometry(settings.value("trackToolBar", QRect()).toRect());
 	playbackToolBar->setGeometry(settings.value("playbackToolBar", QRect()).toRect());
 	volumeToolBar->setGeometry(settings.value("volumeToolBar", QRect()).toRect());
+	settings.endGroup();
+
+	settings.beginGroup("Volume");
+	fooAudioEngine->setVolume(settings.value("volume", 100).toInt());
+	volumeSlider->setValue(settings.value("volume", 100).toInt());
+	fooAudioEngine->getAudioOutput()->setMuted(settings.value("muted", false).toBool());
 	settings.endGroup();
 }
 

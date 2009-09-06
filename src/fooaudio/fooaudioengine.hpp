@@ -17,6 +17,7 @@ public:
 	FooAudioEngine (QObject *);
 
 	Phonon::MediaObject * getMediaObject();
+	Phonon::AudioOutput * getAudioOutput();
 
 	void setFooMainWindow(FooMainWindow *);
 
