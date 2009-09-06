@@ -12,7 +12,7 @@ using namespace std;
 
 class FooTabWidget;
 
-FooMainWindow::FooMainWindow(FooAudioEngine *fae) : QMainWindow (), maxProgress(1000)
+FooMainWindow::FooMainWindow(FooAudioEngine *fae) : QMainWindow (), maxProgress(1000),	slider_pos(-1)
 {
 	this->fooAudioEngine = fae;
 
@@ -27,10 +27,12 @@ FooMainWindow::FooMainWindow(FooAudioEngine *fae) : QMainWindow (), maxProgress(
 	readSettings();
 
 	connect(fooTabWidget, SIGNAL (itemDoubleClickedSignal(QTreeWidgetItem *, int)), this, SLOT (itemDoubleClicked(QTreeWidgetItem *, int)));
+	// volume slider
 	connect(this->volumeSlider, SIGNAL(valueChanged(int)), fooAudioEngine, SLOT(setVolume(int)));
-
-	connect(this->trackSlider, SIGNAL(sliderMoved(int)), fooAudioEngine, SLOT (seek(int)));
-	connect(this->trackSlider, SIGNAL(sliderReleased()), fooAudioEngine, SLOT (sliderReleased()));
+	// track slider
+	connect(fooAudioEngine, SIGNAL (progress(qint64)), this, SLOT (progress(qint64)));
+	connect(this->trackSlider, SIGNAL(sliderMoved(int)), this, SLOT (seek(int)));
+	connect(this->trackSlider, SIGNAL(sliderReleased()), this, SLOT (sliderReleased()));
 
 	connect(this, SIGNAL(nextSignal(QUrl)), fooAudioEngine, SLOT(playFile(QUrl)));
 	connect(this, SIGNAL(prevSignal(QUrl)), fooAudioEngine, SLOT(playFile(QUrl)));
@@ -810,4 +812,26 @@ void FooMainWindow::about ()
 int FooMainWindow::getMaxProgress()
 {
 	return maxProgress;
+}
+
+void FooMainWindow::progress(qint64 time)
+{
+	int progress = (int) (time*maxProgress/fooAudioEngine->getMediaObject()->totalTime());
+	if (progress >= 0 && !trackSlider->isSliderDown())
+		trackSlider->setValue(progress);
+}
+void FooMainWindow::seek(int value)
+{
+	if (slider_pos != value)
+		slider_pos = value;
+}
+
+void FooMainWindow::sliderReleased()
+{
+	if (slider_pos == -1)
+		return;
+	Phonon::MediaObject * mediaObj = fooAudioEngine->getMediaObject();
+	// think to check if value is valid for seek
+	mediaObj->seek(mediaObj->totalTime()*slider_pos/maxProgress);
+	slider_pos = -1;
 }

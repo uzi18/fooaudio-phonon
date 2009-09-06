@@ -20,27 +20,19 @@ public:
 	Phonon::MediaObject * getMediaObject();
 	Phonon::AudioOutput * getAudioOutput();
 
-	void setFooMainWindow(FooMainWindow *);
-
 private:
-	FooMainWindow *fooMainWindow;
-
 	Phonon::MediaObject *mediaObject;
 	Phonon::AudioOutput *audioOutput;
-	int slider_pos;
 
 signals:
 	void aboutToFinish();
+	void progress (qint64 time);
 
 public slots:
-	void enqueueNextFile(QUrl);
-	void playFile(QUrl);
+	void enqueueNextFile (QUrl path);
+	void playFile (QUrl path);
 
-	void progress(qint64 time);
-	void seek(int value);
-	void sliderReleased();
-
-	void setVolume(int);
+	void setVolume (int vol);
 };
 
 #endif // _FOOAUDIOENGINE_HPP_
