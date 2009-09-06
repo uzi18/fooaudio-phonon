@@ -617,6 +617,8 @@ void FooMainWindow::paste ()
 
 void FooMainWindow::mute ()
 {
+	bool mute = fooAudioEngine->getAudioOutput()->isMuted();
+	fooAudioEngine->getAudioOutput()->setMuted(!mute);
 }
 
 void FooMainWindow::stop ()
