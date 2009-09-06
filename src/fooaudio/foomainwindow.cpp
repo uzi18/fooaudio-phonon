@@ -146,7 +146,7 @@ void FooMainWindow::createMenus()
 	removeFromQueueAction->setEnabled(true);
 
 	clearQueueAction = new QAction (tr ("&clear queue"), this);
-	connect (clearQueueAction, SIGNAL (triggered ()), fooAudioEngine, SLOT (clearQueue ()));
+	connect (clearQueueAction, SIGNAL (triggered ()), fooAudioEngine, SLOT (clearMusicQueue ()));
 	queueMenu->addAction (clearQueueAction);
 	clearQueueAction->setEnabled(true);
 
