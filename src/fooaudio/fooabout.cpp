@@ -7,12 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtGui/QBoxLayout>
-#include <QtGui/QKeyEvent>
-#include <QtGui/QLabel>
-#include <QtGui/QPushButton>
-#include <QtGui/QTabWidget>
-#include <QtGui/QTextEdit>
+#include <QBoxLayout>
+#include <QKeyEvent>
+#include <QLabel>
+#include <QPushButton>
+#include <QTabWidget>
+#include <QTextEdit>
 
 #include "fooabout.hpp"
 

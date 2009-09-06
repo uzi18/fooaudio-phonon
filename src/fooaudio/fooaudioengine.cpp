@@ -34,6 +34,26 @@ Phonon::AudioOutput * FooAudioEngine::getAudioOutput ()
 	return audioOutput;
 }
 
+bool FooAudioEngine::isPlaying()
+{
+	return mediaObject->state() == Phonon::PlayingState;
+}
+
+bool FooAudioEngine::isStopped()
+{
+	return mediaObject->state() == (Phonon::StoppedState || Phonon::LoadingState);
+}
+
+bool FooAudioEngine::isMuted()
+{
+	return audioOutput->isMuted();
+}
+
+void FooAudioEngine::setMuted(bool mute)
+{
+	audioOutput->setMuted(mute);
+}
+
 void FooAudioEngine::prepareNextFile()
 {
 	if (queue.isEmpty())
@@ -60,7 +80,7 @@ void FooAudioEngine::removeFileFromQueue (QUrl file)
 	queue.removeOne(file);
 }
 
-void FooAudioEngine::clearQueue ()
+void FooAudioEngine::clearMusicQueue()
 {
 	cerr << "FooAudioEngine::clearQueue" << endl;
 	queue.clear();
@@ -102,4 +122,24 @@ void FooAudioEngine::setVolume (int vol)
 	qreal d = v / 100;
 
 	audioOutput->setVolume(d);
+}
+
+void FooAudioEngine::stop()
+{
+	mediaObject->stop();
+}
+
+void FooAudioEngine::play()
+{
+	mediaObject->play();
+}
+
+void FooAudioEngine::pause()
+{
+	mediaObject->pause();
+}
+
+void FooAudioEngine::clearQueue()
+{
+	mediaObject->clearQueue();
 }
