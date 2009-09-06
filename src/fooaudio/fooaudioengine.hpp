@@ -37,6 +37,8 @@ public slots:
 	void progress(qint64 time);
 	void seek(int value);
 	void sliderReleased();
+
+	void setVolume(int);
 };
 
 #endif // _FOOAUDIOENGINE_HPP_

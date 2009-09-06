@@ -353,6 +353,7 @@ void FooMainWindow::createToolBars ()
 	connect (volumeToolBarAction, SIGNAL (triggered ()), this, SLOT (mute()));
 	volumeToolBar->addAction (volumeToolBarAction);
 	volumeSlider = new QSlider (Qt::Horizontal);
+	volumeSlider->setRange(0, 100);
 	volumeToolBar->addWidget (volumeSlider);
 	addToolBar (volumeToolBar);
 
@@ -374,12 +375,10 @@ void FooMainWindow::createToolBars ()
 	prevToolBarAction = new QAction (QIcon (":images/prev.png"), tr ("Previous"),this);
 	connect (prevToolBarAction, SIGNAL (triggered ()), this, SLOT (previous ()));
 	playbackToolBar->addAction (prevToolBarAction);
-	//prevToolBarAction->setEnabled(false);
 
 	nextToolBarAction = new QAction (QIcon (":images/next.png"), tr ("Next"),this);
 	connect (nextToolBarAction, SIGNAL (triggered ()), this, SLOT (next ()));
 	playbackToolBar->addAction (nextToolBarAction);
-	//nextToolBarAction->setEnabled(false);
 
 	randomToolBarAction = new QAction (QIcon (":images/random.png"), tr ("Random"),this);
 	connect (randomToolBarAction, SIGNAL (triggered ()), this, SLOT (random ()));

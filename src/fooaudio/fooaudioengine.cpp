@@ -95,11 +95,13 @@ void FooAudioEngine::setFooMainWindow(FooMainWindow *fmw)
 {
 	this->fooMainWindow = fmw;
 	// to move progress bar
-	connect (mediaObject, SIGNAL (tick(qint64)), this, SLOT (progress(qint64)));
-	connect (this->fooMainWindow->trackSlider, SIGNAL (sliderMoved(int)), this, SLOT (seek(int)));
-	connect (this->fooMainWindow->trackSlider, SIGNAL (sliderReleased()), this, SLOT (sliderReleased()));
+	connect(mediaObject, SIGNAL (tick(qint64)), this, SLOT (progress(qint64)));
+	connect(this->fooMainWindow->trackSlider, SIGNAL (sliderMoved(int)), this, SLOT (seek(int)));
+	connect(this->fooMainWindow->trackSlider, SIGNAL (sliderReleased()), this, SLOT (sliderReleased()));
 	// this is needed - default = 0 => no ticks
 	mediaObject->setTickInterval(10);
+
+	connect(this->fooMainWindow->volumeSlider, SIGNAL(sliderMoved(int)), this, SLOT(setVolume(int)));
 }
 
 void FooAudioEngine::progress(qint64 time)
@@ -122,4 +124,12 @@ void FooAudioEngine::sliderReleased()
 	// think to check if value is valid for seek
 	mediaObject->seek(mediaObject->totalTime()*slider_pos/fooMainWindow->getMaxProgress());
 	slider_pos = -1;
+}
+
+void FooAudioEngine::setVolume(int vol)
+{
+	qreal v = vol;
+	qreal d = v / 100;
+	cerr << d << endl;
+	audioOutput->setVolume(d);
 }
