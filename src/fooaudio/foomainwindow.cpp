@@ -540,7 +540,6 @@ void FooMainWindow::addFiles ()
 
 	foreach (QString string, files)
 	{
-
 		FooPlaylistWidget *wid = static_cast<FooPlaylistWidget *> (fooTabWidget->currentWidget());
 		wid->addFile (string);
 	}
