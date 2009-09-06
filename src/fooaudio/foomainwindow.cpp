@@ -90,7 +90,7 @@ void FooMainWindow::createMenus()
 	fileMenu->addSeparator ();
 
 	exitAction = new QAction (tr ("&Exit"), this);
-	connect (exitAction, SIGNAL (triggered ()), qApp, SLOT (quit ()));
+	connect (exitAction, SIGNAL (triggered ()), this, SLOT (exit()));
 	fileMenu->addAction (exitAction);
 
 	editMenu = menuBar ()->addMenu (tr ("&Edit"));
@@ -570,6 +570,8 @@ void FooMainWindow::preferences ()
 
 void FooMainWindow::exit ()
 {
+	writeSettings();
+	qApp->quit();
 }
 
 void FooMainWindow::undo ()
@@ -677,6 +679,7 @@ void FooMainWindow::mute ()
 void FooMainWindow::stop ()
 {
 	cerr << "FooMainWindow::stop" << endl;
+	trackSlider->setValue(0);
 	emit stopSignal();
 }
 
