@@ -26,7 +26,7 @@ public:
 	QAction *nextTabAction () const;
 	QAction *previousTabAction () const;
 
-
+	QTreeWidgetItem * nowPlayingItem;
 
 public slots:
 	void newTab (QString name = QString());
@@ -49,8 +49,6 @@ private:
 	QAction *m_previousTabAction;
 
 	FooTabBar *m_tabBar;
-
-	QTreeWidgetItem * nowPlayingItem;
 };
 
 #endif // _FOOTABWIDGET_HPP_

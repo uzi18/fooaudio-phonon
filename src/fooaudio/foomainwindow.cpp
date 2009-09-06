@@ -703,6 +703,7 @@ void FooMainWindow::play ()
 		fooAudioEngine->getMediaObject()->setCurrentSource(playlist->file(0).toLocalFile());
 		cerr << playlist->file(0).toString().toStdString() << endl;
 		fooAudioEngine->getMediaObject()->play();
+		fooTabWidget->nowPlayingItem = playlist->topLevelItem(0);
 	}
 	else
 	{
