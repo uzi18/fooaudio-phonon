@@ -227,30 +227,28 @@ QUrl FooTabWidget::previousFile(bool repeat)
 
 void FooTabWidget::cut (bool remove)
 {
-			FooPlaylistWidget * foo = static_cast<FooPlaylistWidget *> (currentWidget());
+	FooPlaylistWidget * foo = static_cast<FooPlaylistWidget *> (currentWidget());
 	if (!foo)
 		return;
 
 	buffer.clear();
-	buffer = foo->selectedItems();
-
-	cerr << "cut " << buffer.size();
-
-	if (!remove)
-		return;
 
 	foreach (QTreeWidgetItem * item, foo->selectedItems())
 	{
 		if (item)
 		{
-			foo->takeTopLevelItem();
+			cerr << "TabWidget: bufor2 :" << item->text(0).toStdString() << endl;
+			if (remove)
+				buffer.append(foo->takeTopLevelItem(foo->indexOfTopLevelItem(item)));
+			else
+				buffer.append(new QTreeWidgetItem (item));
 		}
 	}
 }
 
 void FooTabWidget::remove ()
 {
-			FooPlaylistWidget * foo = static_cast<FooPlaylistWidget *> (currentWidget());
+	FooPlaylistWidget * foo = static_cast<FooPlaylistWidget *> (currentWidget());
 	if (!foo)
 		return;
 
@@ -258,6 +256,7 @@ void FooTabWidget::remove ()
 	{
 		if (item)
 		{
+			cerr << "TabWidget: bufor2 :" << item->text(0).toStdString() << endl;
 			delete item;
 		}
 	}
@@ -279,6 +278,13 @@ void FooTabWidget::paste ()
 
 	int line = foo->indexOfTopLevelItem(foo->currentItem ());
 	cerr << "TabWidget: line :" << line << endl;
+	foreach (QTreeWidgetItem * item, buffer)
+	{
+		if (item)
+		{
+			cerr << "TabWidget: bufor2 :" << item->text(0).toStdString() << endl;
+		}
+	}
 	// if line not selected
 	if (line < 0)
 	{

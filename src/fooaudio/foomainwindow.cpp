@@ -455,14 +455,13 @@ void FooMainWindow::itemDoubleClicked(QTreeWidgetItem * item, int column)
 	cerr << "FooMainWindow::itemDoubleClicked" << endl;
 	bool wasPlaying = fooAudioEngine->isPlaying();
 
-	FooPlaylistWidget * foo = (FooPlaylistWidget*)fooTabWidget->currentWidget();
-	QLabel * bar = (QLabel*)foo->itemWidget(item, 0);
-	cerr << bar->text().toStdString() << endl;
+	QString nextOne = item->text(0);
+	cerr << nextOne.toStdString() << endl;
 
 	fooAudioEngine->stop();
 	fooAudioEngine->clearQueue();
 
-	fooAudioEngine->getMediaObject()->setCurrentSource(bar->text());
+	fooAudioEngine->getMediaObject()->setCurrentSource(nextOne);
 
 	if (wasPlaying)
 	{
@@ -755,6 +754,8 @@ void FooMainWindow::play ()
 		cerr << "StoppedState" << endl;
 		fooAudioEngine->clearQueue();
 		FooPlaylistWidget *playlist = (FooPlaylistWidget*)fooTabWidget->currentWidget();
+		if (!playlist)
+			return;
 		fooAudioEngine->getMediaObject()->setCurrentSource(playlist->file(0).toLocalFile());
 		cerr << playlist->file(0).toString().toStdString() << endl;
 		fooAudioEngine->play();
@@ -790,8 +791,7 @@ void FooMainWindow::addToQueue ()
 	{
 		if (item)
 		{
-			QLabel * bar = (QLabel*)foo->itemWidget(item, 0);
-			addFileToQueue(bar->text());
+			fooAudioEngine->addFileToQueue(QUrl(item->text(0)));
 		}
 	}
 }
@@ -806,8 +806,7 @@ void FooMainWindow::removeFromQueue()
 	{
 		if (item)
 		{
-			QLabel * bar = (QLabel*)foo->itemWidget(item, 0);
-			removeFileFromQueue(bar->text());
+			fooAudioEngine->removeFileFromQueue(QUrl(item->text(0)));
 		}
 	}
 }
