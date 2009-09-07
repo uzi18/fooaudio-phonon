@@ -791,7 +791,7 @@ void FooMainWindow::addToQueue ()
 	{
 		if (item)
 		{
-			fooAudioEngine->addFileToQueue(QUrl(item->text(0)));
+			addFileToQueue(QUrl(item->text(0)));
 		}
 	}
 }
@@ -806,7 +806,7 @@ void FooMainWindow::removeFromQueue()
 	{
 		if (item)
 		{
-			fooAudioEngine->removeFileFromQueue(QUrl(item->text(0)));
+			removeFileFromQueue(QUrl(item->text(0)));
 		}
 	}
 }
