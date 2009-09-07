@@ -16,11 +16,12 @@ FooMainWindow::FooMainWindow(FooAudioEngine *fae) : QMainWindow (), maxProgress(
 {
 	this->fooAudioEngine = fae;
 
+	fooTabWidget = new FooTabWidget();
+	setCentralWidget(fooTabWidget);
+
 	createMenus();
 	createToolBars();
 	createStatusBar();
-	fooTabWidget = new FooTabWidget();
-	setCentralWidget(fooTabWidget);
 
 	createActions();
 
@@ -116,20 +117,37 @@ void FooMainWindow::createMenus()
 	editMenu->addAction (redoAction);
 	redoAction->setEnabled(false);
 
+	editMenu->addSeparator ();
+
+	cutAction = new QAction (tr ("&Cut"), this);
+	connect (cutAction, SIGNAL (triggered ()), fooTabWidget, SLOT (cut ()));
+	editMenu->addAction (cutAction);
+	cutAction->setEnabled(true);
+
+	copyAction = new QAction (tr ("C&opy"), this);
+	connect (copyAction, SIGNAL (triggered ()), fooTabWidget, SLOT (copy ()));
+	editMenu->addAction (copyAction);
+	copyAction->setEnabled(true);
+
+	pasteAction = new QAction (tr ("&Paste"), this);
+	connect (pasteAction, SIGNAL (triggered ()), fooTabWidget, SLOT (paste ()));
+	editMenu->addAction (pasteAction);
+	pasteAction->setEnabled(true);
+
 	removeAction = new QAction (tr ("R&emove"), this);
-	connect (removeAction, SIGNAL (triggered ()), this, SLOT (remove ()));
+	connect (removeAction, SIGNAL (triggered ()), fooTabWidget, SLOT (remove ()));
 	editMenu->addAction (removeAction);
 	removeAction->setEnabled(true);
 
 	clearAction = new QAction (tr ("&Clear"), this);
-	connect (clearAction, SIGNAL (triggered ()), this, SLOT (clear ()));
+	connect (clearAction, SIGNAL (triggered ()), fooTabWidget, SLOT (clear ()));
 	editMenu->addAction (clearAction);
-	clearAction->setEnabled(false);
+	clearAction->setEnabled(true);
 
 	selectAllAction = new QAction (tr ("Select &all"), this);
-	connect (selectAllAction, SIGNAL (triggered ()), this, SLOT (selectAll ()));
+	connect (selectAllAction, SIGNAL (triggered ()), fooTabWidget, SLOT (selectAll ()));
 	editMenu->addAction (selectAllAction);
-	selectAllAction->setEnabled(false);
+	selectAllAction->setEnabled(true);
 
 	// Queue SubMenu
 	queueMenu = new QMenu (tr ("&Queue"), editMenu);
@@ -244,20 +262,21 @@ void FooMainWindow::createMenus()
 
 	layoutMenu->addSeparator ();
 
-	cutAction = new QAction (tr ("&Cut"), this);
-	connect (cutAction, SIGNAL (triggered ()), this, SLOT (cut ()));
-	layoutMenu->addAction (cutAction);
-	cutAction->setEnabled(false);
+	// what is this ?
+	cutLayoutAction = new QAction (tr ("&Cut"), this);
+	connect (cutLayoutAction, SIGNAL (triggered ()), this, SLOT (cutLayout ()));
+	layoutMenu->addAction (cutLayoutAction);
+	cutLayoutAction->setEnabled(false);
 
-	copyAction = new QAction (tr ("C&opy"), this);
-	connect (copyAction, SIGNAL (triggered ()), this, SLOT (copy ()));
-	layoutMenu->addAction (copyAction);
-	copyAction->setEnabled(false);
+	copyLayoutAction = new QAction (tr ("C&opy"), this);
+	connect (copyLayoutAction, SIGNAL (triggered ()), this, SLOT (copyLayout ()));
+	layoutMenu->addAction (copyLayoutAction);
+	copyLayoutAction->setEnabled(false);
 
-	pasteAction = new QAction (tr ("&Paste"), this);
-	connect (pasteAction, SIGNAL (triggered ()), this, SLOT (paste ()));
-	layoutMenu->addAction (pasteAction);
-	pasteAction->setEnabled(false);
+	pasteLayoutAction = new QAction (tr ("&Paste"), this);
+	connect (pasteLayoutAction, SIGNAL (triggered ()), this, SLOT (pasteLayout ()));
+	layoutMenu->addAction (pasteLayoutAction);
+	pasteLayoutAction->setEnabled(false);
 
 	playbackMenu = menuBar ()->addMenu (tr ("&Playback"));
 
@@ -629,14 +648,6 @@ void FooMainWindow::redo ()
 {
 }
 
-void FooMainWindow::clear ()
-{
-}
-
-void FooMainWindow::selectAll ()
-{
-}
-
 void FooMainWindow::sortBy ()
 {
 }
@@ -702,34 +713,6 @@ void FooMainWindow::enableLayoutEditionMode ()
 }
 
 void FooMainWindow::createScratchbox ()
-{
-}
-
-void FooMainWindow::cut ()
-{
-}
-
-void FooMainWindow::remove ()
-{
-      	FooPlaylistWidget * foo = (FooPlaylistWidget*)fooTabWidget->currentWidget();
-	if (!foo)
-		return;
-
-	foreach (QTreeWidgetItem * item, foo->selectedItems())
-	{
-		if (item)
-		{
-			//foo->removeItemWidget(item,0);
-			delete item;
-		}
-	}
-}
-
-void FooMainWindow::copy ()
-{
-}
-
-void FooMainWindow::paste ()
 {
 }
 
@@ -883,6 +866,18 @@ void FooMainWindow::searchAlbum ()
 }
 
 void FooMainWindow::configure ()
+{
+}
+
+void FooMainWindow::cutLayout ()
+{
+}
+
+void FooMainWindow::copyLayout ()
+{
+}
+
+void FooMainWindow::pasteLayout ()
 {
 }
 

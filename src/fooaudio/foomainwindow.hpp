@@ -50,8 +50,6 @@ private slots:
 
 	void undo ();
 	void redo ();
-	void clear ();
-	void selectAll ();
 	void sortBy ();
 	void randomize ();
 	void reverse ();
@@ -70,10 +68,6 @@ private slots:
 	void quickSetup ();
 	void enableLayoutEditionMode ();
 	void createScratchbox ();
-	void cut ();
-	void remove ();
-	void copy ();
-	void paste ();
 
 	void mute ();
 	void stop ();
@@ -98,6 +92,11 @@ private slots:
 	void configure ();
 
 	void about ();
+
+
+	void cutLayout();
+	void copyLayout();
+	void pasteLayout();
 
 	// Queue
 	void addToQueue ();
@@ -131,6 +130,9 @@ private:
 	QMenu *editMenu;
 		QAction *undoAction;
 		QAction *redoAction;
+		QAction *cutAction;
+		QAction *copyAction;
+		QAction *pasteAction;
 		QAction *removeAction;
 		QAction *clearAction;
 		QAction *selectAllAction;
@@ -160,9 +162,9 @@ private:
 			QAction *quickSetupAction;
 			QAction *enableLayoutEditionModeAction;
 			QAction *createScratchboxAction;
-			QAction *cutAction;
-			QAction *copyAction;
-			QAction *pasteAction;
+			QAction *cutLayoutAction;
+			QAction *copyLayoutAction;
+			QAction *pasteLayoutAction;
 
 	QMenu *playbackMenu;
 		QAction *stopAction;

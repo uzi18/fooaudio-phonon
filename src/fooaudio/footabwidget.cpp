@@ -17,6 +17,7 @@ FooTabWidget::FooTabWidget (QWidget *parent) : QTabWidget (parent), m_newTabActi
 	setElideMode(Qt::ElideRight);
 
 	connect(m_tabBar, SIGNAL(newTab()), this, SLOT(newTab()));
+	connect(m_tabBar, SIGNAL(cloneTab(int)), this, SLOT(cloneTab(int)));
 	connect(m_tabBar, SIGNAL(closeTab(int)), this, SLOT(closeTab(int)));
 	connect(m_tabBar, SIGNAL(closeOtherTabs(int)), this, SLOT(closeOtherTabs(int)));
 
@@ -39,6 +40,8 @@ FooTabWidget::FooTabWidget (QWidget *parent) : QTabWidget (parent), m_newTabActi
 
 	m_tabBar->setTabsClosable(false);
 	m_tabBar->setSelectionBehaviorOnRemove(QTabBar::SelectPreviousTab);
+
+	newTab ();
 }
 
 QAction *FooTabWidget::newTabAction() const
@@ -64,11 +67,17 @@ QAction *FooTabWidget::previousTabAction() const
 void FooTabWidget::newTab(QString name)
 {
 	FooPlaylistWidget *fpw = new FooPlaylistWidget ();
-
 	addTab (fpw, (name.isEmpty() ? "New Playlist" : name));
 
 		connect(fpw, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)),
 				 this, SLOT(itemClicked(QTreeWidgetItem *, int)));
+}
+
+void FooTabWidget::cloneTab (int index)
+{
+	//FooPlaylistWidget *fpw = qobject_cast<FooPlaylistWidget *> widget(index);
+	//FooPlaylistWidget *fpw2 = new FooPlaylistWidget (fpw);
+	//delete current;
 }
 
 void FooTabWidget::closeTab (int index)
@@ -216,4 +225,76 @@ QUrl FooTabWidget::previousFile(bool repeat)
 	}
 
 	return QUrl();
+}
+
+void FooTabWidget::cut (bool remove)
+{
+      	FooPlaylistWidget * foo = static_cast<FooPlaylistWidget *> (currentWidget());
+	if (!foo)
+		return;
+
+	buffer.clear();
+	buffer.insertTopLevelItems(0, foo->selectedItems());
+
+	if (!remove)
+		return;
+
+	foreach (QTreeWidgetItem * item, foo->selectedItems())
+	{
+		if (item)
+		{
+			delete item;
+		}
+	}
+}
+
+void FooTabWidget::remove ()
+{
+      	FooPlaylistWidget * foo = static_cast<FooPlaylistWidget *> (currentWidget());
+	if (!foo)
+		return;
+
+	foreach (QTreeWidgetItem * item, foo->selectedItems())
+	{
+		if (item)
+		{
+			//foo->removeItemWidget(item,0);
+			delete item;
+		}
+	}
+}
+
+void FooTabWidget::copy ()
+{
+	cut(false);
+}
+
+void FooTabWidget::paste ()
+{
+	FooPlaylistWidget * foo = static_cast<FooPlaylistWidget *> (currentWidget());
+	if (!foo)
+		return;
+
+	buffer.selectAll ();
+	cerr << "TabWidget: count :" << buffer.selectedItems().count() << endl;
+	foo->insertTopLevelItems(foo->indexOfTopLevelItem(foo->currentItem ()), buffer.selectedItems());
+}
+
+void FooTabWidget::clear ()
+{
+	FooPlaylistWidget * foo = static_cast<FooPlaylistWidget *> (currentWidget());
+	if (!foo)
+		return;
+
+	// a nie czasem unselect ?
+	foo->clear();
+}
+
+void FooTabWidget::selectAll ()
+{
+	FooPlaylistWidget * foo = static_cast<FooPlaylistWidget *> (currentWidget());
+	if (!foo)
+		return;
+
+	foo->selectAll ();
 }

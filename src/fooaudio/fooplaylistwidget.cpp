@@ -9,14 +9,27 @@
 using namespace std;
 
 FooPlaylistWidget::FooPlaylistWidget ()
+	: QTreeWidget()
 {
+	setSelectionMode(QAbstractItemView::ExtendedSelection);
+	setSelectionBehavior(QAbstractItemView::SelectRows);
 	setSortingEnabled(true);
 	setIndentation(0);
 	setAlternatingRowColors (true);
+
 	QStringList l;
 	l << tr("File");
 	setHeaderLabels(l);
 }
+
+//FooPlaylistWidget::FooPlaylistWidget(const FooPlaylistWidget &copyMe)
+//	: QTreeWidget()
+//{
+//	privateData = copyMe.privateData;
+//	foreach ( ,copyme.mimeTypes())
+//	{
+//	}
+//}
 
 void FooPlaylistWidget::addFile (QString path)
 {
@@ -42,6 +55,7 @@ int FooPlaylistWidget::plistFindFname (const char *fname)
 			break;
 		}
 	}
+	return -1;
 }
 
 QString FooPlaylistWidget::plistGetFile(int i)
