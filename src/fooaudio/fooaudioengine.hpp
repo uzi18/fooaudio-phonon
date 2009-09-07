@@ -20,10 +20,6 @@ public:
 	Phonon::MediaObject * getMediaObject ();
 	Phonon::AudioOutput * getAudioOutput ();
 
-	void addFileToQueue (QUrl file);
-	void removeFileFromQueue (QUrl file);
-	QList<QUrl> getQueue () {return queue;}
-
 	bool isPlaying();
 	bool isStopped();
 	bool isMuted();
@@ -32,8 +28,6 @@ public:
 private:
 	Phonon::MediaObject *mediaObject;
 	Phonon::AudioOutput *audioOutput;
-
-	QList<QUrl> queue;
 
 signals:
 	void aboutToFinish ();
@@ -44,8 +38,6 @@ public slots:
 	void play();
 	void pause();
 	void clearQueue();
-	void clearMusicQueue ();
-	void prepareNextFile();
 	void enqueueNextFile(QUrl path);
 	void playFile (QUrl path);
 

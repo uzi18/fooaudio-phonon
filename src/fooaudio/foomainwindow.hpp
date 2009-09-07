@@ -25,6 +25,10 @@ public:
 	void readSettings();
 	void writeSettings();
 
+	void addFileToQueue (QUrl file);
+	void removeFileFromQueue (QUrl file);
+	QList<QUrl> getQueue () {return queue;}
+
 signals:
 	void playSignal();
 	void prevSignal(QUrl);
@@ -114,6 +118,8 @@ private slots:
 private:
 	const int maxProgress;
 	FooAudioEngine *fooAudioEngine;
+
+	QList<QUrl> queue;
 
 	QMenu *fileMenu;
 		QAction *openAction;

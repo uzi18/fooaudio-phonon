@@ -164,7 +164,7 @@ void FooMainWindow::createMenus()
 	removeFromQueueAction->setEnabled(true);
 
 	clearQueueAction = new QAction (tr ("&clear queue"), this);
-	connect (clearQueueAction, SIGNAL (triggered ()), fooAudioEngine, SLOT (clearMusicQueue ()));
+	connect (clearQueueAction, SIGNAL (triggered ()), this, SLOT (clearQueue ()));
 	queueMenu->addAction (clearQueueAction);
 	clearQueueAction->setEnabled(true);
 
@@ -484,7 +484,15 @@ void FooMainWindow::itemDoubleClicked(QTreeWidgetItem * item, int column)
 
 void FooMainWindow::enqueueNextFile()
 {
-	emit enqueueNextFile(fooTabWidget->nextFile(true));
+	if (queue.isEmpty())
+	{
+		emit enqueueNextFile(fooTabWidget->nextFile(true));
+	}
+	else
+	{
+		cerr << "FooMainWindow::Queue" << endl;
+		emit enqueueNextFile(queue.takeLast());
+	}
 }
 
 void FooMainWindow::writeSettings()
@@ -786,7 +794,7 @@ void FooMainWindow::addToQueue ()
 		if (item)
 		{
 			QLabel * bar = (QLabel*)foo->itemWidget(item, 0);
-			fooAudioEngine->addFileToQueue(bar->text());
+			addFileToQueue(bar->text());
 		}
 	}
 }
@@ -802,15 +810,9 @@ void FooMainWindow::removeFromQueue()
 		if (item)
 		{
 			QLabel * bar = (QLabel*)foo->itemWidget(item, 0);
-			fooAudioEngine->removeFileFromQueue(bar->text());
+			removeFileFromQueue(bar->text());
 		}
 	}
-}
-
-void FooMainWindow::clearQueue ()
-{
-      // do wywalenia ?
-      fooAudioEngine->clearQueue();
 }
 
 void FooMainWindow::random ()
@@ -911,4 +913,24 @@ void FooMainWindow::sliderReleased()
 	// think to check if value is valid for seek
 	mediaObj->seek(mediaObj->totalTime()*slider_pos/maxProgress);
 	slider_pos = -1;
+}
+
+void FooMainWindow::addFileToQueue (QUrl file)
+{
+	cerr << "FooMainWindow::addToQueue" << endl;
+	cerr << "plik dodany do kolejki: " << file.toString().toStdString() << endl;
+	queue.prepend(file);
+}
+
+void FooMainWindow::removeFileFromQueue (QUrl file)
+{
+	cerr << "FooMainWindow::removeFromQueue" << endl;
+	cerr << "plik usuniety z kolejki: " << file.toString().toStdString() << endl;
+	queue.removeOne(file);
+}
+
+void FooMainWindow::clearQueue()
+{
+	cerr << "FooMainWindow::clearQueue" << endl;
+	queue.clear();
 }
