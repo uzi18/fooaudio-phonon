@@ -35,8 +35,7 @@ void FooPlaylistWidget::addFile (QString path)
 {
 	cerr << "FooPlaylistWidget::addFile" << endl;
 	QTreeWidgetItem *wid = new QTreeWidgetItem (this);
-	QLabel *lab = new QLabel (path, this);
-	setItemWidget (wid, 0, lab);
+	wid->setText(0, path);
 	addTopLevelItem (wid);
 }
 
@@ -47,9 +46,7 @@ int FooPlaylistWidget::plistFindFname (const char *fname)
 	{
 		QTreeWidgetItem *wid = topLevelItem(i);
 
-		QLabel *lab = &((QLabel) itemWidget(wid, 0));
-
-		if (lab->text() == fname)
+		if (wid->text(0) == fname)
 		{
 			return i;
 			break;
@@ -78,13 +75,8 @@ QUrl FooPlaylistWidget::file(int i)
 	cerr << "FooPlaylistWidget::nextFile" << endl;
 	cerr << this->topLevelItemCount() << endl;
 	cerr << i << endl;
-	// QLabel * bar = (QLabel*)foo->itemWidget(item, 0);
-	QLabel *lab = (QLabel*) itemWidget(topLevelItem(i), 0);
-	cerr << "Dostałem labela" << endl;
-	if (!lab)
-		return QUrl();
-
-	QUrl url = lab->text();
-	cerr << "Label ma text " << lab->text().toStdString() << endl;
+	QString text = topLevelItem(i)->text(0);
+	QUrl url(text);
+	cerr << "plik :" << text.toStdString() << endl;
 	return url;
 }
