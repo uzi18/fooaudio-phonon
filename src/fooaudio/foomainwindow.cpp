@@ -122,32 +122,26 @@ void FooMainWindow::createMenus()
 	cutAction = new QAction (tr ("&Cut"), this);
 	connect (cutAction, SIGNAL (triggered ()), fooTabWidget, SLOT (cut ()));
 	editMenu->addAction (cutAction);
-	cutAction->setEnabled(true);
 
 	copyAction = new QAction (tr ("C&opy"), this);
 	connect (copyAction, SIGNAL (triggered ()), fooTabWidget, SLOT (copy ()));
 	editMenu->addAction (copyAction);
-	copyAction->setEnabled(true);
 
 	pasteAction = new QAction (tr ("&Paste"), this);
 	connect (pasteAction, SIGNAL (triggered ()), fooTabWidget, SLOT (paste ()));
 	editMenu->addAction (pasteAction);
-	pasteAction->setEnabled(true);
 
 	removeAction = new QAction (tr ("R&emove"), this);
 	connect (removeAction, SIGNAL (triggered ()), fooTabWidget, SLOT (remove ()));
 	editMenu->addAction (removeAction);
-	removeAction->setEnabled(true);
 
 	clearAction = new QAction (tr ("&Clear"), this);
 	connect (clearAction, SIGNAL (triggered ()), fooTabWidget, SLOT (clear ()));
 	editMenu->addAction (clearAction);
-	clearAction->setEnabled(true);
 
 	selectAllAction = new QAction (tr ("Select &all"), this);
 	connect (selectAllAction, SIGNAL (triggered ()), fooTabWidget, SLOT (selectAll ()));
 	editMenu->addAction (selectAllAction);
-	selectAllAction->setEnabled(true);
 
 	// Queue SubMenu
 	queueMenu = new QMenu (tr ("&Queue"), editMenu);
@@ -788,7 +782,7 @@ void FooMainWindow::next ()
 
 void FooMainWindow::addToQueue ()
 {
-      	FooPlaylistWidget * foo = (FooPlaylistWidget*)fooTabWidget->currentWidget();
+			FooPlaylistWidget * foo = (FooPlaylistWidget*)fooTabWidget->currentWidget();
 	if (!foo)
 		return;
 
@@ -804,7 +798,7 @@ void FooMainWindow::addToQueue ()
 
 void FooMainWindow::removeFromQueue()
 {
-      	FooPlaylistWidget * foo = (FooPlaylistWidget*)fooTabWidget->currentWidget();
+			FooPlaylistWidget * foo = (FooPlaylistWidget*)fooTabWidget->currentWidget();
 	if (!foo)
 		return;
 

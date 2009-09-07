@@ -21,7 +21,7 @@ FooAudioEngine::FooAudioEngine (QObject* parent) : QObject(parent)
 	mediaObject->setTickInterval(10);
 
 	connect(mediaObject, SIGNAL (tick(qint64)), this, SIGNAL (progress(qint64)));
-	connect (mediaObject, SIGNAL(aboutToFinish()), this, SIGNAL(aboutToFinish()));
+	connect(mediaObject, SIGNAL(aboutToFinish()), this, SIGNAL(aboutToFinish()));
 }
 
 Phonon::MediaObject * FooAudioEngine::getMediaObject ()

@@ -234,6 +234,8 @@ void FooTabWidget::cut (bool remove)
 	buffer.clear();
 	buffer = foo->selectedItems();
 
+	cerr << "cut " << buffer.size();
+
 	if (!remove)
 		return;
 
@@ -241,7 +243,7 @@ void FooTabWidget::cut (bool remove)
 	{
 		if (item)
 		{
-			delete item;
+			foo->takeTopLevelItem();
 		}
 	}
 }
@@ -272,15 +274,22 @@ void FooTabWidget::paste ()
 	if (!foo)
 		return;
 
-	cerr << "TabWidget: count :" << buffer.count() << endl;
+	cerr << "TabWidget: count: " << buffer.count() << endl;
+	cerr << "TabWidget: size: " << buffer.size() << endl;
 
 	int line = foo->indexOfTopLevelItem(foo->currentItem ());
 	cerr << "TabWidget: line :" << line << endl;
 	// if line not selected
 	if (line < 0)
+	{
+		cout << "lina < 0" << endl;
 		foo->addTopLevelItems(buffer);
+	}
 	else
+	{
+		cout << "line >= 0" << endl;
 		foo->insertTopLevelItems(line, buffer);
+	}
 }
 
 void FooTabWidget::clear ()

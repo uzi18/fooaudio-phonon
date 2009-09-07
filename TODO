@@ -1,0 +1,6 @@
+TODO:
+- trackSlider przeskakuje jak się w niego klinie (bez przeciągania)
+- całkowicie rozdzielić engine i gui
+- klasa abstrakcyjna dla engine
+- mvc dla playlisty
+
