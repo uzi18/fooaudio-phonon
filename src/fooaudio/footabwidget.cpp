@@ -238,10 +238,10 @@ void FooTabWidget::cut (bool remove)
 		if (item)
 		{
 			cerr << "TabWidget: bufor2 :" << item->text(0).toStdString() << endl;
+			buffer.append(item->clone());
+
 			if (remove)
-				buffer.append(foo->takeTopLevelItem(foo->indexOfTopLevelItem(item)));
-			else
-				buffer.append(new QTreeWidgetItem (item));
+				delete item;
 		}
 	}
 }
@@ -277,18 +277,19 @@ void FooTabWidget::paste ()
 
 	int line = foo->indexOfTopLevelItem(foo->currentItem ());
 	cerr << "TabWidget: line :" << line << endl;
+	if (line < 0)
+		line = foo->plistCount();
+
 	foreach (QTreeWidgetItem * item, buffer)
 	{
 		if (item)
 		{
 			cerr << "TabWidget: bufor2 :" << item->text(0).toStdString() << endl;
+			// if line not selected
+			foo->insertTopLevelItem(line, item->clone());
+			line++;
 		}
 	}
-	// if line not selected
-	if (line < 0)
-		foo->addTopLevelItems(buffer);
-	else
-		foo->insertTopLevelItems(line, buffer);
 }
 
 void FooTabWidget::clear ()
