@@ -234,7 +234,7 @@ void FooTabWidget::cut (bool remove)
 		return;
 
 	buffer.clear();
-	buffer.insertTopLevelItems(0, foo->selectedItems());
+	buffer = foo->selectedItems();
 
 	if (!remove)
 		return;
@@ -258,7 +258,6 @@ void FooTabWidget::remove ()
 	{
 		if (item)
 		{
-			//foo->removeItemWidget(item,0);
 			delete item;
 		}
 	}
@@ -275,9 +274,15 @@ void FooTabWidget::paste ()
 	if (!foo)
 		return;
 
-	buffer.selectAll ();
-	cerr << "TabWidget: count :" << buffer.selectedItems().count() << endl;
-	foo->insertTopLevelItems(foo->indexOfTopLevelItem(foo->currentItem ()), buffer.selectedItems());
+	cerr << "TabWidget: count :" << buffer.count() << endl;
+
+	int line = foo->indexOfTopLevelItem(foo->currentItem ());
+	cerr << "TabWidget: line :" << line << endl;
+	// if line not selected
+	if (line < 0)
+		foo->addTopLevelItems(buffer);
+	else
+		foo->insertTopLevelItems(line, buffer);
 }
 
 void FooTabWidget::clear ()
@@ -286,8 +291,7 @@ void FooTabWidget::clear ()
 	if (!foo)
 		return;
 
-	// a nie czasem unselect ?
-	foo->clear();
+	foo->clear ();
 }
 
 void FooTabWidget::selectAll ()
