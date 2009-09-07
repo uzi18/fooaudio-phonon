@@ -484,15 +484,18 @@ void FooMainWindow::itemDoubleClicked(QTreeWidgetItem * item, int column)
 
 void FooMainWindow::enqueueNextFile()
 {
+	QUrl file;
+
 	if (queue.isEmpty())
 	{
-		emit enqueueNextFile(fooTabWidget->nextFile(true));
+		file = fooTabWidget->nextFile(true);
 	}
 	else
 	{
 		cerr << "FooMainWindow::Queue" << endl;
-		emit enqueueNextFile(queue.takeLast());
+		file = queue.takeLast();
 	}
+	emit enqueueNextFile(file);
 }
 
 void FooMainWindow::writeSettings()
