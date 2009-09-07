@@ -13,7 +13,7 @@ FooPlaylistWidget::FooPlaylistWidget ()
 {
 	setSelectionMode(QAbstractItemView::ExtendedSelection);
 	setSelectionBehavior(QAbstractItemView::SelectRows);
-	setSortingEnabled(true);
+	setSortingEnabled(false);
 	setIndentation(0);
 	setAlternatingRowColors (true);
 
