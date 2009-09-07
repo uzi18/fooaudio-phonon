@@ -462,7 +462,13 @@ void FooMainWindow::itemDoubleClicked(QTreeWidgetItem * item, int column)
 	bool wasPlaying = fooAudioEngine->isPlaying();
 
 	FooPlaylistWidget * foo = (FooPlaylistWidget*)fooTabWidget->currentWidget();
+	if (!foo)
+		return;
+
 	QLabel * bar = (QLabel*)foo->itemWidget(item, 0);
+	if (!bar)
+		return;
+
 	cerr << bar->text().toStdString() << endl;
 
 	fooAudioEngine->stop();
@@ -750,6 +756,8 @@ void FooMainWindow::play ()
 		cerr << "StoppedState" << endl;
 		fooAudioEngine->clearQueue();
 		FooPlaylistWidget *playlist = (FooPlaylistWidget*)fooTabWidget->currentWidget();
+		if (!playlist)
+			return;
 		fooAudioEngine->getMediaObject()->setCurrentSource(playlist->file(0).toLocalFile());
 		cerr << playlist->file(0).toString().toStdString() << endl;
 		fooAudioEngine->play();
