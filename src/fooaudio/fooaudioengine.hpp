@@ -22,7 +22,6 @@ public:
 
 	void addFileToQueue (QUrl file);
 	void removeFileFromQueue (QUrl file);
-	void clearMusicQueue ();
 	QList<QUrl> getQueue () {return queue;}
 
 	bool isPlaying();
@@ -45,6 +44,7 @@ public slots:
 	void play();
 	void pause();
 	void clearQueue();
+	void clearMusicQueue ();
 	void prepareNextFile();
 	void enqueueNextFile(QUrl path);
 	void playFile (QUrl path);
