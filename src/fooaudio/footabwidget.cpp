@@ -158,6 +158,7 @@ QUrl FooTabWidget::nextFile(bool repeat)
 					cerr << "TabWidget: nextFile: for: if: repeat" << endl;
 
 					nowPlayingItem = wid->topLevelItem(0);
+					wid->setCurrentItem(nowPlayingItem);
 					return wid->file(0);
 				}
 				else if (index < (max - 1))
@@ -165,6 +166,7 @@ QUrl FooTabWidget::nextFile(bool repeat)
 					cerr << "TabWidget: nextFile: for: if: index < max" << endl;
 
 					nowPlayingItem = wid->itemBelow(nowPlayingItem);
+					wid->setCurrentItem(nowPlayingItem);
 					return wid->file(++index);
 				}
 				else if (index == (max - 1) && !repeat)
@@ -204,6 +206,7 @@ QUrl FooTabWidget::previousFile(bool repeat)
 					cerr << "TabWidget: previousFile: for: if: repeat" << endl;
 
 					nowPlayingItem = wid->topLevelItem(wid->topLevelItemCount());
+					wid->setCurrentItem(nowPlayingItem);
 					return wid->file(wid->topLevelItemCount() - 1);
 				}
 				else if (index > 0)
@@ -211,6 +214,7 @@ QUrl FooTabWidget::previousFile(bool repeat)
 					cerr << "TabWidget: previousFile: for: if: index > 0" << endl;
 
 					nowPlayingItem = wid->itemAbove(nowPlayingItem);
+     wid->setCurrentItem(nowPlayingItem);
 					return wid->file(--index);
 				}
 				else if (index == 0 && !repeat)
@@ -280,6 +284,8 @@ void FooTabWidget::paste ()
 	cerr << "TabWidget: line :" << line << endl;
 	if (line < 0)
 		line = foo->plistCount();
+	else
+		line++;
 
 	foreach (QTreeWidgetItem * item, buffer)
 	{
