@@ -40,8 +40,6 @@ FooTabWidget::FooTabWidget (QWidget *parent) : QTabWidget (parent), m_newTabActi
 
 	m_tabBar->setTabsClosable(false);
 	m_tabBar->setSelectionBehaviorOnRemove(QTabBar::SelectPreviousTab);
-
-	newTab ();
 }
 
 QAction *FooTabWidget::newTabAction() const
@@ -229,7 +227,7 @@ QUrl FooTabWidget::previousFile(bool repeat)
 
 void FooTabWidget::cut (bool remove)
 {
-      	FooPlaylistWidget * foo = static_cast<FooPlaylistWidget *> (currentWidget());
+			FooPlaylistWidget * foo = static_cast<FooPlaylistWidget *> (currentWidget());
 	if (!foo)
 		return;
 
@@ -250,7 +248,7 @@ void FooTabWidget::cut (bool remove)
 
 void FooTabWidget::remove ()
 {
-      	FooPlaylistWidget * foo = static_cast<FooPlaylistWidget *> (currentWidget());
+			FooPlaylistWidget * foo = static_cast<FooPlaylistWidget *> (currentWidget());
 	if (!foo)
 		return;
 
