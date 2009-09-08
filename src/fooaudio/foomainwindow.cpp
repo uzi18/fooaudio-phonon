@@ -894,10 +894,18 @@ int FooMainWindow::getMaxProgress()
 
 void FooMainWindow::progress(qint64 time)
 {
-	int progress = (int) (time*maxProgress/fooAudioEngine->totalTime());
+	qint64 total = fooAudioEngine->totalTime();
+	int progress;
+
+	if (total == 0)
+		progress = 0;
+	else
+		progress = (int) (time*maxProgress/total);
+
 	if (progress >= 0 && !trackSlider->isSliderDown())
 		trackSlider->setValue(progress);
 }
+
 void FooMainWindow::seek(int value)
 {
 	if (slider_pos != value)
