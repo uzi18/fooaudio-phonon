@@ -765,30 +765,28 @@ void FooMainWindow::play ()
 
 	if (fooAudioEngine->getMediaObject()->state() == Phonon::PausedState)
 	{
-		cerr << "PausedState" << endl;
-		fooAudioEngine->getMediaObject()->play();
+		cerr << "was PausedState" << endl;
+		emit playSignal();
 	}
 	else if (fooAudioEngine->isStopped())
 	{
 		cerr << "StoppedState" << endl;
-		fooAudioEngine->clearQueue();
 		FooPlaylistWidget *playlist = (FooPlaylistWidget*)fooTabWidget->currentWidget();
 		if (!playlist)
 			return;
 		fooTabWidget->setCurrentPlaylist(fooTabWidget->currentIndex());
 		// TODO play selected item or first if none selected
 		fooTabWidget->setCurrentItem(0);
+		QUrl file = playlist->file(0);
+		cerr << file.toString().toStdString() << endl;
 
-		fooAudioEngine->getMediaObject()->setCurrentSource(playlist->file(0).toLocalFile());
-		cerr << playlist->file(0).toString().toStdString() << endl;
-		fooAudioEngine->play();
+		emit nextSignal (file);
 	}
 	else
 	{
+		// implement this
 		cerr << "Inny state" << endl;
 	}
-
-//	emit playSignal();
 }
 
 void FooMainWindow::previous ()
