@@ -22,15 +22,6 @@ FooPlaylistWidget::FooPlaylistWidget ()
 	setHeaderLabels(l);
 }
 
-//FooPlaylistWidget::FooPlaylistWidget(const FooPlaylistWidget &copyMe)
-//	: QTreeWidget()
-//{
-//	privateData = copyMe.privateData;
-//	foreach ( ,copyme.mimeTypes())
-//	{
-//	}
-//}
-
 void FooPlaylistWidget::addFile (QString path)
 {
 	cerr << "FooPlaylistWidget::addFile" << endl;
@@ -79,4 +70,9 @@ QUrl FooPlaylistWidget::file(int i)
 	QUrl url(text);
 	cerr << "plik :" << text.toStdString() << endl;
 	return url;
+}
+
+QList<QTreeWidgetItem *> FooPlaylistWidget::itemsList()
+{
+
 }

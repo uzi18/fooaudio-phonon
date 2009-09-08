@@ -67,15 +67,20 @@ void FooTabWidget::newTab(QString name)
 	FooPlaylistWidget *fpw = new FooPlaylistWidget ();
 	addTab (fpw, (name.isEmpty() ? "New Playlist" : name));
 
-		connect(fpw, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)),
-				 this, SLOT(itemClicked(QTreeWidgetItem *, int)));
+	connect(fpw, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)),
+		this, SLOT(itemClicked(QTreeWidgetItem *, int)));
 }
 
 void FooTabWidget::cloneTab (int index)
 {
-	//FooPlaylistWidget *fpw = qobject_cast<FooPlaylistWidget *> widget(index);
-	//FooPlaylistWidget *fpw2 = new FooPlaylistWidget (fpw);
-	//delete current;
+	QString newName = QString(tr("Copy of %1")).arg(tabText(index));
+	//FooPlaylistWidget *fpw = qobject_cast<FooPlaylistWidget *> (widget(index));
+	FooPlaylistWidget *fpwCopy = new FooPlaylistWidget ();
+	addTab (fpwCopy, newName);
+
+	connect(fpwCopy, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)),
+		this, SLOT(itemClicked(QTreeWidgetItem *, int)));
+
 }
 
 void FooTabWidget::closeTab (int index)
