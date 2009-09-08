@@ -119,7 +119,7 @@ namespace FooAudio
 
         if (!file.isEmpty())
         {
-                d->mediaObject->enqueue(file.toLocalFile());
+                d->mediaObject->enqueue(file);
                 emit willPlayNow(file);
         }
     }
@@ -131,11 +131,11 @@ namespace FooAudio
         if (!file.isEmpty())
         {
             qDebug() << "FooPhononAudioEngine::playFile: is not Empty: " 
-                << file.toLocalFile();
+                << file.toString();
             emit willPlayNow(file);
             d->mediaObject->stop();
             d->mediaObject->clearQueue();
-            d->mediaObject->setCurrentSource(file.toLocalFile());
+            d->mediaObject->setCurrentSource(file);
             d->mediaObject->play();
         }
         else
