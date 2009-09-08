@@ -150,17 +150,14 @@ void FooMainWindow::createMenus()
 	addToQueueAction = new QAction (tr ("&add to queue"), this);
 	connect (addToQueueAction, SIGNAL (triggered ()), this, SLOT (addToQueue ()));
 	queueMenu->addAction (addToQueueAction);
-	addToQueueAction->setEnabled(true);
 
 	removeFromQueueAction = new QAction (tr ("&remove from queue"), this);
 	connect (removeFromQueueAction, SIGNAL (triggered ()), this, SLOT (removeFromQueue()));
 	queueMenu->addAction (removeFromQueueAction);
-	removeFromQueueAction->setEnabled(true);
 
 	clearQueueAction = new QAction (tr ("&clear queue"), this);
 	connect (clearQueueAction, SIGNAL (triggered ()), this, SLOT (clearQueue ()));
 	queueMenu->addAction (clearQueueAction);
-	clearQueueAction->setEnabled(true);
 
 	// Sort SubMenu
 	sortMenu = new QMenu (tr ("&Sort"), editMenu);
