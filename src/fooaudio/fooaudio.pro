@@ -6,26 +6,30 @@ TEMPLATE = app
 TARGET =
 DEPENDPATH += .
 INCLUDEPATH += .
-DESTDIR = ../..
+DESTDIR = ../../bin
 
 # Input
-HEADERS += fooabout.hpp \
-			  fooaudioapp.hpp \
-			  fooaudioengine.hpp \
-			  fooaudioengineplugin.hpp \
-			  foochangename.hpp \
-			  foomainwindow.hpp \
-			  fooplaylistwidget.hpp \
-			  footabbar.hpp \
-			  footabwidget.hpp
-SOURCES += fooabout.cpp \
-			  fooaudio.cpp \
-			  fooaudioapp.cpp \
-			  fooaudioengine.cpp \
-			  fooaudioengineplugin.cpp \
-			  foochangename.cpp \
-			  foomainwindow.cpp \
-			  fooplaylistwidget.cpp \
-			  footabbar.cpp \
-			  footabwidget.cpp
+HEADERS +=  fooabout.hpp \
+            fooaudioapp.hpp \
+            fooaudioengine.hpp \
+            fooaudioengineplugin.hpp \
+            foochangename.hpp \
+            foomainwindow.hpp \
+            fooplaylistwidget.hpp \
+            footabbar.hpp \
+            footabwidget.hpp \
+            abstractaudiointerface.h
+
+SOURCES +=  fooabout.cpp \
+            fooaudio.cpp \
+            fooaudioapp.cpp \
+            fooaudioengine.cpp \
+            fooaudioengineplugin.cpp \
+            foochangename.cpp \
+            foomainwindow.cpp \
+            fooplaylistwidget.cpp \
+            footabbar.cpp \
+            footabwidget.cpp
+
 RESOURCES += resource.qrc
+
