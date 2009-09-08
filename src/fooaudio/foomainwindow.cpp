@@ -530,6 +530,12 @@ void FooMainWindow::writeSettings()
 		playlists.endArray();
 	}
 	playlists.endArray();
+
+	playlists.beginGroup("current");
+	playlists.setValue("playlist", fooTabWidget->getCurrentPlaylistIndex());
+	playlists.setValue("path", fooTabWidget->getCurrentItemIndex());
+	playlists.endGroup();
+
 }
 
 void FooMainWindow::readSettings()
@@ -581,6 +587,12 @@ void FooMainWindow::readSettings()
 		fooTabWidget->newTab("Default");
 	}
 	playlists.endArray();
+
+	playlists.beginGroup("current");
+	fooTabWidget->setCurrentPlaylist(playlists.value("playlist", 0).toInt());
+	fooTabWidget->setCurrentItem(playlists.value("path", 0).toInt());
+	playlists.endGroup();
+
 }
 
  void FooMainWindow::closeEvent(QCloseEvent *event)
@@ -756,10 +768,13 @@ void FooMainWindow::play ()
 		FooPlaylistWidget *playlist = (FooPlaylistWidget*)fooTabWidget->currentWidget();
 		if (!playlist)
 			return;
+		fooTabWidget->setCurrentPlaylist(fooTabWidget->currentIndex());
+		// TODO play selected item or first if none selected
+		fooTabWidget->setCurrentItem(0);
+
 		fooAudioEngine->getMediaObject()->setCurrentSource(playlist->file(0).toLocalFile());
 		cerr << playlist->file(0).toString().toStdString() << endl;
 		fooAudioEngine->play();
-		fooTabWidget->nowPlayingItem = playlist->topLevelItem(0);
 	}
 	else
 	{

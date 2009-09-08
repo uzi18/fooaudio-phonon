@@ -27,7 +27,13 @@ public:
 	QAction *nextTabAction () const;
 	QAction *previousTabAction () const;
 
-	QTreeWidgetItem * nowPlayingItem;
+	void setCurrentPlaylist(int index);
+	int getCurrentPlaylistIndex();
+	void setCurrentItem(int index);
+	int getCurrentItemIndex();
+
+	QTreeWidgetItem * currentPlayingItem;
+	FooPlaylistWidget *currentPlayingPlaylist;
 
 public slots:
 	void newTab (QString name = QString());

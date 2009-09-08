@@ -129,7 +129,9 @@ void FooTabWidget::previousTab()
 void FooTabWidget::itemClicked(QTreeWidgetItem * item, int column)
 {
 	cerr << "FooTabWidget::itemClicked" << endl;
-	nowPlayingItem = item;
+	currentPlayingItem = item;
+	currentPlayingPlaylist = static_cast<FooPlaylistWidget *>(currentWidget());
+
 	emit itemDoubleClickedSignal(item, column);
 }
 
@@ -144,7 +146,7 @@ QUrl FooTabWidget::nextFile(bool repeat)
 	{
 		cout << "TabWidget: nextFile: for: i: " << i << endl;
 		FooPlaylistWidget *wid = static_cast<FooPlaylistWidget *> (widget(i));
-		int index = wid->indexOfTopLevelItem(nowPlayingItem);
+		int index = wid->indexOfTopLevelItem(currentPlayingItem);
 		int max = wid->topLevelItemCount();
 		cerr << "TabWidget: nextFile: for: index: " << index << endl;
 		cerr << "TabWidget: nextFile: for: max: " << max << endl;
@@ -157,16 +159,18 @@ QUrl FooTabWidget::nextFile(bool repeat)
 				{
 					cerr << "TabWidget: nextFile: for: if: repeat" << endl;
 
-					nowPlayingItem = wid->topLevelItem(0);
-					wid->setCurrentItem(nowPlayingItem);
+					currentPlayingPlaylist = wid;
+					currentPlayingItem = wid->topLevelItem(0);
+					wid->setCurrentItem(currentPlayingItem);
 					return wid->file(0);
 				}
 				else if (index < (max - 1))
 				{
 					cerr << "TabWidget: nextFile: for: if: index < max" << endl;
 
-					nowPlayingItem = wid->itemBelow(nowPlayingItem);
-					wid->setCurrentItem(nowPlayingItem);
+					currentPlayingPlaylist = wid;
+					currentPlayingItem = wid->itemBelow(currentPlayingItem);
+					wid->setCurrentItem(currentPlayingItem);
 					return wid->file(++index);
 				}
 				else if (index == (max - 1) && !repeat)
@@ -192,7 +196,7 @@ QUrl FooTabWidget::previousFile(bool repeat)
 	{
 		cout << "TabWidget: previousFile: for: i: " << i << endl;
 		FooPlaylistWidget *wid = static_cast<FooPlaylistWidget *> (widget(i));
-		int index = wid->indexOfTopLevelItem(nowPlayingItem);
+		int index = wid->indexOfTopLevelItem(currentPlayingItem);
 		int max = wid->topLevelItemCount();
 		cerr << "TabWidget: previousFile: for: index: " << index << endl;
 		cerr << "TabWidget: previousFile: for: max: " << max << endl;
@@ -205,16 +209,18 @@ QUrl FooTabWidget::previousFile(bool repeat)
 				{
 					cerr << "TabWidget: previousFile: for: if: repeat" << endl;
 
-					nowPlayingItem = wid->topLevelItem(wid->topLevelItemCount());
-					wid->setCurrentItem(nowPlayingItem);
+					currentPlayingPlaylist = wid;
+					currentPlayingItem = wid->topLevelItem(wid->topLevelItemCount());
+					wid->setCurrentItem(currentPlayingItem);
 					return wid->file(wid->topLevelItemCount() - 1);
 				}
 				else if (index > 0)
 				{
 					cerr << "TabWidget: previousFile: for: if: index > 0" << endl;
 
-					nowPlayingItem = wid->itemAbove(nowPlayingItem);
-     wid->setCurrentItem(nowPlayingItem);
+					currentPlayingPlaylist = wid;
+					currentPlayingItem = wid->itemAbove(currentPlayingItem);
+					wid->setCurrentItem(currentPlayingItem);
 					return wid->file(--index);
 				}
 				else if (index == 0 && !repeat)
@@ -260,7 +266,6 @@ void FooTabWidget::remove ()
 	{
 		if (item)
 		{
-			cerr << "TabWidget: bufor2 :" << item->text(0).toStdString() << endl;
 			delete item;
 		}
 	}
@@ -315,4 +320,30 @@ void FooTabWidget::selectAll ()
 		return;
 
 	foo->selectAll ();
+}
+
+void FooTabWidget::setCurrentPlaylist(int index)
+{
+  	cerr << "TabWidget: playlista :" << index << endl;
+	currentPlayingPlaylist = static_cast<FooPlaylistWidget *> (widget(index));
+	setCurrentIndex(index);
+}
+
+int FooTabWidget::getCurrentPlaylistIndex()
+{
+	cerr << "TabWidget: playlista :" << indexOf(currentPlayingPlaylist) << endl;
+	return indexOf(currentPlayingPlaylist);
+}
+
+void FooTabWidget::setCurrentItem(int index)
+{
+  	cerr << "TabWidget: utwor :" << index << endl;
+	currentPlayingItem = currentPlayingPlaylist->topLevelItem(index);
+	currentPlayingPlaylist->setCurrentItem(currentPlayingItem);
+}
+
+int FooTabWidget::getCurrentItemIndex()
+{
+  	cerr << "TabWidget: utwor :" << currentPlayingPlaylist->indexOfTopLevelItem(currentPlayingItem) << endl;
+	return currentPlayingPlaylist->indexOfTopLevelItem(currentPlayingItem);
 }
