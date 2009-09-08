@@ -39,6 +39,11 @@ bool FooAudioEngine::isPlaying()
 	return mediaObject->state() == Phonon::PlayingState;
 }
 
+bool FooAudioEngine::isPaused()
+{
+	return mediaObject->state() == Phonon::PausedState;
+}
+
 bool FooAudioEngine::isStopped()
 {
 	return mediaObject->state() == (Phonon::StoppedState || Phonon::LoadingState);

@@ -22,6 +22,7 @@ public:
 
 	bool isPlaying();
 	bool isStopped();
+	bool isPaused();
 	bool isMuted();
 	void setMuted(bool);
 
