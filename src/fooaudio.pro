@@ -1,3 +1,3 @@
 CONFIG += ordered
 TEMPLATE = subdirs
-SUBDIRS = fooaudio
+SUBDIRS = fooaudio modules
