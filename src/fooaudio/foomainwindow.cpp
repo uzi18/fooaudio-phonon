@@ -453,26 +453,11 @@ void FooMainWindow::createStatusBar()
 void FooMainWindow::itemDoubleClicked(QTreeWidgetItem * item, int column)
 {
 	cerr << "FooMainWindow::itemDoubleClicked" << endl;
-	bool wasPlaying = fooAudioEngine->isPlaying();
 
 	QString nextOne = item->text(0);
 	cerr << nextOne.toStdString() << endl;
 
-	fooAudioEngine->stop();
-	fooAudioEngine->clearQueue();
-
-	fooAudioEngine->getMediaObject()->setCurrentSource(nextOne);
-
-	if (wasPlaying)
-	{
-		fooAudioEngine->play();
-	}
-	else
-	{
-		fooAudioEngine->stop();
-	}
-
-	emit playSignal();
+	emit nextSignal(nextOne);
 }
 
 QUrl FooMainWindow::getNextFile()
