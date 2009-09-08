@@ -475,7 +475,7 @@ void FooMainWindow::itemDoubleClicked(QTreeWidgetItem * item, int column)
 	emit playSignal();
 }
 
-void FooMainWindow::enqueueNextFile()
+QUrl FooMainWindow::getNextFile()
 {
 	QUrl file;
 
@@ -488,7 +488,14 @@ void FooMainWindow::enqueueNextFile()
 		cerr << "FooMainWindow::Queue" << endl;
 		file = queue.takeLast();
 	}
-	emit enqueueNextFile(file);
+
+	cerr << "FooMainWindow:: nextFile : " << file.toLocalFile().toStdString() << endl;
+	return file;
+}
+
+void FooMainWindow::enqueueNextFile()
+{
+	emit enqueueNextFile(getNextFile());
 }
 
 void FooMainWindow::writeSettings()
@@ -793,7 +800,8 @@ void FooMainWindow::previous ()
 void FooMainWindow::next ()
 {
 	cerr << "FooMainWindow::next" << endl;
-	emit nextSignal (fooTabWidget->nextFile(true));
+
+	emit prevSignal (getNextFile());
 }
 
 void FooMainWindow::addToQueue ()

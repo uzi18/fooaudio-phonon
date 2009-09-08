@@ -29,6 +29,8 @@ public:
 	void removeFileFromQueue (QUrl file);
 	QList<QUrl> getQueue () {return queue;}
 
+	QUrl getNextFile();
+
 signals:
 	void playSignal();
 	void prevSignal(QUrl);
