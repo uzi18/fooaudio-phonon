@@ -1,51 +1,41 @@
-#ifndef _FOOAUDIOENGINE_HPP_
-#define _FOOAUDIOENGINE_HPP_
+#ifndef _FOOPHONONAUDIOENGINE_HPP_
+#define _FOOPHONONAUDIOENGINE_HPP_
 
-#include <QList>
-#include <QDir>
-#include <QUrl>
-#include "fooplaylistwidget.hpp"
+#include "fooaudioengineplugin.hpp"
 
 namespace Phonon {
 	class MediaObject;
 	class AudioOutput;
 }
+class QUrl;
 
-class FooMainWindow;
-
-class FooAudioEngine : public QObject
+class FooPhononAudioEngine : public FooAudioEnginePlugin
 {
-	Q_OBJECT
 
 public:
-	FooAudioEngine (QObject * parent = 0);
+	FooPhononAudioEngine (QObject * parent = 0);
 
-	bool isPlaying();
-	bool isStopped();
-	bool isPaused();
-	bool isMuted();
-	void setMuted(bool);
-	qint64 totalTime();
-	void seek (qint64 time);
+virtual	bool isPlaying();
+virtual	bool isStopped();
+virtual	bool isPaused();
+virtual	bool isMuted();
+virtual	void setMuted(bool);
+virtual	qint64 totalTime();
+virtual	void seek (qint64 time);
+
+public slots:
+virtual	void stop();
+virtual	void play();
+virtual	void pause();
+virtual	void clearQueue();
+virtual	void enqueueNextFile(QUrl path);
+virtual	void playFile (QUrl path);
+
+virtual	void setVolume (int vol);
 
 private:
 	Phonon::MediaObject *mediaObject;
 	Phonon::AudioOutput *audioOutput;
-
-signals:
-	void aboutToFinish ();
-	void progress (qint64 time);
-	void willPlayNow (QUrl file);
-
-public slots:
-	void stop();
-	void play();
-	void pause();
-	void clearQueue();
-	void enqueueNextFile(QUrl path);
-	void playFile (QUrl path);
-
-	void setVolume (int vol);
 };
 
-#endif // _FOOAUDIOENGINE_HPP_
+#endif // _FOOPHONONAUDIOENGINE_HPP_

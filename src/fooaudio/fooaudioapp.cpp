@@ -4,7 +4,6 @@
 using namespace std;
 
 #include "fooaudioapp.hpp"
-#include "foomainwindow.hpp"
 
 FooaudioApp::FooaudioApp (int argc, char *argv[]) : QApplication (argc, argv)
 {

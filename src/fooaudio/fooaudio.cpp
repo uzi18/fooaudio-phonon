@@ -11,7 +11,7 @@ int main (int argc, char * argv [])
 	fooApp.setApplicationName("fooaudio");
 	fooApp.setQuitOnLastWindowClosed(true);
 
-	FooAudioEngine *fooAudioEngine = new FooAudioEngine(&fooApp);
+	FooPhononAudioEngine *fooAudioEngine = new FooPhononAudioEngine(&fooApp);
 
 	FooMainWindow *fooMainWindow = new FooMainWindow(fooAudioEngine);
 

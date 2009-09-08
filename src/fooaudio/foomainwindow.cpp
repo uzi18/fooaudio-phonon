@@ -12,7 +12,7 @@ using namespace std;
 
 class FooTabWidget;
 
-FooMainWindow::FooMainWindow(FooAudioEngine *fae) : QMainWindow (), maxProgress(1000),	slider_pos(-1)
+FooMainWindow::FooMainWindow(FooPhononAudioEngine *fae) : QMainWindow (), maxProgress(1000),	slider_pos(-1)
 {
 	this->fooAudioEngine = fae;
 

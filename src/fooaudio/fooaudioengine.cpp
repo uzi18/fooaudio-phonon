@@ -1,6 +1,5 @@
 #include <QApplication>
 #include <QPluginLoader>
-#include <QUrl>
 #include <phonon/audiooutput.h>
 #include <phonon/mediaobject.h>
 
@@ -11,9 +10,9 @@ using namespace std;
 #include "fooaudioengine.hpp"
 #include "foomainwindow.hpp"
 
-FooAudioEngine::FooAudioEngine (QObject* parent) : QObject(parent)
+FooPhononAudioEngine::FooPhononAudioEngine (QObject* parent) : FooAudioEnginePlugin(parent)
 {
-	cerr << "FooAudioEngine" << endl;
+	cerr << "FooPhononAudioEngine" << endl;
 
 	audioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
 	mediaObject = new Phonon::MediaObject(this);
@@ -27,45 +26,45 @@ FooAudioEngine::FooAudioEngine (QObject* parent) : QObject(parent)
 	connect(mediaObject, SIGNAL(aboutToFinish()), this, SIGNAL(aboutToFinish()));
 }
 
-bool FooAudioEngine::isPlaying()
+bool FooPhononAudioEngine::isPlaying()
 {
 	return mediaObject->state() == Phonon::PlayingState;
 }
 
-bool FooAudioEngine::isPaused()
+bool FooPhononAudioEngine::isPaused()
 {
 	return mediaObject->state() == Phonon::PausedState;
 }
 
-bool FooAudioEngine::isStopped()
+bool FooPhononAudioEngine::isStopped()
 {
 	Phonon::State state = mediaObject->state();
 	return state == Phonon::StoppedState || state == Phonon::LoadingState;
 }
 
-bool FooAudioEngine::isMuted()
+bool FooPhononAudioEngine::isMuted()
 {
 	return audioOutput->isMuted();
 }
 
-void FooAudioEngine::setMuted(bool mute)
+void FooPhononAudioEngine::setMuted(bool mute)
 {
 	audioOutput->setMuted(mute);
 }
 
-qint64 FooAudioEngine::totalTime()
+qint64 FooPhononAudioEngine::totalTime()
 {
 	return mediaObject->totalTime();
 }
 
-void FooAudioEngine::seek (qint64 time)
+void FooPhononAudioEngine::seek (qint64 time)
 {
 	mediaObject->seek(time);
 }
 
-void FooAudioEngine::enqueueNextFile (QUrl path)
+void FooPhononAudioEngine::enqueueNextFile (QUrl path)
 {
-	cerr << "FooAudioEngine::enqueueNextFile" << endl;
+	cerr << "FooPhononAudioEngine::enqueueNextFile" << endl;
 
 	cerr << "Kolejna piosenka: " << path.toString().toStdString() << endl;
 	if (!path.isEmpty())
@@ -75,13 +74,13 @@ void FooAudioEngine::enqueueNextFile (QUrl path)
 	}
 }
 
-void FooAudioEngine::playFile (QUrl path)
+void FooPhononAudioEngine::playFile (QUrl path)
 {
-	cerr << "FooAudioEngine::playFile" << endl;
+	cerr << "FooPhononAudioEngine::playFile" << endl;
 
 	if (!path.isEmpty())
 	{
-		cerr << "FooAudioEngine::playFile: is not Empty: " << path.toLocalFile().toStdString() << endl;
+		cerr << "FooPhononAudioEngine::playFile: is not Empty: " << path.toLocalFile().toStdString() << endl;
 		emit willPlayNow (path);
 		mediaObject->stop();
 		mediaObject->clearQueue();
@@ -90,12 +89,12 @@ void FooAudioEngine::playFile (QUrl path)
 	}
 	else
 	{
-		cerr << "FooAudioEngine::playFile: is Empty" << endl;
+		cerr << "FooPhononAudioEngine::playFile: is Empty" << endl;
 		mediaObject->stop();
 	}
 }
 
-void FooAudioEngine::setVolume (int vol)
+void FooPhononAudioEngine::setVolume (int vol)
 {
 	qreal v = vol;
 	qreal d = v / 100;
@@ -103,22 +102,22 @@ void FooAudioEngine::setVolume (int vol)
 	audioOutput->setVolume(d);
 }
 
-void FooAudioEngine::stop()
+void FooPhononAudioEngine::stop()
 {
 	mediaObject->stop();
 }
 
-void FooAudioEngine::play()
+void FooPhononAudioEngine::play()
 {
 	mediaObject->play();
 }
 
-void FooAudioEngine::pause()
+void FooPhononAudioEngine::pause()
 {
 	mediaObject->pause();
 }
 
-void FooAudioEngine::clearQueue()
+void FooPhononAudioEngine::clearQueue()
 {
 	mediaObject->clearQueue();
 }

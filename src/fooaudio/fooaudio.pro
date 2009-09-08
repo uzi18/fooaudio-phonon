@@ -12,6 +12,7 @@ DESTDIR = ../..
 HEADERS += fooabout.hpp \
 			  fooaudioapp.hpp \
 			  fooaudioengine.hpp \
+			  fooaudioengineplugin.hpp \
 			  foochangename.hpp \
 			  foomainwindow.hpp \
 			  fooplaylistwidget.hpp \
@@ -21,6 +22,7 @@ SOURCES += fooabout.cpp \
 			  fooaudio.cpp \
 			  fooaudioapp.cpp \
 			  fooaudioengine.cpp \
+			  fooaudioengineplugin.cpp \
 			  foochangename.cpp \
 			  foomainwindow.cpp \
 			  fooplaylistwidget.cpp \

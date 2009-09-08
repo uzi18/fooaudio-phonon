@@ -5,14 +5,14 @@
 #include <QUrl>
 #include "footabwidget.hpp"
 
-class FooAudioEngine;
+class FooPhononAudioEngine;
 
 class FooMainWindow : public QMainWindow
 {
 	Q_OBJECT
 
 public:
-	FooMainWindow (FooAudioEngine *);
+	FooMainWindow (FooPhononAudioEngine *);
 	~FooMainWindow ();
 
 	FooTabWidget *fooTabWidget;
@@ -121,7 +121,7 @@ private slots:
 
 private:
 	const int maxProgress;
-	FooAudioEngine *fooAudioEngine;
+	FooPhononAudioEngine *fooAudioEngine;
 
 	QList<QUrl> queue;
 	QList<QUrl> prevqueue;
