@@ -4,9 +4,12 @@
 #include <QList>
 #include <QDir>
 #include <QUrl>
-#include <phonon/audiooutput.h>
-#include <phonon/mediaobject.h>
 #include "fooplaylistwidget.hpp"
+
+namespace Phonon {
+	class MediaObject;
+	class AudioOutput;
+}
 
 class FooMainWindow;
 
@@ -17,14 +20,13 @@ class FooAudioEngine : public QObject
 public:
 	FooAudioEngine (QObject * parent = 0);
 
-	Phonon::MediaObject * getMediaObject ();
-	Phonon::AudioOutput * getAudioOutput ();
-
 	bool isPlaying();
 	bool isStopped();
 	bool isPaused();
 	bool isMuted();
 	void setMuted(bool);
+	qint64 totalTime();
+	void seek (qint64 time);
 
 private:
 	Phonon::MediaObject *mediaObject;

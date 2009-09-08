@@ -1,6 +1,9 @@
 #include <QApplication>
 #include <QPluginLoader>
 #include <QUrl>
+#include <phonon/audiooutput.h>
+#include <phonon/mediaobject.h>
+
 #include <iostream>
 
 using namespace std;
@@ -22,16 +25,6 @@ FooAudioEngine::FooAudioEngine (QObject* parent) : QObject(parent)
 
 	connect(mediaObject, SIGNAL (tick(qint64)), this, SIGNAL (progress(qint64)));
 	connect(mediaObject, SIGNAL(aboutToFinish()), this, SIGNAL(aboutToFinish()));
-}
-
-Phonon::MediaObject * FooAudioEngine::getMediaObject ()
-{
-	return mediaObject;
-}
-
-Phonon::AudioOutput * FooAudioEngine::getAudioOutput ()
-{
-	return audioOutput;
 }
 
 bool FooAudioEngine::isPlaying()
@@ -58,6 +51,16 @@ bool FooAudioEngine::isMuted()
 void FooAudioEngine::setMuted(bool mute)
 {
 	audioOutput->setMuted(mute);
+}
+
+qint64 FooAudioEngine::totalTime()
+{
+	return mediaObject->totalTime();
+}
+
+void FooAudioEngine::seek (qint64 time)
+{
+	mediaObject->seek(time);
 }
 
 void FooAudioEngine::enqueueNextFile (QUrl path)

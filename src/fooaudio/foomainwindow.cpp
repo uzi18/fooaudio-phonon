@@ -394,7 +394,7 @@ void FooMainWindow::createToolBars ()
 	volumeToolBar = new QToolBar (this);
 	volumeToolBar->setFloatable (false);
 	volumeToolBarAction = new QAction (tr("Mute"),this);
-	bool mute = fooAudioEngine->getAudioOutput()->isMuted();
+	bool mute = fooAudioEngine->isMuted();
 	volumeToolBarAction->setIcon(QIcon (mute ? ":images/mute.png" : ":images/vol.png"));
 	connect (volumeToolBarAction, SIGNAL (triggered ()), this, SLOT (mute()));
 	volumeToolBar->addAction (volumeToolBarAction);
@@ -894,7 +894,7 @@ int FooMainWindow::getMaxProgress()
 
 void FooMainWindow::progress(qint64 time)
 {
-	int progress = (int) (time*maxProgress/fooAudioEngine->getMediaObject()->totalTime());
+	int progress = (int) (time*maxProgress/fooAudioEngine->totalTime());
 	if (progress >= 0 && !trackSlider->isSliderDown())
 		trackSlider->setValue(progress);
 }
@@ -908,9 +908,8 @@ void FooMainWindow::sliderReleased()
 {
 	if (slider_pos == -1)
 		return;
-	Phonon::MediaObject * mediaObj = fooAudioEngine->getMediaObject();
 	// think to check if value is valid for seek
-	mediaObj->seek(mediaObj->totalTime()*slider_pos/maxProgress);
+	fooAudioEngine->seek(fooAudioEngine->totalTime()*slider_pos/maxProgress);
 	slider_pos = -1;
 }
 
