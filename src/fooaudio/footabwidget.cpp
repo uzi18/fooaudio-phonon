@@ -210,9 +210,9 @@ QUrl FooTabWidget::previousFile(bool repeat)
 					cerr << "TabWidget: previousFile: for: if: repeat" << endl;
 
 					currentPlayingPlaylist = wid;
-					currentPlayingItem = wid->topLevelItem(wid->topLevelItemCount());
+					currentPlayingItem = wid->topLevelItem(max - 1);
 					wid->setCurrentItem(currentPlayingItem);
-					return wid->file(wid->topLevelItemCount() - 1);
+					return wid->file(max - 1);
 				}
 				else if (index > 0)
 				{
