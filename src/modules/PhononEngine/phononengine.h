@@ -32,7 +32,7 @@ namespace FooAudio
     {
         Q_OBJECT
     public:
-        PhononEngine();
+        PhononEngine(QObject *parent = 0);
         ~PhononEngine();
         
         void init();
@@ -59,6 +59,10 @@ namespace FooAudio
         void enqueueNextFile(QUrl file);
         void playFile(QUrl file);
         void setVolume(int volume);
+
+    private:
+        class PhononEnginePrivate;
+        PhononEnginePrivate * d;
     };    
 }
 

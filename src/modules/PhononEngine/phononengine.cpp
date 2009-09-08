@@ -20,74 +20,134 @@
 #include "phononengine.h"
 
 #include <QDebug>
+#include <phonon/AudioOutput>
+#include <phonon/MediaObject>
 
 namespace FooAudio
 {
-    PhononEngine::PhononEngine()
+    const int DEFAUL_INTERVAL   = 10;
+
+    class PhononEngine::PhononEnginePrivate
     {
+    public:
+        Phonon::MediaObject *mediaObject;
+        Phonon::AudioOutput *audioOutput;
+    };
+
+    PhononEngine::PhononEngine(QObject * parent)
+        : QObject(parent)
+    {
+        d = new PhononEnginePrivate;
+
+        d->audioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
+        d->mediaObject = new Phonon::MediaObject(this);
+
+        Phonon::createPath(d->mediaObject, d->audioOutput);
+
+        d->mediaObject->setTickInterval(DEFAUL_INTERVAL);
+
+        connect(d->mediaObject, SIGNAL (tick(qint64)), this, SIGNAL (progress(qint64)));
+        connect(d->mediaObject, SIGNAL(aboutToFinish()), this, SIGNAL(aboutToFinish()));
+
     }
 
     PhononEngine::~PhononEngine()
     {
+        delete d;
     }    
 
     bool PhononEngine::isPlaying()
     {
-        return false;
+        return d->mediaObject->state() == Phonon::PlayingState;
     }
 
     bool PhononEngine::isStopped()
     {
-        return !isPlaying();
+        Phonon::State state = d->mediaObject->state();
+        return state == Phonon::StoppedState || state == Phonon::LoadingState;
     }
 
     bool PhononEngine::isPaused()
     {
-        return false;
+        return d->mediaObject->state() == Phonon::PausedState;
     }
 
     bool PhononEngine::isMuted()
     {
-        return false;
+        return d->audioOutput->isMuted();
     }
 
-    void PhononEngine::setMuted(bool)
+    void PhononEngine::setMuted(bool mute)
     {
+        d->audioOutput->setMuted(mute);
     }
 
     qint64 PhononEngine::totalTime()
     {
+        return d->mediaObject->totalTime();
     }
 
     void PhononEngine::seek(qint64 time)
     {
+        d->mediaObject->seek(time);
     }
 
     void PhononEngine::stop()
     {
+        d->mediaObject->stop();
     }
 
     void PhononEngine::play()
     {
+        d->mediaObject->play();
     }
 
     void PhononEngine::pause()
     {
+        d->mediaObject->pause();
     }
 
     void PhononEngine::clearQueue()
     {
+        d->mediaObject->clearQueue();
     }
 
     void PhononEngine::enqueueNextFile(QUrl file)
     {
+        qDebug() << "PhononEngine::enqueueNextFile"
+            << "Next song: " << file.toString();
+
+        if (!file.isEmpty())
+        {
+                d->mediaObject->enqueue(file.toLocalFile());
+                emit willPlayNow(file);
+        }
     }
 
     void PhononEngine::playFile(QUrl file)
     {
+        qDebug() << "PhononEngine::playfile";
+
+        if (!file.isEmpty())
+        {
+            qDebug() << "FooPhononAudioEngine::playFile: is not Empty: " 
+                << file.toLocalFile();
+            emit willPlayNow(file);
+            d->mediaObject->stop();
+            d->mediaObject->clearQueue();
+            d->mediaObject->setCurrentSource(file.toLocalFile());
+            d->mediaObject->play();
+        }
+        else
+        {
+            qDebug() << "FooPhononAudioEngine::playFile: is Empty";
+            d->mediaObject->stop();
+        }
     }
 
     void PhononEngine::setVolume(int volume)
     {
+        qreal v = volume / 100;
+        d->audioOutput->setVolume(v);
     }
 };
