@@ -5,9 +5,11 @@
 #include <QUrl>
 #include "footabwidget.hpp"
 
-class FooPhononAudioEngine;
+class	QSystemTrayIcon;
 
-class FooMainWindow : public QMainWindow
+class	FooPhononAudioEngine;
+
+class	FooMainWindow : public QMainWindow
 {
 	Q_OBJECT
 
@@ -117,7 +119,9 @@ private slots:
 	// volume slider
 	void sliderReleased ();
 
-	void addToPrevQueue (QString path);
+	void addToPrevQueue (QUrl path);
+
+	void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
 
 private:
 	const int maxProgress;
@@ -126,6 +130,8 @@ private:
 	QList<QUrl> queue;
 	QList<QUrl> prevqueue;
 	int prevqueueindex;
+
+	QSystemTrayIcon *trayIcon;
 
 	QMenu *fileMenu;
 		QAction *openAction;
@@ -224,6 +230,7 @@ private:
 	void createToolBars();
 	void createActions();
 	void createStatusBar();
+	void createSystrayIcon();
 
 protected:
 	void closeEvent(QCloseEvent *);
