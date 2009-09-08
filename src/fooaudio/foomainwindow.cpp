@@ -801,7 +801,7 @@ void FooMainWindow::next ()
 {
 	cerr << "FooMainWindow::next" << endl;
 
-	emit prevSignal (getNextFile());
+	emit nextSignal (getNextFile());
 }
 
 void FooMainWindow::addToQueue ()
