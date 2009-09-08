@@ -748,19 +748,19 @@ void FooMainWindow::play ()
 {
 	cerr << "FooMainWindow::play" << endl;
 
-	if (fooAudioEngine->getMediaObject()->state() == Phonon::PausedState)
+	if (fooAudioEngine->isPaused())
 	{
 		cerr << "was PausedState" << endl;
 		emit playSignal();
 	}
 	else if (fooAudioEngine->isStopped())
 	{
-		cerr << "StoppedState" << endl;
+		cerr << "was StoppedState" << endl;
 		FooPlaylistWidget *playlist = (FooPlaylistWidget*)fooTabWidget->currentWidget();
 		if (!playlist)
 			return;
+
 		fooTabWidget->setCurrentPlaylist(fooTabWidget->currentIndex());
-		// TODO play selected item or first if none selected
 		fooTabWidget->setCurrentItem(0);
 		QUrl file = playlist->file(0);
 		cerr << file.toString().toStdString() << endl;
