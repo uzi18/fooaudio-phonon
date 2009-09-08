@@ -14,6 +14,7 @@ public:
 	int plistCount();
 	QString plistGetFile(int);
 	QUrl file(int);
+	QList<QTreeWidgetItem *> itemsList();
 };
 
 #endif // _FOOPLAYLIST_HPP_
