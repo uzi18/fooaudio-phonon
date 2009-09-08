@@ -35,6 +35,7 @@ private:
 signals:
 	void aboutToFinish ();
 	void progress (qint64 time);
+	void willPlayNow (QUrl file);
 
 public slots:
 	void stop();

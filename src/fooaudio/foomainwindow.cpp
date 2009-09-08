@@ -39,6 +39,7 @@ FooMainWindow::FooMainWindow(FooAudioEngine *fae) : QMainWindow (), maxProgress(
 	connect(this, SIGNAL(prevSignal(QUrl)), fooAudioEngine, SLOT(playFile(QUrl)));
 	connect(fooAudioEngine, SIGNAL(aboutToFinish()), this, SLOT(enqueueNextFile()));
 	connect(this, SIGNAL(enqueueNextFile(QUrl)), fooAudioEngine, SLOT(enqueueNextFile(QUrl)));
+	connect(fooAudioEngine, SIGNAL(willPlayNow (QUrl)), this, SLOT(addToPrevQueue(QUrl)));
 }
 
 FooMainWindow::~FooMainWindow ()
@@ -919,6 +920,10 @@ void FooMainWindow::sliderReleased()
 	// think to check if value is valid for seek
 	fooAudioEngine->seek(fooAudioEngine->totalTime()*slider_pos/maxProgress);
 	slider_pos = -1;
+}
+
+void FooMainWindow::addToPrevQueue (QString path)
+{
 }
 
 void FooMainWindow::addFileToQueue (QUrl file)

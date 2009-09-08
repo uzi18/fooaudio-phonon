@@ -117,11 +117,15 @@ private slots:
 	// volume slider
 	void sliderReleased ();
 
+	void addToPrevQueue (QString path);
+
 private:
 	const int maxProgress;
 	FooAudioEngine *fooAudioEngine;
 
 	QList<QUrl> queue;
+	QList<QUrl> prevqueue;
+	int prevqueueindex;
 
 	QMenu *fileMenu;
 		QAction *openAction;

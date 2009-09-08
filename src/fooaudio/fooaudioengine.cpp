@@ -71,6 +71,7 @@ void FooAudioEngine::enqueueNextFile (QUrl path)
 	if (!path.isEmpty())
 	{
 		mediaObject->enqueue(path.toLocalFile());
+		emit willPlayNow (path);
 	}
 }
 
@@ -81,6 +82,7 @@ void FooAudioEngine::playFile (QUrl path)
 	if (!path.isEmpty())
 	{
 		cerr << "FooAudioEngine::playFile: is not Empty: " << path.toLocalFile().toStdString() << endl;
+		emit willPlayNow (path);
 		mediaObject->stop();
 		mediaObject->clearQueue();
 		mediaObject->setCurrentSource(path.toLocalFile());
