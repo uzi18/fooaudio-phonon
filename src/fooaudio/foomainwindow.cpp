@@ -45,7 +45,7 @@ FooMainWindow::FooMainWindow(FooPhononAudioEngine *fae) : QMainWindow (), maxPro
 	connect(this, SIGNAL(enqueueNextFile(QUrl)), fooAudioEngine, SLOT(enqueueNextFile(QUrl)));
 	connect(fooAudioEngine, SIGNAL(willPlayNow (QUrl)), this, SLOT(addToPrevQueue(QUrl)));
 	
-	QTimer::singleShot(200, this, SLOT(setTrayIcon()));
+	setTrayIcon();
 }
 
 FooMainWindow::~FooMainWindow ()
@@ -486,10 +486,9 @@ void FooMainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
 {
 	switch (reason) {
 	case QSystemTrayIcon::Trigger:
+	case QSystemTrayIcon::DoubleClick:
 		setVisible(!isVisible());
 		break;
-	//case QSystemTrayIcon::DoubleClick:
-	//    	break;
 	//case QSystemTrayIcon::MiddleClick:
 	//    ;
 	//    	break;

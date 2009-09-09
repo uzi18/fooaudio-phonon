@@ -24,7 +24,6 @@ FooPlaylistWidget::FooPlaylistWidget ()
 
 void FooPlaylistWidget::addFile (QString path)
 {
-	cerr << "FooPlaylistWidget::addFile" << endl;
 	QTreeWidgetItem *wid = new QTreeWidgetItem (this);
 	wid->setText(0, path);
 	addTopLevelItem (wid);
@@ -63,16 +62,15 @@ int FooPlaylistWidget::plistNext(int i)
 
 QUrl FooPlaylistWidget::file(int i)
 {
-	cerr << "FooPlaylistWidget::nextFile" << endl;
+	cerr << "FooPlaylistWidget::file" << endl;
 	cerr << this->topLevelItemCount() << endl;
 	cerr << i << endl;
 	QString text = topLevelItem(i)->text(0);
 	QUrl url(text);
-	cerr << "plik :" << text.toStdString() << endl;
 	return url;
 }
 
 QList<QTreeWidgetItem *> FooPlaylistWidget::itemsList()
 {
-
+	return QList<QTreeWidgetItem *> ();
 }
