@@ -312,36 +312,42 @@ void FooMainWindow::createMenus()
 	connect (defaultOrderAction, SIGNAL (triggered ()), this, SLOT (defaultOrder ()));
 	orderMenu->addAction (defaultOrderAction);
 	defaultOrderAction->setEnabled(false);
+	defaultOrderAction->setCheckable(true);
 
 	repeatPlaylistAction = new QAction (tr ("Repeat (&playlist)"), this);
-	connect (defaultOrderAction, SIGNAL (triggered ()), this, SLOT (defaultOrder ()));
-	orderMenu->addAction (defaultOrderAction);
-	repeatPlaylistAction->setEnabled(false);
+	connect (repeatPlaylistAction, SIGNAL (triggered ()), this, SLOT (repeatPlaylist ()));
+	orderMenu->addAction (repeatPlaylistAction);
+	repeatPlaylistAction->setCheckable(true);
 
 	repeatTrackAction = new QAction (tr ("Repeat (&track)"), this);
 	connect (repeatTrackAction, SIGNAL (triggered ()), this, SLOT (repeatTrack ()));
 	orderMenu->addAction (repeatTrackAction);
 	repeatTrackAction->setEnabled(false);
+	repeatTrackAction->setCheckable(true);
 
 	randomOrderAction = new QAction (tr ("Ra&ndom"), this);
 	connect (randomOrderAction, SIGNAL (triggered ()), this, SLOT (randomOrder ()));
 	orderMenu->addAction (randomOrderAction);
 	randomOrderAction->setEnabled(false);
+	randomOrderAction->setCheckable(true);
 
 	shuffleTracksAction = new QAction (tr ("&Shuffle (tracks)"), this);
 	connect (shuffleTracksAction, SIGNAL (triggered ()), this, SLOT (shuffleTracks ()));
 	orderMenu->addAction (shuffleTracksAction);
 	shuffleTracksAction->setEnabled(false);
+	shuffleTracksAction->setCheckable(true);
 
 	shuffleAlbumsAction = new QAction (tr ("S&huffle (albums)"), this);
 	connect (shuffleAlbumsAction, SIGNAL (triggered ()), this, SLOT (shuffleAlbums ()));
 	orderMenu->addAction (shuffleAlbumsAction);
 	shuffleAlbumsAction->setEnabled(false);
+	shuffleAlbumsAction->setCheckable(true);
 
 	shuffleFoldersAction = new QAction (tr ("Shuffle (&folders)"), this);
 	connect (shuffleFoldersAction, SIGNAL (triggered ()), this, SLOT (shuffleFolders ()));
 	orderMenu->addAction (shuffleFoldersAction);
 	shuffleFoldersAction->setEnabled(false);
+	shuffleFoldersAction->setCheckable(true);
 
 	stopAfterCurrentAction = new QAction (tr ("S&top after current"), this);
 	connect (stopAfterCurrentAction, SIGNAL (triggered ()), this, SLOT (stopAfterCurrent ()));
