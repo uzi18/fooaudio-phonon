@@ -1,11 +1,10 @@
 QT += phonon
-TEMPLATE = lib subdirs
+TEMPLATE = lib
 DEPENDPATH += .
 INCLUDEPATH += . ../../fooaudio
 DESTDIR = ../../../lib
 
-SUBDIRS = tests
-
 HEADERS += phononengine.h
 
 SOURCES += phononengine.cpp
+
