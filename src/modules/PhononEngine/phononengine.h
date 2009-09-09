@@ -21,16 +21,16 @@
 #define PHONONENGINE_H__
 
 #include <abstractaudiointerface.h>
-#include <fooaudioexports.h>
 
 #include <QObject>
 #include <QUrl>
 
 namespace FooAudio
 {
-    class FAEXPORTS PhononEngine : public QObject, public AbstractAudioInterface
+    class PhononEngine : public QObject, public AbstractAudioInterface
     {
         Q_OBJECT
+        Q_INTERFACES(FooAudio::AbstractAudioInterface)
     public:
         PhononEngine(QObject *parent = 0);
         ~PhononEngine();

@@ -20,6 +20,7 @@
 #include "phononengine.h"
 
 #include <QDebug>
+#include <QtPlugin>
 #include <phonon/AudioOutput>
 #include <phonon/MediaObject>
 
@@ -151,3 +152,5 @@ namespace FooAudio
         d->audioOutput->setVolume(v);
     }
 };
+
+Q_EXPORT_PLUGIN2(PhononEngine, FooAudio::PhononEngine)
