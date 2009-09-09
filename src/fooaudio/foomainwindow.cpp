@@ -375,6 +375,14 @@ void FooMainWindow::createMenus()
 	libraryMenu->addAction (configureAction);
 	configureAction->setEnabled(false);
 
+	settingsMenu = menuBar ()->addMenu (tr ("Se&ttings"));
+
+	trayIconAction = new QAction (tr ("&Tray Icon"), this);
+	connect (trayIconAction, SIGNAL (triggered ()), this, SLOT (setTrayIcon ()));
+	settingsMenu->addAction (trayIconAction);
+	trayIconAction->setCheckable (true); 
+	trayIconAction->setEnabled (QSystemTrayIcon::isSystemTrayAvailable());
+
 	helpMenu = menuBar ()->addMenu (tr ("&Help"));
 
 	aboutAction = new QAction (tr ("&About"), this);
@@ -459,10 +467,10 @@ void FooMainWindow::createSystrayIcon()
 		trayIcon = new QSystemTrayIcon(this);
 		trayIcon->setIcon(QIcon(":images/icon64.png"));
 		trayIcon->setContextMenu(playbackMenu);
-		trayIcon->show();
 
 		connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
 			this, SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
+
 	}
 }
 
@@ -905,6 +913,11 @@ void FooMainWindow::searchAlbum ()
 
 void FooMainWindow::configure ()
 {
+}
+
+void FooMainWindow::setTrayIcon ()
+{
+	trayIcon->setVisible(trayIconAction->isChecked());
 }
 
 void FooMainWindow::cutLayout ()

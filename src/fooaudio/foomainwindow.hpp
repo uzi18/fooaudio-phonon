@@ -122,6 +122,7 @@ private slots:
 	void addToPrevQueue (QUrl path);
 
 	void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
+	void setTrayIcon ();
 
 private:
 	const int maxProgress;
@@ -207,6 +208,9 @@ private:
 		QAction *albumListAction;
 		QAction *searchAlbumAction;
 		QAction *configureAction;
+
+	QMenu *settingsMenu;
+		QAction *trayIconAction;
 
 	QMenu *helpMenu;
 		QAction *aboutAction;
