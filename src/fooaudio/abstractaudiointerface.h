@@ -20,15 +20,12 @@
 #ifndef ABSTRACTAUDIOINTERFACE_H__
 #define ABSTRACTAUDIOINTERFACE_H__
 
-#include "fooaudioexports.h"
-
 #include <QObject>
-
-class QUrl;
+#include <QUrl>
 
 namespace FooAudio
 {
-    class FAEXPORTS AbstractAudioInterface
+    class AbstractAudioInterface
     {
     public:
         virtual ~AbstractAudioInterface() {}
@@ -58,6 +55,6 @@ namespace FooAudio
     };
 }
 
-Q_DECLARE_INTERFACE(FooAudio::AbstractAudioInterface, "org.fooaudio.AudioInterface")
+Q_DECLARE_INTERFACE(FooAudio::AbstractAudioInterface, "org.fooaudio.AudioInterface/1.0");
 
 #endif // ABSTRACTAUDIOINTERFACE_H__
