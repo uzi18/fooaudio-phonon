@@ -1,4 +1,4 @@
-#include "fooaudioapp.hpp"
+#include <QApplication>
 #include "fooaudioengine.hpp"
 #include "foomainwindow.hpp"
 
@@ -6,8 +6,8 @@ int main (int argc, char * argv [])
 {
 	Q_INIT_RESOURCE (resource);
 
-	FooaudioApp fooApp (argc, argv);
-
+	QApplication fooApp (argc, argv);
+	QTextCodec::setCodecForCStrings (QTextCodec::codecForName ("UTF-8"));
 	fooApp.setApplicationName("fooaudio");
 	fooApp.setQuitOnLastWindowClosed(true);
 
