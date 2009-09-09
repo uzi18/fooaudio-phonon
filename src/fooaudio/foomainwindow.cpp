@@ -19,11 +19,15 @@ FooMainWindow::FooMainWindow(FooPhononAudioEngine *fae) : QMainWindow (), maxPro
 	fooTabWidget = new FooTabWidget();
 	setCentralWidget(fooTabWidget);
 
+	this->setWindowIcon(QIcon(":images/icon64.png"));
+
 	createMenus();
 	createToolBars();
 	createStatusBar();
 
 	createActions();
+
+	createSystrayIcon();
 
 	readSettings();
 
@@ -446,6 +450,38 @@ void FooMainWindow::createActions()
 void FooMainWindow::createStatusBar()
 {
 	statusBar()->showMessage(tr("Ready"));
+}
+
+void FooMainWindow::createSystrayIcon()
+{
+	if (QSystemTrayIcon::isSystemTrayAvailable())
+	{
+		trayIcon = new QSystemTrayIcon(this);
+		trayIcon->setIcon(QIcon(":images/icon64.png"));
+		trayIcon->setContextMenu(playbackMenu);
+		trayIcon->show();
+
+		connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+			this, SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
+	}
+}
+
+void FooMainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
+{
+	switch (reason) {
+	case QSystemTrayIcon::Trigger:
+		setVisible(!isVisible());
+		break;
+	//case QSystemTrayIcon::DoubleClick:
+	//    	break;
+	//case QSystemTrayIcon::MiddleClick:
+	//    ;
+	//    	break;
+	//case QSystemTrayIcon::Context:
+	//    	break;
+	default:
+	    ;
+	}
 }
 
 void FooMainWindow::itemDoubleClicked(QTreeWidgetItem * item, int column)
@@ -922,7 +958,7 @@ void FooMainWindow::sliderReleased()
 	slider_pos = -1;
 }
 
-void FooMainWindow::addToPrevQueue (QString path)
+void FooMainWindow::addToPrevQueue (QUrl path)
 {
 }
 

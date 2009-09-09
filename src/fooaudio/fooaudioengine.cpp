@@ -69,7 +69,7 @@ void FooPhononAudioEngine::enqueueNextFile (QUrl path)
 	cerr << "Kolejna piosenka: " << path.toString().toStdString() << endl;
 	if (!path.isEmpty())
 	{
-		mediaObject->enqueue(path.toLocalFile());
+                mediaObject->enqueue(path.toString());
 		emit willPlayNow (path);
 	}
 }
@@ -79,12 +79,12 @@ void FooPhononAudioEngine::playFile (QUrl path)
 	cerr << "FooPhononAudioEngine::playFile" << endl;
 
 	if (!path.isEmpty())
-	{
-		cerr << "FooPhononAudioEngine::playFile: is not Empty: " << path.toLocalFile().toStdString() << endl;
-		emit willPlayNow (path);
+        {
+                cerr << "FooPhononAudioEngine::playFile: is not Empty: " << path.toString().toStdString() << endl;
+                emit willPlayNow (path);
 		mediaObject->stop();
 		mediaObject->clearQueue();
-		mediaObject->setCurrentSource(path.toLocalFile());
+                mediaObject->setCurrentSource(path.toString());
 		mediaObject->play();
 	}
 	else

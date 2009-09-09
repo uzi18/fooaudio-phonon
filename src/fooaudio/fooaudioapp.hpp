@@ -11,4 +11,5 @@ public:
 	FooaudioApp (int, char **);
 };
 
+
 #endif // _FOOAUDIOAPP_HPP_
