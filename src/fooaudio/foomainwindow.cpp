@@ -44,6 +44,8 @@ FooMainWindow::FooMainWindow(FooPhononAudioEngine *fae) : QMainWindow (), maxPro
 	connect(fooAudioEngine, SIGNAL(aboutToFinish()), this, SLOT(enqueueNextFile()));
 	connect(this, SIGNAL(enqueueNextFile(QUrl)), fooAudioEngine, SLOT(enqueueNextFile(QUrl)));
 	connect(fooAudioEngine, SIGNAL(willPlayNow (QUrl)), this, SLOT(addToPrevQueue(QUrl)));
+	
+	QTimer::singleShot(200, this, SLOT(setTrayIcon()));
 }
 
 FooMainWindow::~FooMainWindow ()
@@ -310,36 +312,42 @@ void FooMainWindow::createMenus()
 	connect (defaultOrderAction, SIGNAL (triggered ()), this, SLOT (defaultOrder ()));
 	orderMenu->addAction (defaultOrderAction);
 	defaultOrderAction->setEnabled(false);
+	defaultOrderAction->setCheckable(true);
 
 	repeatPlaylistAction = new QAction (tr ("Repeat (&playlist)"), this);
-	connect (defaultOrderAction, SIGNAL (triggered ()), this, SLOT (defaultOrder ()));
-	orderMenu->addAction (defaultOrderAction);
-	repeatPlaylistAction->setEnabled(false);
+	connect (repeatPlaylistAction, SIGNAL (triggered ()), this, SLOT (repeatPlaylist ()));
+	orderMenu->addAction (repeatPlaylistAction);
+	repeatPlaylistAction->setCheckable(true);
 
 	repeatTrackAction = new QAction (tr ("Repeat (&track)"), this);
 	connect (repeatTrackAction, SIGNAL (triggered ()), this, SLOT (repeatTrack ()));
 	orderMenu->addAction (repeatTrackAction);
 	repeatTrackAction->setEnabled(false);
+	repeatTrackAction->setCheckable(true);
 
 	randomOrderAction = new QAction (tr ("Ra&ndom"), this);
 	connect (randomOrderAction, SIGNAL (triggered ()), this, SLOT (randomOrder ()));
 	orderMenu->addAction (randomOrderAction);
 	randomOrderAction->setEnabled(false);
+	randomOrderAction->setCheckable(true);
 
 	shuffleTracksAction = new QAction (tr ("&Shuffle (tracks)"), this);
 	connect (shuffleTracksAction, SIGNAL (triggered ()), this, SLOT (shuffleTracks ()));
 	orderMenu->addAction (shuffleTracksAction);
 	shuffleTracksAction->setEnabled(false);
+	shuffleTracksAction->setCheckable(true);
 
 	shuffleAlbumsAction = new QAction (tr ("S&huffle (albums)"), this);
 	connect (shuffleAlbumsAction, SIGNAL (triggered ()), this, SLOT (shuffleAlbums ()));
 	orderMenu->addAction (shuffleAlbumsAction);
 	shuffleAlbumsAction->setEnabled(false);
+	shuffleAlbumsAction->setCheckable(true);
 
 	shuffleFoldersAction = new QAction (tr ("Shuffle (&folders)"), this);
 	connect (shuffleFoldersAction, SIGNAL (triggered ()), this, SLOT (shuffleFolders ()));
 	orderMenu->addAction (shuffleFoldersAction);
 	shuffleFoldersAction->setEnabled(false);
+	shuffleFoldersAction->setCheckable(true);
 
 	stopAfterCurrentAction = new QAction (tr ("S&top after current"), this);
 	connect (stopAfterCurrentAction, SIGNAL (triggered ()), this, SLOT (stopAfterCurrent ()));
@@ -374,6 +382,14 @@ void FooMainWindow::createMenus()
 	connect (configureAction, SIGNAL (triggered ()), this, SLOT (configure ()));
 	libraryMenu->addAction (configureAction);
 	configureAction->setEnabled(false);
+
+	settingsMenu = menuBar ()->addMenu (tr ("Se&ttings"));
+
+	trayIconAction = new QAction (tr ("&Tray Icon"), this);
+	connect (trayIconAction, SIGNAL (triggered ()), this, SLOT (setTrayIcon ()));
+	settingsMenu->addAction (trayIconAction);
+	trayIconAction->setCheckable (true); 
+	trayIconAction->setEnabled (QSystemTrayIcon::isSystemTrayAvailable());
 
 	helpMenu = menuBar ()->addMenu (tr ("&Help"));
 
@@ -459,10 +475,10 @@ void FooMainWindow::createSystrayIcon()
 		trayIcon = new QSystemTrayIcon(this);
 		trayIcon->setIcon(QIcon(":images/icon64.png"));
 		trayIcon->setContextMenu(playbackMenu);
-		trayIcon->show();
 
 		connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
 			this, SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
+
 	}
 }
 
@@ -530,6 +546,7 @@ void FooMainWindow::writeSettings()
 	settings.setValue("trackToolBar", trackToolBar->geometry());
 	settings.setValue("playbackToolBar", playbackToolBar->geometry());
 	settings.setValue("volumeToolBar", volumeToolBar->geometry());
+	settings.setValue("trayIcon", trayIconAction->isChecked());
 	settings.endGroup();
 
 	settings.beginGroup("Volume");
@@ -577,6 +594,7 @@ void FooMainWindow::readSettings()
 	trackToolBar->setGeometry(settings.value("trackToolBar", QRect()).toRect());
 	playbackToolBar->setGeometry(settings.value("playbackToolBar", QRect()).toRect());
 	volumeToolBar->setGeometry(settings.value("volumeToolBar", QRect()).toRect());
+	trayIconAction->setChecked(settings.value("trayIcon", true).toBool());
 	settings.endGroup();
 
 	settings.beginGroup("Volume");
@@ -905,6 +923,11 @@ void FooMainWindow::searchAlbum ()
 
 void FooMainWindow::configure ()
 {
+}
+
+void FooMainWindow::setTrayIcon ()
+{
+	trayIcon->setVisible(trayIconAction->isChecked());
 }
 
 void FooMainWindow::cutLayout ()
