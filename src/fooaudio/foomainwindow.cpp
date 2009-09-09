@@ -44,6 +44,8 @@ FooMainWindow::FooMainWindow(FooPhononAudioEngine *fae) : QMainWindow (), maxPro
 	connect(fooAudioEngine, SIGNAL(aboutToFinish()), this, SLOT(enqueueNextFile()));
 	connect(this, SIGNAL(enqueueNextFile(QUrl)), fooAudioEngine, SLOT(enqueueNextFile(QUrl)));
 	connect(fooAudioEngine, SIGNAL(willPlayNow (QUrl)), this, SLOT(addToPrevQueue(QUrl)));
+	
+	QTimer::singleShot(200, this, SLOT(setTrayIcon()));
 }
 
 FooMainWindow::~FooMainWindow ()
@@ -538,6 +540,7 @@ void FooMainWindow::writeSettings()
 	settings.setValue("trackToolBar", trackToolBar->geometry());
 	settings.setValue("playbackToolBar", playbackToolBar->geometry());
 	settings.setValue("volumeToolBar", volumeToolBar->geometry());
+	settings.setValue("trayIcon", trayIconAction->isChecked());
 	settings.endGroup();
 
 	settings.beginGroup("Volume");
@@ -585,6 +588,7 @@ void FooMainWindow::readSettings()
 	trackToolBar->setGeometry(settings.value("trackToolBar", QRect()).toRect());
 	playbackToolBar->setGeometry(settings.value("playbackToolBar", QRect()).toRect());
 	volumeToolBar->setGeometry(settings.value("volumeToolBar", QRect()).toRect());
+	trayIconAction->setChecked(settings.value("trayIcon", true).toBool());
 	settings.endGroup();
 
 	settings.beginGroup("Volume");
