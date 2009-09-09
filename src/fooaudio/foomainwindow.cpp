@@ -486,10 +486,9 @@ void FooMainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
 {
 	switch (reason) {
 	case QSystemTrayIcon::Trigger:
+	case QSystemTrayIcon::DoubleClick:
 		setVisible(!isVisible());
 		break;
-	//case QSystemTrayIcon::DoubleClick:
-	//    	break;
 	//case QSystemTrayIcon::MiddleClick:
 	//    ;
 	//    	break;
