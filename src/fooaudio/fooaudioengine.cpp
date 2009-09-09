@@ -67,11 +67,11 @@ void FooPhononAudioEngine::enqueueNextFile (QUrl path)
 	cerr << "FooPhononAudioEngine::enqueueNextFile" << endl;
 
 	cerr << "Kolejna piosenka: " << path.toString().toStdString() << endl;
-	if (!path.isEmpty())
-	{
-                mediaObject->enqueue(path.toString());
-		emit willPlayNow (path);
-	}
+	if (path.isEmpty())
+		return;
+
+	mediaObject->enqueue(path.toString());
+	emit willPlayNow (path);
 }
 
 void FooPhononAudioEngine::playFile (QUrl path)
