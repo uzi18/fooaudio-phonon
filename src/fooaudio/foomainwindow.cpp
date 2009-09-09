@@ -45,7 +45,7 @@ FooMainWindow::FooMainWindow(FooPhononAudioEngine *fae) : QMainWindow (), maxPro
 	connect(this, SIGNAL(enqueueNextFile(QUrl)), fooAudioEngine, SLOT(enqueueNextFile(QUrl)));
 	connect(fooAudioEngine, SIGNAL(willPlayNow (QUrl)), this, SLOT(addToPrevQueue(QUrl)));
 	
-	QTimer::singleShot(200, this, SLOT(setTrayIcon()));
+	setTrayIcon();
 }
 
 FooMainWindow::~FooMainWindow ()
