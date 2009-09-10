@@ -404,6 +404,7 @@ void FooMainWindow::createMenus()
 void FooMainWindow::createToolBars ()
 {
 	trackToolBar = new QToolBar (this);
+	trackToolBar->setObjectName("trackToolBar");
 	trackToolBar->setFloatable (false);
 	trackSlider = new QSlider (Qt::Horizontal);
 	trackSlider->setRange(0, maxProgress);
@@ -411,6 +412,7 @@ void FooMainWindow::createToolBars ()
 	addToolBar (trackToolBar);
 
 	volumeToolBar = new QToolBar (this);
+	volumeToolBar->setObjectName("volumeToolBar");
 	volumeToolBar->setFloatable (false);
 	volumeToolBarAction = new QAction (tr("Mute"),this);
 	bool mute = fooAudioEngine->isMuted();
@@ -424,6 +426,7 @@ void FooMainWindow::createToolBars ()
 	addToolBar (volumeToolBar);
 
 	playbackToolBar = new QToolBar (this);
+	playbackToolBar->setObjectName("playbackToolBar");
 	playbackToolBar->setFloatable (false);
 
 	stopToolBarAction = new QAction (QIcon (":images/stop.png"), tr ("Stop"),this);
@@ -493,7 +496,7 @@ void FooMainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
 	//case QSystemTrayIcon::Context:
 	//    	break;
 	default:
-	    ;
+		 ;
 	}
 }
 
@@ -540,10 +543,7 @@ void FooMainWindow::writeSettings()
 	settings.beginGroup("FooMainWindow");
 	settings.setValue("pos", pos());
 	settings.setValue("size", size());
-	settings.setValue("trackToolBar", trackToolBar->geometry());
-	settings.setValue("playbackToolBar", playbackToolBar->geometry());
-	settings.setValue("volumeToolBar", volumeToolBar->geometry());
-	settings.setValue("trayIcon", trayIconAction->isChecked());
+	settings.setValue("toolBarsPosition", saveState());
 	settings.endGroup();
 
 	settings.beginGroup("Volume");
@@ -588,10 +588,8 @@ void FooMainWindow::readSettings()
 	QSize size = settings.value("size", QSize(400, 400)).toSize();
 	resize(size);
 	move(pos);
-	trackToolBar->setGeometry(settings.value("trackToolBar", QRect()).toRect());
-	playbackToolBar->setGeometry(settings.value("playbackToolBar", QRect()).toRect());
-	volumeToolBar->setGeometry(settings.value("volumeToolBar", QRect()).toRect());
-	trayIconAction->setChecked(settings.value("trayIcon", true).toBool());
+	restoreState(settings.value("toolBarsPosition", QVariant()).toByteArray());
+	trayIconAction->setChecked(settings.value("trayIcon", false).toBool());
 	settings.endGroup();
 
 	settings.beginGroup("Volume");
