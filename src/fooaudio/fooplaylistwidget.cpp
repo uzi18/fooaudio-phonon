@@ -47,17 +47,21 @@ void FooPlaylistWidget::contextMenuEvent ( QContextMenuEvent * event )
 
     if (-1 != index)
     {
+        action = menu.addAction (tr ("Play w/o stop after"), mainWindow, SLOT (play ()));
+        action->setData (index);
+
+        menu.addSeparator ();
+
         action = menu.addAction (tr ("Play"), mainWindow, SLOT (play ()));
         action->setData (index);
 
         menu.addSeparator ();
 
-        action = menu.addAction (tr ("Play \& stop after"), mainWindow, SLOT (play ()));
+        action = menu.addAction (tr ("&Add To Queue"), mainWindow, SLOT (addToQueue())/*, QKeySequence::Close*/);
         action->setData (index);
 
-        menu.addSeparator ();
-
-        action = menu.addAction (tr ("&Add To Queue"), mainWindow, SLOT (addToQueue())/*, QKeySequence::Close*/);
+        // condition
+        action = menu.addAction (tr ("&Remove from Queue"), mainWindow, SLOT (removeFromQueue ()));
         action->setData (index);
 
         menu.addSeparator ();
@@ -67,16 +71,8 @@ void FooPlaylistWidget::contextMenuEvent ( QContextMenuEvent * event )
 
         menu.addSeparator ();
 
-        // condition
-        action = menu.addAction (tr ("&Remove from Queue"), mainWindow, SLOT (removeFromQueue ()));
-        action->setData (index);
-
-        menu.addSeparator ();
-
         action = menu.addAction (tr ("&Copy to Playlist"), mainWindow, SLOT (removeFromQueue ()));
         action->setData (index);
-
-        menu.addSeparator ();
 
         action = menu.addAction (tr ("&Move to Playlist"), mainWindow, SLOT (removeFromQueue ()));
         action->setData (index);
