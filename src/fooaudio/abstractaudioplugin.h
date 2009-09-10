@@ -17,32 +17,30 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************************/
 
-#ifndef PHONONENGINE_H__
-#define PHONONENGINE_H__
-
-#include <abstractaudioplugin.h>
+#ifndef ABSTRACTAUDIOPLUGIN_H__
+#define ABSTRACTAUDIOPLUGIN_H__
 
 #include <QObject>
 #include <QUrl>
 
 namespace FooAudio
 {
-    class PhononEngine : public AbstractAudioPlugin
+    class AbstractAudioPlugin : public QObject
     {
         Q_OBJECT
 
     public:
-        PhononEngine(QObject *parent = 0);
-        ~PhononEngine();
-        
-        bool isPlaying();
-        bool isStopped();
-        bool isPaused();
-        bool isMuted();
-        void setMuted(bool);
+        AbstractAudioPlugin(QObject *parent = 0);
+        virtual ~AbstractAudioPlugin() {}
 
-        qint64 totalTime();
-        void seek(qint64 time);
+        virtual bool isPlaying() = 0;
+        virtual bool isStopped() = 0;
+        virtual bool isPaused() = 0;
+        virtual bool isMuted() = 0;
+        virtual void setMuted(bool) = 0;
+
+        virtual qint64 totalTime() = 0;
+        virtual void seek(qint64 time) = 0;
 
     signals:
         void aboutToFinish();
@@ -50,18 +48,14 @@ namespace FooAudio
         void willPlayNow(QUrl file);
 
     public slots:
-        void stop();
-        void play();
-        void pause();
-        void clearQueue();
-        void enqueueNextFile(QUrl file);
-        void playFile(QUrl file);
-        void setVolume(int volume);
-
-    private:
-        class PhononEnginePrivate;
-        PhononEnginePrivate * d;
-    };    
+        virtual void stop() = 0;
+        virtual void play() = 0;
+        virtual void pause() = 0;
+        virtual void clearQueue() = 0;
+        virtual void enqueueNextFile(QUrl file) = 0;
+        virtual void playFile(QUrl file) = 0;
+        virtual void setVolume(int volume) = 0;
+    };
 }
 
-#endif // PHONONENGINE_H__
+#endif // ABSTRACTAUDIOPLUGIN_H__

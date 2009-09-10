@@ -1,11 +1,13 @@
 QT += phonon
 TEMPLATE = app
-DEPENDPATH += .
+DEPENDPATH += . ../../../fooaudio
 INCLUDEPATH += . ../../../fooaudio
 DESTDIR = .
 CONFIG += qtestlib
 
-HEADERS +=  tests.h
+HEADERS +=  tests.h \
+            abstractaudioplugin.h \
 
-SOURCES +=  tests.cpp
+SOURCES +=  tests.cpp \
+            abstractaudioplugin.cpp \
 

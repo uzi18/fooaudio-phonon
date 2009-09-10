@@ -17,51 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************************/
 
-#ifndef PHONONENGINE_H__
-#define PHONONENGINE_H__
+#include <QtPlugin>
 
-#include <abstractaudioplugin.h>
-
-#include <QObject>
-#include <QUrl>
+#include "phononplugin.h"
+#include "phononengine.h"
 
 namespace FooAudio
 {
-    class PhononEngine : public AbstractAudioPlugin
+    PhononPlugin::PhononPlugin(QObject *parent) : QObject(parent)
     {
-        Q_OBJECT
+    }
 
-    public:
-        PhononEngine(QObject *parent = 0);
-        ~PhononEngine();
-        
-        bool isPlaying();
-        bool isStopped();
-        bool isPaused();
-        bool isMuted();
-        void setMuted(bool);
-
-        qint64 totalTime();
-        void seek(qint64 time);
-
-    signals:
-        void aboutToFinish();
-        void progress(qint64 time);
-        void willPlayNow(QUrl file);
-
-    public slots:
-        void stop();
-        void play();
-        void pause();
-        void clearQueue();
-        void enqueueNextFile(QUrl file);
-        void playFile(QUrl file);
-        void setVolume(int volume);
-
-    private:
-        class PhononEnginePrivate;
-        PhononEnginePrivate * d;
-    };    
+    AbstractAudioPlugin *PhononPlugin::GetAudioPlugin()
+    {
+        return new PhononEngine(this);
+    }
 }
 
-#endif // PHONONENGINE_H__
+Q_EXPORT_PLUGIN2(PhononPlugin, FooAudio::PhononPlugin)

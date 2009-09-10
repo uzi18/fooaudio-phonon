@@ -17,7 +17,8 @@ HEADERS +=  fooabout.hpp \
             fooplaylistwidget.hpp \
             footabbar.hpp \
             footabwidget.hpp \
-            abstractaudiointerface.h
+            abstractaudiointerface.h \
+            abstractaudioplugin.h
 
 SOURCES +=  fooabout.cpp \
             fooaudio.cpp \
@@ -27,7 +28,8 @@ SOURCES +=  fooabout.cpp \
             foomainwindow.cpp \
             fooplaylistwidget.cpp \
             footabbar.cpp \
-            footabwidget.cpp
+            footabwidget.cpp \
+            abstractaudioplugin.cpp
 
 RESOURCES += resource.qrc
 
