@@ -10,8 +10,6 @@ using namespace std;
 #include "foomainwindow.hpp"
 #include "fooplaylistwidget.hpp"
 
-class FooTabWidget;
-
 FooMainWindow::FooMainWindow(FooPhononAudioEngine *fae) : QMainWindow (), maxProgress(1000),	slider_pos(-1)
 {
 	this->fooAudioEngine = fae;
@@ -44,7 +42,7 @@ FooMainWindow::FooMainWindow(FooPhononAudioEngine *fae) : QMainWindow (), maxPro
 	connect(fooAudioEngine, SIGNAL(aboutToFinish()), this, SLOT(enqueueNextFile()));
 	connect(this, SIGNAL(enqueueNextFile(QUrl)), fooAudioEngine, SLOT(enqueueNextFile(QUrl)));
 	connect(fooAudioEngine, SIGNAL(willPlayNow (QUrl)), this, SLOT(addToPrevQueue(QUrl)));
-	
+
 	setTrayIcon();
 }
 
@@ -388,7 +386,7 @@ void FooMainWindow::createMenus()
 	trayIconAction = new QAction (tr ("&Tray Icon"), this);
 	connect (trayIconAction, SIGNAL (triggered ()), this, SLOT (setTrayIcon ()));
 	settingsMenu->addAction (trayIconAction);
-	trayIconAction->setCheckable (true); 
+	trayIconAction->setCheckable (true);
 	trayIconAction->setEnabled (QSystemTrayIcon::isSystemTrayAvailable());
 
 	helpMenu = menuBar ()->addMenu (tr ("&Help"));
