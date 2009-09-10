@@ -21,8 +21,8 @@
 
 #include <QDebug>
 #include <QtPlugin>
-#include <phonon/AudioOutput>
-#include <phonon/MediaObject>
+#include <phonon/audiooutput.h>
+#include <phonon/mediaobject.h>
 
 namespace FooAudio
 {
