@@ -636,8 +636,16 @@ void FooMainWindow::readSettings()
 
  void FooMainWindow::closeEvent(QCloseEvent *event)
  {
-    writeSettings();
-    event->accept();
+    if (trayIconAction->isChecked())
+    {
+	hide();
+	event->ignore();
+    }
+    else
+    {
+	writeSettings();
+	event->accept();
+    }
  }
 
 void FooMainWindow::open ()
