@@ -544,6 +544,7 @@ void FooMainWindow::writeSettings()
     settings.setValue("pos", pos());
     settings.setValue("size", size());
     settings.setValue("toolBarsPosition", saveState());
+    settings.setValue("trayIcon", trayIconAction->isChecked());
     settings.endGroup();
 
     settings.beginGroup("Volume");
