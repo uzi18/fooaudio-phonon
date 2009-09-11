@@ -20,8 +20,13 @@ FooPlaylistWidget::FooPlaylistWidget ()
     setSortingEnabled(false);
     setIndentation(0);
     setAlternatingRowColors (true);
-    // For drag and drop files
+    // For drag and drop files, QAbstractItemView::DragDrop doesn't work (why?)
     setAcceptDrops(true);
+    setDragDropMode(QAbstractItemView::InternalMove);
+    setDragEnabled(true);
+    viewport()->setAcceptDrops(true);
+    setDropIndicatorShown(true);
+    // Context Menu
     setContextMenuPolicy(Qt::DefaultContextMenu);
 
     QStringList l;
@@ -87,11 +92,12 @@ void FooPlaylistWidget::contextMenuEvent ( QContextMenuEvent * event )
     menu.exec (QCursor::pos ());
 }
 
-void FooPlaylistWidget::addFile (QString path)
+void FooPlaylistWidget::addFile (QString file, int index)
 {
     QTreeWidgetItem *wid = new QTreeWidgetItem (this);
-    wid->setText(0, path);
-    addTopLevelItem (wid);
+
+    wid->setText(0, file);
+    insertTopLevelItem (index == -1 ? topLevelItemCount() : index, wid);
 }
 
 int FooPlaylistWidget::plistFindFname (const char *fname)
@@ -149,17 +155,40 @@ void FooPlaylistWidget::dragEnterEvent(QDragEnterEvent * event)
 void FooPlaylistWidget::dropEvent(QDropEvent * event)
 {
     QList<QUrl> urlList;
-
     if (event->mimeData()->hasUrls())
     {
-        urlList = event->mimeData()->urls(); // returns list of QUrls
+        urlList = event->mimeData()->urls();
 
         // if just text was dropped, urlList is empty (size == 0)
-        if ( urlList.size() > 0) // if at least one QUrl is present in list
+        if ( urlList.size() > 0)
         {
-            // here append files/dirs
+            int index = indexOfTopLevelItem(itemAt (event->pos()));
+	    addFiles(index, urlList, true);
         }
     }
 
     event->acceptProposedAction();
+}
+
+void FooPlaylistWidget::addFiles(int index, QList<QUrl> list, bool recursive)
+{
+    QFileInfo info;
+    QString path;
+
+    foreach (QUrl file, list)
+    {
+	path = file.toLocalFile();
+        info.setFile( path );
+        if ( info.isFile() )
+	{
+	    cerr << "FooPlaylistWidget:: addFiles at " << index << endl;
+	    addFile(path, index);
+	}
+
+        if ( info.isDir() && recursive)
+	{
+	  cerr << "FooPlaylistWidget:: addDir at " << index << endl;
+        //    addDir()
+	}
+    }
 }
