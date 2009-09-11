@@ -20,23 +20,21 @@
 #ifndef PHONONENGINE_H__
 #define PHONONENGINE_H__
 
-#include <abstractaudiointerface.h>
+#include <abstractaudioplugin.h>
 
 #include <QObject>
 #include <QUrl>
 
 namespace FooAudio
 {
-    class PhononEngine : public QObject, public AbstractAudioInterface
+    class PhononEngine : public AbstractAudioPlugin
     {
         Q_OBJECT
-        Q_INTERFACES(FooAudio::AbstractAudioInterface)
+
     public:
         PhononEngine(QObject *parent = 0);
         ~PhononEngine();
         
-        void init();
-
         bool isPlaying();
         bool isStopped();
         bool isPaused();

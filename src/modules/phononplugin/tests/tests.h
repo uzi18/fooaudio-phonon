@@ -1,12 +1,12 @@
 #include <QtTest/QtTest>
 
-#include <abstractaudiointerface.h>
+#include <abstractaudioplugin.h>
 
 class TestPhononEngine : public QObject
 {
     Q_OBJECT
 
-    FooAudio::AbstractAudioInterface *plugin;
+    FooAudio::AbstractAudioPlugin *plugin;
 
 public:
     TestPhononEngine();
@@ -17,4 +17,5 @@ private slots:
     void isStopped();
     void isPaused();
     void isMuted();
+    void aboutToFinish();
 };

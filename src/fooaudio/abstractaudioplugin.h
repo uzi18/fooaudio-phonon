@@ -17,24 +17,45 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************************/
 
-#ifndef ABSTRACTAUDIOINTERFACE_H__
-#define ABSTRACTAUDIOINTERFACE_H__
+#ifndef ABSTRACTAUDIOPLUGIN_H__
+#define ABSTRACTAUDIOPLUGIN_H__
 
 #include <QObject>
 #include <QUrl>
 
-#include "abstractaudioplugin.h"
-
 namespace FooAudio
 {
-    class AbstractAudioInterface
+    class AbstractAudioPlugin : public QObject
     {
+        Q_OBJECT
+
     public:
-        virtual ~AbstractAudioInterface() {}
-        virtual AbstractAudioPlugin* GetAudioPlugin() = 0;
-   };
+        AbstractAudioPlugin(QObject *parent = 0);
+        virtual ~AbstractAudioPlugin() {}
+
+        virtual bool isPlaying() = 0;
+        virtual bool isStopped() = 0;
+        virtual bool isPaused() = 0;
+        virtual bool isMuted() = 0;
+        virtual void setMuted(bool) = 0;
+
+        virtual qint64 totalTime() = 0;
+        virtual void seek(qint64 time) = 0;
+
+    signals:
+        void aboutToFinish();
+        void progress(qint64 time);
+        void willPlayNow(QUrl file);
+
+    public slots:
+        virtual void stop() = 0;
+        virtual void play() = 0;
+        virtual void pause() = 0;
+        virtual void clearQueue() = 0;
+        virtual void enqueueNextFile(QUrl file) = 0;
+        virtual void playFile(QUrl file) = 0;
+        virtual void setVolume(int volume) = 0;
+    };
 }
 
-Q_DECLARE_INTERFACE(FooAudio::AbstractAudioInterface, "org.fooaudio.AudioInterface/1.0");
-
-#endif // ABSTRACTAUDIOINTERFACE_H__
+#endif // ABSTRACTAUDIOPLUGIN_H__

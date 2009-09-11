@@ -17,24 +17,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************************/
 
-#ifndef ABSTRACTAUDIOINTERFACE_H__
-#define ABSTRACTAUDIOINTERFACE_H__
+#include <abstractaudiointerface.h>
+#include <abstractaudioplugin.h>
 
 #include <QObject>
-#include <QUrl>
-
-#include "abstractaudioplugin.h"
 
 namespace FooAudio
 {
-    class AbstractAudioInterface
+    class PhononPlugin : public QObject, public AbstractAudioInterface
     {
+        Q_OBJECT
+        Q_INTERFACES(FooAudio::AbstractAudioInterface)
+
     public:
-        virtual ~AbstractAudioInterface() {}
-        virtual AbstractAudioPlugin* GetAudioPlugin() = 0;
-   };
+        PhononPlugin(QObject *parent = 0);
+        AbstractAudioPlugin *GetAudioPlugin();
+    };
 }
-
-Q_DECLARE_INTERFACE(FooAudio::AbstractAudioInterface, "org.fooaudio.AudioInterface/1.0");
-
-#endif // ABSTRACTAUDIOINTERFACE_H__

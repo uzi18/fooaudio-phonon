@@ -1,3 +1,3 @@
 CONFIG += ordered
 TEMPLATE = subdirs
-SUBDIRS += phononengine phononengine/tests
+SUBDIRS += phononplugin phononplugin/tests

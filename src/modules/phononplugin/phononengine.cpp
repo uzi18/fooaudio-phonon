@@ -36,7 +36,7 @@ namespace FooAudio
     };
 
     PhononEngine::PhononEngine(QObject * parent)
-        : QObject(parent)
+        : AbstractAudioPlugin(parent)
     {
         d = new PhononEnginePrivate;
 
@@ -55,7 +55,7 @@ namespace FooAudio
     PhononEngine::~PhononEngine()
     {
         delete d;
-    }    
+    }
 
     bool PhononEngine::isPlaying()
     {
@@ -153,4 +153,3 @@ namespace FooAudio
     }
 };
 
-Q_EXPORT_PLUGIN2(PhononEngine, FooAudio::PhononEngine)
