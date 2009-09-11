@@ -13,7 +13,7 @@ int main (int argc, char * argv [])
 
 	FooPhononAudioEngine *fooAudioEngine = new FooPhononAudioEngine(&fooApp);
 
-	FooMainWindow *fooMainWindow = new FooMainWindow();
+	FooMainWindow *fooMainWindow = FooMainWindow::instance();
 	fooMainWindow->setAudioEngine(fooAudioEngine);
 
 	fooMainWindow->show();
