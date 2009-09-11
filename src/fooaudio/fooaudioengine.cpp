@@ -16,6 +16,7 @@ FooPhononAudioEngine::FooPhononAudioEngine (QObject* parent) : FooAudioEnginePlu
 
 	audioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
 	mediaObject = new Phonon::MediaObject(this);
+	metaInformation = new Phonon::MediaObject(this);
 
 	Phonon::createPath(mediaObject, audioOutput);
 
@@ -79,12 +80,12 @@ void FooPhononAudioEngine::playFile (QUrl path)
 	cerr << "FooPhononAudioEngine::playFile" << endl;
 
 	if (!path.isEmpty())
-        {
-                cerr << "FooPhononAudioEngine::playFile: is not Empty: " << path.toString().toStdString() << endl;
-                emit willPlayNow (path);
+		  {
+					 cerr << "FooPhononAudioEngine::playFile: is not Empty: " << path.toString().toStdString() << endl;
+					 emit willPlayNow (path);
 		mediaObject->stop();
 		mediaObject->clearQueue();
-                mediaObject->setCurrentSource(path.toString());
+					 mediaObject->setCurrentSource(path.toString());
 		mediaObject->play();
 	}
 	else
@@ -120,4 +121,16 @@ void FooPhononAudioEngine::pause()
 void FooPhononAudioEngine::clearQueue()
 {
 	mediaObject->clearQueue();
+}
+
+void FooPhononAudioEngine::metaData(QUrl url)
+{
+	metaInformation->setCurrentSource(url);
+	emit metaData(metaInformation->metaData());
+}
+
+void FooPhononAudioEngine::metaData (const QString &key, const QUrl url)
+{
+	metaInformation->setCurrentSource(url);
+	emit metaData(metaInformation->metaData(key));
 }
