@@ -2,6 +2,7 @@
 #include <QPluginLoader>
 #include <phonon/audiooutput.h>
 #include <phonon/mediaobject.h>
+#include <Phonon/BackendCapabilities>
 
 #include <iostream>
 
@@ -133,4 +134,9 @@ void FooPhononAudioEngine::metaData (const QString &key, const QUrl url)
 {
 	metaInformation->setCurrentSource(url);
 	emit metaData(metaInformation->metaData(key));
+}
+
+void FooPhononAudioEngine::mimeTypes()
+{
+	emit mimeTypes(Phonon::BackendCapabilities::availableMimeTypes());
 }

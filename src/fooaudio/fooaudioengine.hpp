@@ -38,10 +38,12 @@ virtual	void setVolume(int);
 
 virtual void metaData(QUrl);
 virtual void metaData(const QString &, QUrl);
+virtual void mimeTypes();
 
 signals:
 void metaData(QMultiMap<QString, QString>);
 void metaData(QStringList);
+void mimeTypes(QStringList);
 
 private:
 	Phonon::MediaObject *mediaObject;
