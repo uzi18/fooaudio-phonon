@@ -3,7 +3,6 @@ TODO
 - całkowicie rozdzielić engine i gui (connecty w main())
 - engine jako plugin
 - mvc dla playlisty (pewnie pójdzie dla 0.3)
-- tray (ustawienia się nie zapisują? oO)
 - menu kontekstowe dla traya (nowe, uwzględniające zamykanie aplikacji, proste).
 - zwracanie metadanych przez engine
 - playlista jakaś sensowna (z metadanymi)
