@@ -12,10 +12,19 @@ class	FooPhononAudioEngine;
 class	FooMainWindow : public QMainWindow
 {
 	Q_OBJECT
+	Q_DISABLE_COPY(FooMainWindow)
+
+	static FooMainWindow *Instance;
+
+	void init();
 
 public:
-	FooMainWindow (FooPhononAudioEngine *);
+	FooMainWindow ();
 	~FooMainWindow ();
+
+	static FooMainWindow * instance();
+
+	void setAudioEngine(FooPhononAudioEngine * engine);
 
 	FooTabWidget *fooTabWidget;
 

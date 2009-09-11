@@ -10,10 +10,52 @@ using namespace std;
 #include "foomainwindow.hpp"
 #include "fooplaylistwidget.hpp"
 
-FooMainWindow::FooMainWindow(FooPhononAudioEngine *fae) : QMainWindow (), maxProgress(1000),	slider_pos(-1)
-{
-    this->fooAudioEngine = fae;
+FooMainWindow * FooMainWindow::Instance = 0;
 
+FooMainWindow::FooMainWindow()
+: QMainWindow (), maxProgress(1000), slider_pos(-1)
+{
+    Instance = this;
+    init();
+}
+
+FooMainWindow * FooMainWindow::instance()
+{
+        if (0 == Instance)
+        {
+                Instance = new FooMainWindow();
+                Instance->init();
+        }
+        return Instance;
+}
+
+void FooMainWindow::setAudioEngine(FooPhononAudioEngine * engine)
+{
+    fooAudioEngine = engine;
+
+    // volume slider
+    connect(this->volumeSlider, SIGNAL(valueChanged(int)), fooAudioEngine, SLOT(setVolume(int)));
+    // track slider
+    connect(fooAudioEngine, SIGNAL (progress(qint64)), this, SLOT (progress(qint64)));
+    connect(this->trackSlider, SIGNAL(sliderMoved(int)), this, SLOT (seek(int)));
+    connect(this->trackSlider, SIGNAL(sliderReleased()), this, SLOT (sliderReleased()));
+
+    connect(this, SIGNAL(nextSignal(QUrl)), fooAudioEngine, SLOT(playFile(QUrl)));
+    connect(this, SIGNAL(prevSignal(QUrl)), fooAudioEngine, SLOT(playFile(QUrl)));
+    connect(fooAudioEngine, SIGNAL(aboutToFinish()), this, SLOT(enqueueNextFile()));
+    connect(this, SIGNAL(enqueueNextFile(QUrl)), fooAudioEngine, SLOT(enqueueNextFile(QUrl)));
+    connect(fooAudioEngine, SIGNAL(willPlayNow (QUrl)), this, SLOT(addToPrevQueue(QUrl)));
+
+    connect(this, SIGNAL(playSignal()), fooAudioEngine, SLOT(play()));
+    connect(this, SIGNAL(pauseSignal()), fooAudioEngine, SLOT(pause()) );
+    connect(this, SIGNAL(stopSignal()), fooAudioEngine, SLOT(stop()));
+
+    bool mute = fooAudioEngine->isMuted();
+    volumeToolBarAction->setIcon(QIcon (mute ? ":images/mute.png" : ":images/vol.png"));
+}
+
+void FooMainWindow::init()
+{
     fooTabWidget = new FooTabWidget();
     setCentralWidget(fooTabWidget);
 
@@ -30,18 +72,6 @@ FooMainWindow::FooMainWindow(FooPhononAudioEngine *fae) : QMainWindow (), maxPro
     readSettings();
 
     connect(fooTabWidget, SIGNAL (itemDoubleClickedSignal(QTreeWidgetItem *, int)), this, SLOT (itemDoubleClicked(QTreeWidgetItem *, int)));
-    // volume slider
-    connect(this->volumeSlider, SIGNAL(valueChanged(int)), fooAudioEngine, SLOT(setVolume(int)));
-    // track slider
-    connect(fooAudioEngine, SIGNAL (progress(qint64)), this, SLOT (progress(qint64)));
-    connect(this->trackSlider, SIGNAL(sliderMoved(int)), this, SLOT (seek(int)));
-    connect(this->trackSlider, SIGNAL(sliderReleased()), this, SLOT (sliderReleased()));
-
-    connect(this, SIGNAL(nextSignal(QUrl)), fooAudioEngine, SLOT(playFile(QUrl)));
-    connect(this, SIGNAL(prevSignal(QUrl)), fooAudioEngine, SLOT(playFile(QUrl)));
-    connect(fooAudioEngine, SIGNAL(aboutToFinish()), this, SLOT(enqueueNextFile()));
-    connect(this, SIGNAL(enqueueNextFile(QUrl)), fooAudioEngine, SLOT(enqueueNextFile(QUrl)));
-    connect(fooAudioEngine, SIGNAL(willPlayNow (QUrl)), this, SLOT(addToPrevQueue(QUrl)));
 
     setTrayIcon();
 }
@@ -415,8 +445,6 @@ void FooMainWindow::createToolBars ()
     volumeToolBar->setObjectName("volumeToolBar");
     volumeToolBar->setFloatable (false);
     volumeToolBarAction = new QAction (tr("Mute"),this);
-    bool mute = fooAudioEngine->isMuted();
-    volumeToolBarAction->setIcon(QIcon (mute ? ":images/mute.png" : ":images/vol.png"));
     connect (volumeToolBarAction, SIGNAL (triggered ()), this, SLOT (mute()));
     volumeToolBar->addAction (volumeToolBarAction);
     volumeSlider = new QSlider (Qt::Horizontal);
@@ -459,9 +487,6 @@ void FooMainWindow::createToolBars ()
 
 void FooMainWindow::createActions()
 {
-    connect(this, SIGNAL(playSignal()), fooAudioEngine, SLOT(play()));
-    connect(this, SIGNAL(pauseSignal()), fooAudioEngine, SLOT(pause()) );
-    connect(this, SIGNAL(stopSignal()), fooAudioEngine, SLOT(stop()));
 }
 
 void FooMainWindow::createStatusBar()
@@ -594,9 +619,9 @@ void FooMainWindow::readSettings()
     settings.endGroup();
 
     settings.beginGroup("Volume");
-    fooAudioEngine->setVolume(settings.value("volume", 100).toInt());
+    //fooAudioEngine->setVolume(settings.value("volume", 100).toInt());
     volumeSlider->setValue(settings.value("volume", 100).toInt());
-    fooAudioEngine->setMuted(settings.value("muted", false).toBool());
+    //fooAudioEngine->setMuted(settings.value("muted", false).toBool());
     settings.endGroup();
 
     QSettings playlists("fooaudio", "playlists");

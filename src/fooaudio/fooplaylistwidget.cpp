@@ -37,7 +37,7 @@ FooPlaylistWidget::FooPlaylistWidget ()
 
 void FooPlaylistWidget::contextMenuEvent ( QContextMenuEvent * event )
 {
-    FooMainWindow *mainWindow = qobject_cast<FooMainWindow *> (parent()->parent()->parent());
+    FooMainWindow *mainWindow = FooMainWindow::instance();
     if (!mainWindow)
         return;
 
