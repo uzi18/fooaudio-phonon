@@ -225,6 +225,8 @@ private:
 		QAction *aboutAction;
 		QAction *aboutQtAction;
 
+    QMenu *trayMenu;
+
 	QAction *volumeToolBarAction;
 	QAction *stopToolBarAction;
 	QAction *playToolBarAction;

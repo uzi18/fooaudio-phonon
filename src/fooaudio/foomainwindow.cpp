@@ -499,10 +499,30 @@ void FooMainWindow::createSystrayIcon()
     {
         trayIcon = new QSystemTrayIcon(this);
         trayIcon->setIcon(QIcon(":images/icon64.png"));
-        trayIcon->setContextMenu(playbackMenu);
+
+        trayMenu = new QMenu();
+        trayMenu->addAction (stopAction);
+        trayMenu->addAction (pauseAction);
+        trayMenu->addAction (playAction);
+        trayMenu->addAction (previousAction);
+        trayMenu->addAction (nextAction);
+        trayMenu->addAction (randomAction);
+
+        trayMenu->addSeparator ();
+
+        trayMenu->addAction (orderMenu->menuAction ());
+        trayMenu->addAction (stopAfterCurrentAction);
+        trayMenu->addAction (playbackFollowsCursorAction);
+        trayMenu->addAction (cursorFollowsPlaybackAction);
+
+        trayMenu->addSeparator();
+
+        trayMenu->addAction(tr ("&Exit"), this, SLOT (exit()));
+
+        trayIcon->setContextMenu(trayMenu);
 
         connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-            this, SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
+                this, SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
 
     }
 }
