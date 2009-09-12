@@ -190,14 +190,14 @@ void FooPlaylistWidget::addFiles(int index, QList<QUrl> list, bool recursive)
         {
             cerr << "FooPlaylistWidget:: addDir at " << index << endl;
             QDir directory(path);
-
-            QStringList files = directory.entryList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Readable);
-
             QList<QUrl> urls;
-            foreach( QString string, files){
-                urls.append(QUrl(path+"/"+string));
-                cerr << "FooPlaylistWidget:: inDir " << string.toStdString() << endl;
+
+            // add all files and dirs to list of urls
+            foreach( QString fileInDirectory, directory.entryList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Readable))
+            {
+                urls.append(QUrl(directory.filePath(fileInDirectory)));
             }
+            // launch this metod one more time to add files and scan subdirs if recursive
             addFiles(index, urls, recursive);
         }
     }
