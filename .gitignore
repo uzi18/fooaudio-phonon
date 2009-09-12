@@ -39,6 +39,8 @@ Makefile
 moc_*.cpp
 qrc_*.cpp
 fooaudio
+lib
+bin
 
 # stgit generated dirs
 patches-*
