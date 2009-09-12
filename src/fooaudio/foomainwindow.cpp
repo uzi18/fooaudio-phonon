@@ -103,7 +103,6 @@ void FooMainWindow::createMenus()
     addFolderAction = new QAction (tr ("A&dd Folder"), this);
     connect (addFolderAction, SIGNAL (triggered ()), this, SLOT (addFolder ()));
     fileMenu->addAction (addFolderAction);
-    addFolderAction->setEnabled(false);
 
     addLocationAction = new QAction (tr ("Add Lo&cation"), this);
     connect (addLocationAction, SIGNAL (triggered ()), this, SLOT (addLocation ()));
@@ -664,13 +663,13 @@ void FooMainWindow::readSettings()
  {
     if (trayIconAction->isChecked())
     {
-	hide();
-	event->ignore();
+    hide();
+    event->ignore();
     }
     else
     {
-	writeSettings();
-	event->accept();
+    writeSettings();
+    event->accept();
     }
  }
 
@@ -688,19 +687,41 @@ void FooMainWindow::addFiles ()
     QStringList files = QFileDialog::getOpenFileNames(this, tr("Select Music Files"), QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
 
     if (files.isEmpty())
-    {
-         return;
-    }
+        return;
 
+    QList<QUrl> urls;
     foreach (QString string, files)
     {
-        FooPlaylistWidget *wid = static_cast<FooPlaylistWidget *> (fooTabWidget->currentWidget());
-        wid->addFile (string);
+        urls.append(QUrl(string));
     }
+
+    FooPlaylistWidget * wid = static_cast<FooPlaylistWidget *> (fooTabWidget->currentWidget());
+    if (!wid)
+        return;
+
+    wid->addFiles(-1, urls, false);
 }
 
 void FooMainWindow::addFolder ()
 {
+    QString dirName = QFileDialog::getExistingDirectory(this, tr("Select directory"), QDir::currentPath());
+
+    if (dirName.isEmpty())
+        return;
+
+    QFileInfo info;
+    info.setFile(dirName);
+    if (!info.isDir())
+        return;
+
+    QList<QUrl> urls;
+    urls.append(QUrl(dirName));
+
+    FooPlaylistWidget * wid = static_cast<FooPlaylistWidget *> (fooTabWidget->currentWidget());
+    if (!wid)
+        return;
+
+    wid->addFiles(-1, urls, true);
 }
 
 void FooMainWindow::addLocation ()

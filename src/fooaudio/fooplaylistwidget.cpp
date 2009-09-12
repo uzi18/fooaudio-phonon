@@ -163,7 +163,7 @@ void FooPlaylistWidget::dropEvent(QDropEvent * event)
         if ( urlList.size() > 0)
         {
             int index = indexOfTopLevelItem(itemAt (event->pos()));
-	    addFiles(index, urlList, true);
+            addFiles(index, urlList, true);
         }
     }
 
@@ -172,23 +172,33 @@ void FooPlaylistWidget::dropEvent(QDropEvent * event)
 
 void FooPlaylistWidget::addFiles(int index, QList<QUrl> list, bool recursive)
 {
+    // TODO: check if files are supported by engine
     QFileInfo info;
     QString path;
 
     foreach (QUrl file, list)
     {
-	path = file.toLocalFile();
+        path = file.toLocalFile();
         info.setFile( path );
         if ( info.isFile() )
-	{
-	    cerr << "FooPlaylistWidget:: addFiles at " << index << endl;
-	    addFile(path, index);
-	}
+        {
+            cerr << "FooPlaylistWidget:: addFiles at " << index << endl;
+            addFile(path, index);
+        }
 
-        if ( info.isDir() && recursive)
-	{
-	  cerr << "FooPlaylistWidget:: addDir at " << index << endl;
-        //    addDir()
-	}
+        else if ( info.isDir() && recursive)
+        {
+            cerr << "FooPlaylistWidget:: addDir at " << index << endl;
+            QDir directory(path);
+
+            QStringList files = directory.entryList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Readable);
+
+            QList<QUrl> urls;
+            foreach( QString string, files){
+                urls.append(QUrl(path+"/"+string));
+                cerr << "FooPlaylistWidget:: inDir " << string.toStdString() << endl;
+            }
+            addFiles(index, urls, recursive);
+        }
     }
 }
