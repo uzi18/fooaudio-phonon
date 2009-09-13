@@ -2,9 +2,8 @@
 
 * compilation :
 
-    cd src/fooaudio
     qmake-qt4
     make
 
-    (you will find fooaudio in ../.. )
+    (you will find fooaudio in bin dir)
 
