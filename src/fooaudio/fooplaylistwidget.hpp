@@ -3,6 +3,9 @@
 
 #include <QTreeWidget>
 
+
+
+
 class FooPlaylistWidget : public QTreeWidget
 {
 public:

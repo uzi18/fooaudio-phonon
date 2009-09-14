@@ -2,18 +2,16 @@
 #include <QPluginLoader>
 #include <phonon/audiooutput.h>
 #include <phonon/mediaobject.h>
-#include <Phonon/BackendCapabilities>
+#include <KDE/Phonon/BackendCapabilities>
 
-#include <iostream>
-
-using namespace std;
+#include <QtDebug>
 
 #include "fooaudioengine.hpp"
 #include "foomainwindow.hpp"
 
 FooPhononAudioEngine::FooPhononAudioEngine (QObject* parent) : FooAudioEnginePlugin(parent)
 {
-	cerr << "FooPhononAudioEngine" << endl;
+        qDebug() <<  "FooPhononAudioEngine";
 
 	audioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
 	mediaObject = new Phonon::MediaObject(this);
@@ -66,9 +64,9 @@ void FooPhononAudioEngine::seek (qint64 time)
 
 void FooPhononAudioEngine::enqueueNextFile (QUrl path)
 {
-	cerr << "FooPhononAudioEngine::enqueueNextFile" << endl;
+        qDebug() <<  "FooPhononAudioEngine::enqueueNextFile";
 
-	cerr << "Kolejna piosenka: " << path.toString().toStdString() << endl;
+        qDebug() <<  "Kolejna piosenka: " << path.toString();
 	if (path.isEmpty())
 		return;
 
@@ -78,11 +76,11 @@ void FooPhononAudioEngine::enqueueNextFile (QUrl path)
 
 void FooPhononAudioEngine::playFile (QUrl path)
 {
-	cerr << "FooPhononAudioEngine::playFile" << endl;
+        qDebug() <<  "FooPhononAudioEngine::playFile";
 
 	if (!path.isEmpty())
 		  {
-					 cerr << "FooPhononAudioEngine::playFile: is not Empty: " << path.toString().toStdString() << endl;
+                                         qDebug() <<  "FooPhononAudioEngine::playFile: is not Empty: " << path.toString();
 					 emit willPlayNow (path);
 		mediaObject->stop();
 		mediaObject->clearQueue();
@@ -91,7 +89,7 @@ void FooPhononAudioEngine::playFile (QUrl path)
 	}
 	else
 	{
-		cerr << "FooPhononAudioEngine::playFile: is Empty" << endl;
+                qDebug() <<  "FooPhononAudioEngine::playFile: is Empty";
 		mediaObject->stop();
 	}
 }

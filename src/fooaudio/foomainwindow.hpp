@@ -4,6 +4,13 @@
 #include <QtGui>
 #include <QUrl>
 #include "footabwidget.hpp"
+namespace PlayOrder
+{
+    enum playOrder
+    {
+        repeatPlaylist,repeatTrack,shuffleTracks,shuffleAlbums,shuffleFolders,defaultOrder,random
+    };
+}
 
 class	QSystemTrayIcon;
 
@@ -47,6 +54,7 @@ signals:
 	void prevSignal(QUrl);
 	void stopSignal();
 	void nextSignal(QUrl);
+        void randomSignal(QUrl);
 	void pauseSignal();
 	void enqueueNextFile(QUrl);
 
@@ -107,9 +115,9 @@ private slots:
 	void albumList ();
 	void searchAlbum ();
 	void configure ();
-
+        void uncheckAllOrders();
 	void about ();
-
+        QUrl randomTrack();
 
 	void cutLayout();
 	void copyLayout();
@@ -135,6 +143,7 @@ private slots:
 
 private:
 	const int maxProgress;
+        PlayOrder::playOrder order;
 	FooPhononAudioEngine *fooAudioEngine;
 
 	QList<QUrl> queue;
