@@ -188,7 +188,7 @@ void FooPlaylistWidget::addFiles(int index, QList<QUrl> list, bool recursive)
 
     foreach (QUrl file, list)
     {
-        path = file.toLocalFile();
+        path = file.toString();
         info.setFile( path );
         if ( info.isFile() )
         {
