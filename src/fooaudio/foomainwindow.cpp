@@ -432,7 +432,7 @@ void FooMainWindow::createMenus()
 
 void FooMainWindow::createToolBars ()
 {
-    trackToolBar = new QToolBar (this);
+    trackToolBar = new QToolBar (tr("TrackToolBar"), this);
     trackToolBar->setObjectName("trackToolBar");
     trackToolBar->setFloatable (false);
     trackSlider = new QSlider (Qt::Horizontal);
@@ -440,7 +440,7 @@ void FooMainWindow::createToolBars ()
     trackToolBar->addWidget (trackSlider);
     addToolBar (trackToolBar);
 
-    volumeToolBar = new QToolBar (this);
+    volumeToolBar = new QToolBar (tr("VolumeToolBar"), this);
     volumeToolBar->setObjectName("volumeToolBar");
     volumeToolBar->setFloatable (false);
     volumeToolBarAction = new QAction (tr("Mute"),this);
@@ -452,7 +452,7 @@ void FooMainWindow::createToolBars ()
     volumeToolBar->addWidget (volumeSlider);
     addToolBar (volumeToolBar);
 
-    playbackToolBar = new QToolBar (this);
+    playbackToolBar = new QToolBar (tr("PlaybackToolBar"), this);
     playbackToolBar->setObjectName("playbackToolBar");
     playbackToolBar->setFloatable (false);
 
