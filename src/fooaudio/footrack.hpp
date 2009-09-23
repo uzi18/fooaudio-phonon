@@ -24,7 +24,7 @@ class FooTrack
     QString Track;
 
 public:
-    FooTrack(QUrl file);
+    FooTrack(QUrl &file);
 
     const QUrl & file() { return File; }
 

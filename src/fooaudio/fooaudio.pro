@@ -30,5 +30,7 @@ SOURCES += abstractaudioplugin.cpp \
     foomainwindow.cpp \
     fooplaylistwidget.cpp \
     footabbar.cpp \
-    footabwidget.cpp
+    footabwidget.cpp \
+    footracklist.cpp \
+    footrack.cpp
 RESOURCES += resource.qrc

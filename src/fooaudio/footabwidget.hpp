@@ -3,6 +3,7 @@
 
 #include <QTabWidget>
 #include <QtGui>
+
 #include "footabbar.hpp"
 #include "fooplaylistwidget.hpp"
 
