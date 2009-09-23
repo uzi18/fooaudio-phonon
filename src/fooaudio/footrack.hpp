@@ -7,13 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FOOFILE_HPP
-#define FOOFILE_HPP
+#ifndef FOOTRACK_HPP
+#define FOOTRACK_HPP
 
 #include <QString>
 #include <QUrl>
 
-class Utwor
+class FooTrack
 {
     QUrl File;
 
@@ -24,7 +24,7 @@ class Utwor
     QString Track;
 
 public:
-    Utwor(QUrl file);
+    FooTrack(QUrl file);
 
     const QUrl & file() { return File; }
 
