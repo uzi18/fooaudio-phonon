@@ -3,7 +3,7 @@
 ######################################################################
 QT += phonon
 TEMPLATE = app
-TARGET = 
+TARGET =
 DEPENDPATH += .
 INCLUDEPATH += .
 DESTDIR = ../../bin
@@ -18,7 +18,8 @@ HEADERS += abstractaudiointerface.h \
            foomainwindow.hpp \
            fooplaylistwidget.hpp \
            footabbar.hpp \
-           footabwidget.hpp
+           footabwidget.hpp \
+           footrack.hpp
 SOURCES += abstractaudioplugin.cpp \
            fooabout.cpp \
            fooaudio.cpp \
