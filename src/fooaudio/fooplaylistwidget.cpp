@@ -33,6 +33,11 @@ FooPlaylistWidget::FooPlaylistWidget ()
     l << tr("File");
     setHeaderLabels(l);
 
+    // TODO Remove and add something normal
+    Filters << ".mp3"  << ".wma" << ".mp4" << ".mpg" << ".mpeg" << ".m4a";
+    Filters << ".flac" << ".ogg" << ".wav" << ".3gp" << ".ac3" << ".aac";
+
+    // TODO .m3u .m4u
 }
 
 void FooPlaylistWidget::contextMenuEvent ( QContextMenuEvent * event )
@@ -52,12 +57,12 @@ void FooPlaylistWidget::contextMenuEvent ( QContextMenuEvent * event )
 
     if (-1 != index)
     {
-        action = menu.addAction (tr ("Play w/o stop after"), mainWindow, SLOT (play ()));
+        action = menu.addAction (tr ("Play"), mainWindow, SLOT (play ()));
         action->setData (index);
 
         menu.addSeparator ();
 
-        action = menu.addAction (tr ("Play"), mainWindow, SLOT (play ()));
+        action = menu.addAction (tr ("Stop after this file"), mainWindow, SLOT (play ()));
         action->setData (index);
 
         menu.addSeparator ();
@@ -92,12 +97,17 @@ void FooPlaylistWidget::contextMenuEvent ( QContextMenuEvent * event )
     menu.exec (QCursor::pos ());
 }
 
-void FooPlaylistWidget::addFile (QString file, int index)
+void FooPlaylistWidget::addFile (const QString &file, int index)
 {
-    QTreeWidgetItem *wid = new QTreeWidgetItem (this);
+    foreach (const QString &filter, Filters)
+	if (file.endsWith (filter, Qt::CaseInsensitive))
+	{
+	    QTreeWidgetItem *wid = new QTreeWidgetItem (this);
 
-    wid->setText(0, file);
-    insertTopLevelItem (index == -1 ? topLevelItemCount() : index, wid);
+	    wid->setText(0, file);
+	    insertTopLevelItem (index == -1 ? topLevelItemCount() : index, wid);
+	    return;
+	}
 }
 
 int FooPlaylistWidget::plistFindFname (const char *fname)

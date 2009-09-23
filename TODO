@@ -11,3 +11,6 @@ TODO :
 - playlista jakaś sensowna (z metadanymi)
 - sortowanie playlisty
 - dodanie skryptow cmake do budowania fooaudio
+
+Ideas:
+- use libmagic or something simmilar for detecting file type
