@@ -20,10 +20,10 @@ class FooTrackList : public QList<FooTrack>
     QString Name;
 
 public:
-    FooTrackList();
+    FooTrackList(QString name = "");
 
     const QString & name() { return Name; }
-    void setName (QString title) { Name=name; }
+    void setName (const QString &name) { Name=name; }
 };
 
 #endif
