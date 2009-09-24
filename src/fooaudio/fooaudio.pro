@@ -20,7 +20,8 @@ HEADERS += abstractaudiointerface.h \
     footabbar.hpp \
     footabwidget.hpp \
     footrack.hpp \
-    footracklist.hpp
+    footracklist.hpp \
+	
 SOURCES += abstractaudioplugin.cpp \
     fooabout.cpp \
     fooaudio.cpp \
@@ -32,5 +33,8 @@ SOURCES += abstractaudioplugin.cpp \
     footabbar.cpp \
     footabwidget.cpp \
     footracklist.cpp \
-    footrack.cpp
+    footrack.cpp \
+
+include(logic/logic.pro)
+
 RESOURCES += resource.qrc
