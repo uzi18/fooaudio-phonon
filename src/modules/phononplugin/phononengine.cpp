@@ -21,8 +21,9 @@
 
 #include <QDebug>
 #include <QtPlugin>
-#include <phonon/audiooutput.h>
-#include <phonon/mediaobject.h>
+#include <Phonon/AudioOutput>
+#include <Phonon/MediaObject>
+#include <Phonon/BackendCapabilities>
 
 namespace FooAudio
 {
@@ -33,6 +34,7 @@ namespace FooAudio
     public:
         Phonon::MediaObject *mediaObject;
         Phonon::AudioOutput *audioOutput;
+        Phonon::MediaObject *metaInformation;
     };
 
     PhononEngine::PhononEngine(QObject * parent)
@@ -42,6 +44,7 @@ namespace FooAudio
 
         d->audioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
         d->mediaObject = new Phonon::MediaObject(this);
+        d->metaInformation = new Phonon::MediaObject(this);
 
         Phonon::createPath(d->mediaObject, d->audioOutput);
 
@@ -83,12 +86,12 @@ namespace FooAudio
         d->audioOutput->setMuted(mute);
     }
 
-    qint64 PhononEngine::totalTime()
+    qint64 PhononEngine::totalTime() const
     {
         return d->mediaObject->totalTime();
     }
 
-    void PhononEngine::seek(qint64 time)
+    void PhononEngine::seek(const qint64 time)
     {
         d->mediaObject->seek(time);
     }
@@ -113,7 +116,7 @@ namespace FooAudio
         d->mediaObject->clearQueue();
     }
 
-    void PhononEngine::enqueueNextFile(QUrl file)
+    void PhononEngine::enqueueNextFile(const QUrl file)
     {
         qDebug() << "PhononEngine::enqueueNextFile"
             << "Next song: " << file.toString();
@@ -125,7 +128,7 @@ namespace FooAudio
         }
     }
 
-    void PhononEngine::playFile(QUrl file)
+    void PhononEngine::playFile(const QUrl file)
     {
         qDebug() << "PhononEngine::playfile";
 
@@ -146,10 +149,27 @@ namespace FooAudio
         }
     }
 
-    void PhononEngine::setVolume(int volume)
+    void PhononEngine::setVolume(const int volume)
     {
         qreal v = volume / 100;
         d->audioOutput->setVolume(v);
+    }
+
+    void PhononEngine::metaData(const QUrl url)
+    {
+        d->metaInformation->setCurrentSource(url);
+        emit metaData(d->metaInformation->metaData());
+    }
+
+    void PhononEngine::metaData(const QString &key, const QUrl url)
+    {
+        d->metaInformation->setCurrentSource(url);
+        emit metaData(d->metaInformation->metaData(key));
+    }
+
+    void PhononEngine::mimeTypes()
+    {
+        emit mimeTypes(Phonon::BackendCapabilities::availableMimeTypes());
     }
 };
 
