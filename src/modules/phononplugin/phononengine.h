@@ -41,22 +41,28 @@ namespace FooAudio
         bool isMuted();
         void setMuted(bool);
 
-        qint64 totalTime();
-        void seek(qint64 time);
+        qint64 totalTime() const;
+        void seek(const qint64 time);
 
     signals:
         void aboutToFinish();
-        void progress(qint64 time);
-        void willPlayNow(QUrl file);
+        void progress(const qint64 time);
+        void willPlayNow(const QUrl file);
+        void metaData(QMultiMap<QString, QString>);
+        void metaData(QStringList);
+        void mimeTypes(QStringList);
 
     public slots:
         void stop();
         void play();
         void pause();
         void clearQueue();
-        void enqueueNextFile(QUrl file);
-        void playFile(QUrl file);
-        void setVolume(int volume);
+        void enqueueNextFile(const QUrl file);
+        void playFile(const QUrl file);
+        void setVolume(const int volume);
+        void metaData(const QUrl url);
+        void metaData(const QString &key, const QUrl url);
+        void mimeTypes();
 
     private:
         class PhononEnginePrivate;
