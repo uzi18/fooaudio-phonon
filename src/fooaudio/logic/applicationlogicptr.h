@@ -17,32 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************************/
 
-#include "applicationlogic.h"
+#ifndef APPLICATIONLOGICPTR_H
+#define APPLICATIONLOGICPTR_H
 
-#include <QDebug>
+#include <QSharedPointer>
 
-ApplicationLogic::ApplicationLogic()
-{
-}
+class ApplicationLogic;
 
-ApplicationLogic::~ApplicationLogic()
-{
-}
+typedef QSharedPointer<ApplicationLogic> ApplicationLogicPtr;
 
-void ApplicationLogic::InitializeControllers()
-{
-// example:
-//    controllersList["Controller"] = QSharedPointer<Controller>(new Controller);
-}
-
-QSharedPointer<QObject> ApplicationLogic::getController(QString controllerName)
-{
-    return controllersList[controllerName];
-}
-
-void ApplicationLogic::run()
-{
-    InitializeControllers();
-
-    exec();
-}
+#endif // APPLICATIONLOGICPTR_H
