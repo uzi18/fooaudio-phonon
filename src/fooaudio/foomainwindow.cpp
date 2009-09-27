@@ -496,36 +496,35 @@ void FooMainWindow::createStatusBar()
 
 void FooMainWindow::createSystrayIcon()
 {
-    if (QSystemTrayIcon::isSystemTrayAvailable())
-    {
-        trayIcon = new QSystemTrayIcon(this);
-        trayIcon->setIcon(QIcon(":images/icon64.png"));
+    if (!QSystemTrayIcon::isSystemTrayAvailable())
+        return;
 
-        trayMenu = new QMenu();
-        trayMenu->addAction (stopAction);
-        trayMenu->addAction (pauseAction);
-        trayMenu->addAction (playAction);
-        trayMenu->addAction (previousAction);
-        trayMenu->addAction (nextAction);
-        trayMenu->addAction (randomAction);
+    trayIcon = new QSystemTrayIcon(this);
+    trayIcon->setIcon(QIcon(":images/icon64.png"));
 
-        trayMenu->addSeparator ();
+    trayMenu = new QMenu();
+    trayMenu->addAction (stopAction);
+    trayMenu->addAction (pauseAction);
+    trayMenu->addAction (playAction);
+    trayMenu->addAction (previousAction);
+    trayMenu->addAction (nextAction);
+    trayMenu->addAction (randomAction);
 
-        trayMenu->addAction (orderMenu->menuAction ());
-        trayMenu->addAction (stopAfterCurrentAction);
-        trayMenu->addAction (playbackFollowsCursorAction);
-        trayMenu->addAction (cursorFollowsPlaybackAction);
+    trayMenu->addSeparator ();
 
-        trayMenu->addSeparator();
+    trayMenu->addAction (orderMenu->menuAction ());
+    trayMenu->addAction (stopAfterCurrentAction);
+    trayMenu->addAction (playbackFollowsCursorAction);
+    trayMenu->addAction (cursorFollowsPlaybackAction);
 
-        trayMenu->addAction(tr ("&Exit"), this, SLOT (exit()));
+    trayMenu->addSeparator();
 
-        trayIcon->setContextMenu(trayMenu);
+    trayMenu->addAction(tr ("&Exit"), this, SLOT (exit()));
 
-        connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-                this, SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
+    trayIcon->setContextMenu(trayMenu);
 
-    }
+    connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+            this, SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
 }
 
 void FooMainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
@@ -573,7 +572,7 @@ QUrl FooMainWindow::getNextFile()
     }
     else
     {
-        // if Queue is not empty so priority is on these files
+        // if we have Queue priority is on these files
         // TODO what about order here?
         qDebug() << "FooMainWindow::Queue";
         file = queue.takeLast();
