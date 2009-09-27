@@ -558,25 +558,23 @@ void FooMainWindow::itemDoubleClicked(QTreeWidgetItem * item, int column)
 QUrl FooMainWindow::getNextFile()
 {
     QUrl file;
-    switch (this->order)
-    {
-        case PlayOrder::shuffleTracks:
-        {
-            return this->randomTrack();
-        }
-        case PlayOrder::repeatTrack:
-        {
-            return QUrl(this->fooTabWidget->currentPlayingItem->text(0));
-        }
-        default:
-            break;
-    }
     if (queue.isEmpty())
     {
-        file = fooTabWidget->nextFile(true);
+        // if Queue is empty take order option
+        switch (this->order)
+        {
+        case PlayOrder::shuffleTracks:
+            file = this->randomTrack();
+        case PlayOrder::repeatTrack:
+            file = this->fooTabWidget->currentPlayingItem->text(0);
+        default:
+            file = fooTabWidget->nextFile(true);
+        }
     }
     else
     {
+        // if Queue is not empty so priority is on these files
+        // TODO what about order here?
         qDebug() << "FooMainWindow::Queue";
         file = queue.takeLast();
     }
@@ -977,6 +975,7 @@ void FooMainWindow::removeFromQueue()
         }
     }
 }
+
 QUrl FooMainWindow::randomTrack()
 {
     int count = this->fooTabWidget->currentPlayingPlaylist->plistCount();
@@ -984,6 +983,7 @@ QUrl FooMainWindow::randomTrack()
     this->fooTabWidget->setCurrentItem(randomIndex);
     return QUrl(this->fooTabWidget->currentPlayingItem->text(0));
 }
+
 void FooMainWindow::uncheckAllOrders()
 {
     this->repeatPlaylistAction->setChecked(false);
@@ -993,6 +993,7 @@ void FooMainWindow::uncheckAllOrders()
     this->shuffleTracksAction->setChecked(false);
     this->defaultOrderAction->setChecked(false);
 }
+
 void FooMainWindow::random ()
 {
     emit randomSignal(randomTrack());

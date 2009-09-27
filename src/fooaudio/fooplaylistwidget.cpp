@@ -97,14 +97,14 @@ void FooPlaylistWidget::contextMenuEvent ( QContextMenuEvent * event )
 void FooPlaylistWidget::addFile (const QString &file, int index)
 {
     foreach (const QString &filter, Filters)
-	if (file.endsWith (filter, Qt::CaseInsensitive))
-	{
-	    QTreeWidgetItem *wid = new QTreeWidgetItem (this);
+        if (file.endsWith (filter, Qt::CaseInsensitive))
+        {
+            QTreeWidgetItem *wid = new QTreeWidgetItem (this);
 
-	    wid->setText(0, file);
-	    insertTopLevelItem (index == -1 ? topLevelItemCount() : index, wid);
-	    return;
-	}
+            wid->setText(0, file);
+            insertTopLevelItem (index == -1 ? topLevelItemCount() : index, wid);
+            return;
+        }
 }
 
 int FooPlaylistWidget::plistFindFname (const char *fname)
@@ -185,6 +185,7 @@ void FooPlaylistWidget::addFiles(int index, QList<QUrl> list, bool recursive)
 
     foreach (QUrl file, list)
     {
+        // toLocalPath() have problems with spaces in file/dir names - it just cut rest
         path = file.toString();
         info.setFile( path );
         if ( info.isFile() )
