@@ -5,9 +5,6 @@
 #include <QLineEdit>
 #include <QTabBar>
 
-#include <iostream>
-using namespace std;
-
 FooChangeName::FooChangeName(int index, QWidget *parent)
 {
 	tabBar = (QTabBar*) parent;

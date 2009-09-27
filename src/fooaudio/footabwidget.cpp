@@ -1,6 +1,3 @@
-#include <iostream>
-
-using namespace std;
 
 #include "footabwidget.hpp"
 #include "footabbar.hpp"
@@ -10,7 +7,7 @@ using namespace std;
 #include <QEvent>
 #include <QMenu>
 
-#include <QDebug>
+#include <QtDebug>
 
 FooTabWidget::FooTabWidget (QWidget *parent) : QTabWidget (parent), m_newTabAction(0), m_closeTabAction(0), m_nextTabAction(0), m_previousTabAction(0), m_tabBar(new FooTabBar (this))
 {
@@ -133,7 +130,7 @@ void FooTabWidget::previousTab()
 
 void FooTabWidget::itemClicked(QTreeWidgetItem * item, int column)
 {
-	cerr << "FooTabWidget::itemClicked" << endl;
+        qDebug() << "FooTabWidget::itemClicked";
 	currentPlayingItem = item;
 	currentPlayingPlaylist = static_cast<FooPlaylistWidget *>(currentWidget());
 
@@ -142,27 +139,27 @@ void FooTabWidget::itemClicked(QTreeWidgetItem * item, int column)
 
 QUrl FooTabWidget::nextFile(bool repeat)
 {
-	cerr << "FooTabWidget::nextFile" << endl;
+        qDebug() << "FooTabWidget::nextFile";
 	int c = count();
 
-	cerr << "TabWidget: nextFile: c: " << c << endl;
+        qDebug() << "TabWidget: nextFile: c: " << c;
 
 	for (int i = 0; i < c; i++)
 	{
-		cout << "TabWidget: nextFile: for: i: " << i << endl;
+                qDebug() << "TabWidget: nextFile: for: i: " << i;
 		FooPlaylistWidget *wid = static_cast<FooPlaylistWidget *> (widget(i));
 		int index = wid->indexOfTopLevelItem(currentPlayingItem);
 		int max = wid->topLevelItemCount();
-		cerr << "TabWidget: nextFile: for: index: " << index << endl;
-		cerr << "TabWidget: nextFile: for: max: " << max << endl;
+                qDebug() << "TabWidget: nextFile: for: index: " << index;
+                qDebug() << "TabWidget: nextFile: for: max: " << max;
 
 			if (index >= 0)
 			{
-				cerr << "TabWidget: nextFile: for: if: index >= 0" << endl;
+                                qDebug() << "TabWidget: nextFile: for: if: index >= 0";
 
 				if (index == (max - 1) && repeat)
 				{
-					cerr << "TabWidget: nextFile: for: if: repeat" << endl;
+                                        qDebug() << "TabWidget: nextFile: for: if: repeat";
 
 					currentPlayingPlaylist = wid;
 					currentPlayingItem = wid->topLevelItem(0);
@@ -171,7 +168,7 @@ QUrl FooTabWidget::nextFile(bool repeat)
 				}
 				else if (index < (max - 1))
 				{
-					cerr << "TabWidget: nextFile: for: if: index < max" << endl;
+                                        qDebug() << "TabWidget: nextFile: for: if: index < max";
 
 					currentPlayingPlaylist = wid;
 					currentPlayingItem = wid->itemBelow(currentPlayingItem);
@@ -180,7 +177,7 @@ QUrl FooTabWidget::nextFile(bool repeat)
 				}
 				else if (index == (max - 1) && !repeat)
 				{
-					cerr << "TabWidget: nextFile: for: if: !repeat" << endl;
+                                        qDebug() << "TabWidget: nextFile: for: if: !repeat";
 
 					return QUrl();
 				}
@@ -192,27 +189,27 @@ QUrl FooTabWidget::nextFile(bool repeat)
 
 QUrl FooTabWidget::previousFile(bool repeat)
 {
-	cerr << "FooTabWidget::previousFile" << endl;
+        qDebug() << "FooTabWidget::previousFile";
 	int c = count();
 
-	cerr << "TabWidget: previousFile: c: " << c << endl;
+        qDebug() << "TabWidget: previousFile: c: " << c;
 
 	for (int i = 0; i < c; i++)
 	{
-		cout << "TabWidget: previousFile: for: i: " << i << endl;
+                qDebug() << "TabWidget: previousFile: for: i: " << i;
 		FooPlaylistWidget *wid = static_cast<FooPlaylistWidget *> (widget(i));
 		int index = wid->indexOfTopLevelItem(currentPlayingItem);
 		int max = wid->topLevelItemCount();
-		cerr << "TabWidget: previousFile: for: index: " << index << endl;
-		cerr << "TabWidget: previousFile: for: max: " << max << endl;
+                qDebug() << "TabWidget: previousFile: for: index: " << index;
+                qDebug() << "TabWidget: previousFile: for: max: " << max;
 
 			if (index >= 0)
 			{
-				cerr << "TabWidget: previousFile: for: if: index >= 0" << endl;
+                                qDebug() << "TabWidget: previousFile: for: if: index >= 0";
 
 				if (index == 0 && repeat)
 				{
-					cerr << "TabWidget: previousFile: for: if: repeat" << endl;
+                                        qDebug() << "TabWidget: previousFile: for: if: repeat";
 
 					currentPlayingPlaylist = wid;
 					currentPlayingItem = wid->topLevelItem(max - 1);
@@ -221,7 +218,7 @@ QUrl FooTabWidget::previousFile(bool repeat)
 				}
 				else if (index > 0)
 				{
-					cerr << "TabWidget: previousFile: for: if: index > 0" << endl;
+                                        qDebug() << "TabWidget: previousFile: for: if: index > 0";
 
 					currentPlayingPlaylist = wid;
 					currentPlayingItem = wid->itemAbove(currentPlayingItem);
@@ -230,7 +227,7 @@ QUrl FooTabWidget::previousFile(bool repeat)
 				}
 				else if (index == 0 && !repeat)
 				{
-					cerr << "TabWidget: previousFile: for: if: !repeat" << endl;
+                                        qDebug() << "TabWidget: previousFile: for: if: !repeat";
 
 					return QUrl();
 				}
@@ -252,7 +249,7 @@ void FooTabWidget::cut (bool remove)
 	{
 		if (item)
 		{
-			cerr << "TabWidget: bufor2 :" << item->text(0).toStdString() << endl;
+                        qDebug() << "TabWidget: bufor2 :" << item->text(0);
 			buffer.append(item->clone());
 
 			if (remove)
@@ -287,11 +284,11 @@ void FooTabWidget::paste ()
 	if (!foo)
 		return;
 
-	cerr << "TabWidget: count: " << buffer.count() << endl;
-	cerr << "TabWidget: size: " << buffer.size() << endl;
+        qDebug() << "TabWidget: count: " << buffer.count();
+        qDebug() << "TabWidget: size: " << buffer.size();
 
 	int line = foo->indexOfTopLevelItem(foo->currentItem ());
-	cerr << "TabWidget: line :" << line << endl;
+        qDebug() << "TabWidget: line :" << line;
 	if (line < 0)
 		line = foo->plistCount();
 	else
@@ -301,7 +298,7 @@ void FooTabWidget::paste ()
 	{
 		if (item)
 		{
-			cerr << "TabWidget: bufor2 :" << item->text(0).toStdString() << endl;
+                        qDebug() << "TabWidget: bufor2 :" << item->text(0);
 			// if line not selected
 			foo->insertTopLevelItem(line, item->clone());
 			line++;
@@ -329,26 +326,26 @@ void FooTabWidget::selectAll ()
 
 void FooTabWidget::setCurrentPlaylist(int index)
 {
-  	cerr << "TabWidget: playlista :" << index << endl;
+        qDebug() << "TabWidget: playlista :" << index;
 	currentPlayingPlaylist = static_cast<FooPlaylistWidget *> (widget(index));
 	setCurrentIndex(index);
 }
 
 int FooTabWidget::getCurrentPlaylistIndex()
 {
-	cerr << "TabWidget: playlista :" << indexOf(currentPlayingPlaylist) << endl;
+        qDebug() << "TabWidget: playlista :" << indexOf(currentPlayingPlaylist);
 	return indexOf(currentPlayingPlaylist);
 }
 
 void FooTabWidget::setCurrentItem(int index)
 {
-  	cerr << "TabWidget: utwor :" << index << endl;
+        qDebug() << "TabWidget: utwor :" << index;
 	currentPlayingItem = currentPlayingPlaylist->topLevelItem(index);
 	currentPlayingPlaylist->setCurrentItem(currentPlayingItem);
 }
 
 int FooTabWidget::getCurrentItemIndex()
 {
-  	cerr << "TabWidget: utwor :" << currentPlayingPlaylist->indexOfTopLevelItem(currentPlayingItem) << endl;
+        qDebug() << "TabWidget: utwor :" << currentPlayingPlaylist->indexOfTopLevelItem(currentPlayingItem);
 	return currentPlayingPlaylist->indexOfTopLevelItem(currentPlayingItem);
 }

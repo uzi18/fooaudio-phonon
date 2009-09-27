@@ -1,12 +1,9 @@
-#include <QDebug>
 #include <QLabel>
 #include <QStringList>
 #include <QtGui>
 #include <QUrl>
 
-#include <iostream>
-
-using namespace std;
+#include <QtDebug>
 
 #include "foomainwindow.hpp"
 
@@ -112,7 +109,7 @@ void FooPlaylistWidget::addFile (const QString &file, int index)
 
 int FooPlaylistWidget::plistFindFname (const char *fname)
 {
-    cerr << "FooPlaylistWidget::plistFindFname" << endl;
+    qDebug() << "FooPlaylistWidget::plistFindFname";
     for (int i = 0; i < topLevelItemCount(); i++)
     {
         QTreeWidgetItem *wid = topLevelItem(i);
@@ -143,9 +140,9 @@ int FooPlaylistWidget::plistNext(int i)
 
 QUrl FooPlaylistWidget::file(int i)
 {
-    cerr << "FooPlaylistWidget::file" << endl;
-    cerr << this->topLevelItemCount() << endl;
-    cerr << i << endl;
+    qDebug() << "FooPlaylistWidget::file";
+    qDebug() << this->topLevelItemCount();
+    qDebug() << i;
     QString text = topLevelItem(i)->text(0);
     QUrl url(text);
     return url;
@@ -192,13 +189,13 @@ void FooPlaylistWidget::addFiles(int index, QList<QUrl> list, bool recursive)
         info.setFile( path );
         if ( info.isFile() )
         {
-            cerr << "FooPlaylistWidget:: addFiles at " << index << endl;
+            qDebug() << "FooPlaylistWidget:: addFiles at " << index;
             addFile(path, index);
         }
 
         else if ( info.isDir() && recursive)
         {
-            cerr << "FooPlaylistWidget:: addDir at " << index << endl;
+            qDebug() << "FooPlaylistWidget:: addDir at " << index;
             QDir directory(path);
             QList<QUrl> urls;
 
