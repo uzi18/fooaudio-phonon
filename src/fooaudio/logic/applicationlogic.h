@@ -21,37 +21,17 @@
 #define LOGICTHREAD_H
 
 #include <QThread>
-#include <QSharedPointer>
 #include <QMap>
+#include <QSharedPointer>
 #include <QApplication>
-
-#include "applicationlogicptr.h"
 
 class ApplicationLogic : public QThread
 {
     Q_OBJECT
-    Q_DISABLE_COPY(ApplicationLogic)
 
     QMap<QString, QSharedPointer<QObject> > controllersList;
 
-    template <typename T>
-    class deleter
-    {
-        public:
-            inline void operator() (T *p)
-            {
-                p->quit();
-                while(p->isRunning())
-                {
-                    QApplication::processEvents();
-                    QApplication::instance()->thread()->msleep(100);
-                }
-
-                delete p;
-            }
-    };
-
-    static ApplicationLogicPtr instance;
+    static ApplicationLogic* instance;
 
 public:
     ApplicationLogic();
@@ -60,7 +40,8 @@ public:
     QSharedPointer<QObject> getController(QString controllerName);
     void run();
     void InitializeControllers();
-    static ApplicationLogicPtr getInstance();
+    static ApplicationLogic* getInstance();
+    static void Release();
 };
 
 #endif // LOGICTHREAD_H
