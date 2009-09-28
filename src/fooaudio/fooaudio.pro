@@ -7,6 +7,8 @@ TARGET =
 DEPENDPATH += .
 INCLUDEPATH += .
 DESTDIR = ../../bin
+CONFIG -= release
+CONFIG += debug
 
 # Input
 HEADERS += abstractaudiointerface.h \
@@ -21,7 +23,7 @@ HEADERS += abstractaudiointerface.h \
     footabwidget.hpp \
     footrack.hpp \
     footracklist.hpp \
-	
+    fooapplication.h
 SOURCES += abstractaudioplugin.cpp \
     fooabout.cpp \
     fooaudio.cpp \
@@ -34,7 +36,6 @@ SOURCES += abstractaudioplugin.cpp \
     footabwidget.cpp \
     footracklist.cpp \
     footrack.cpp \
-
+    fooapplication.cpp
 include(logic/logic.pro)
-
 RESOURCES += resource.qrc

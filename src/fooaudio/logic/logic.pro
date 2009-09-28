@@ -2,7 +2,6 @@ DEPENDPATH += . \
     ../
 INCLUDEPATH += . \
     ../
-HEADERS += logic/applicationlogic.h \
-           logic/applicationlogicptr.h
+HEADERS += logic/applicationlogic.h
 
 SOURCES += logic/applicationlogic.cpp
