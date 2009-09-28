@@ -51,6 +51,8 @@ class ApplicationLogic : public QThread
             }
     };
 
+    static ApplicationLogicPtr instance;
+
 public:
     ApplicationLogic();
     ~ApplicationLogic();
@@ -58,11 +60,7 @@ public:
     QSharedPointer<QObject> getController(QString controllerName);
     void run();
     void InitializeControllers();
-
-    static ApplicationLogicPtr Create()
-    {
-        return ApplicationLogicPtr(new ApplicationLogic, ApplicationLogic::deleter<ApplicationLogic>());
-    }
+    static ApplicationLogicPtr getInstance();
 };
 
 #endif // LOGICTHREAD_H

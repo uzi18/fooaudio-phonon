@@ -21,6 +21,8 @@
 
 #include <QDebug>
 
+ApplicationLogicPtr ApplicationLogic::instance;
+
 ApplicationLogic::ApplicationLogic()
 {
 }
@@ -38,6 +40,16 @@ void ApplicationLogic::InitializeControllers()
 QSharedPointer<QObject> ApplicationLogic::getController(QString controllerName)
 {
     return controllersList[controllerName];
+}
+
+ApplicationLogicPtr ApplicationLogic::getInstance()
+{
+    if(instance)
+        return instance;
+
+    instance = ApplicationLogicPtr(new ApplicationLogic, ApplicationLogic::deleter<ApplicationLogic>());
+
+    return instance;
 }
 
 void ApplicationLogic::run()
