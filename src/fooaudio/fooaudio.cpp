@@ -10,8 +10,8 @@ int main (int argc, char * argv [])
 
 	QApplication fooApp (argc, argv);
 
-        ApplicationLogicPtr applicationLogic = ApplicationLogic::Create();
-        applicationLogic->start();
+    ApplicationLogicPtr applicationLogic = ApplicationLogic::getInstance();
+    applicationLogic->start();
 
 	QTextCodec::setCodecForCStrings (QTextCodec::codecForName ("UTF-8"));
 	fooApp.setApplicationName("fooaudio");
