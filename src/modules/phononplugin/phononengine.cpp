@@ -21,6 +21,7 @@
 
 #include <QtDebug>
 #include <QtPlugin>
+
 #include <Phonon/AudioOutput>
 #include <Phonon/MediaObject>
 #include <Phonon/BackendCapabilities>
