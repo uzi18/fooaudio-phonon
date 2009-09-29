@@ -96,8 +96,11 @@ void FooPlaylistWidget::contextMenuEvent ( QContextMenuEvent * event )
 
 void FooPlaylistWidget::addFile (const QString &file, int index)
 {
+    // if it's network uri
+    QUrl adress(file);
+
     foreach (const QString &filter, Filters)
-        if (file.endsWith (filter, Qt::CaseInsensitive) || file.startsWith("http://" ,Qt::CaseInsensitive))
+        if (file.endsWith (filter, Qt::CaseInsensitive) || (!adress.sheme().isEmpty() && !adress.host().isEmpty()))
         {
             QTreeWidgetItem *wid = new QTreeWidgetItem (this);
 
