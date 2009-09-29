@@ -106,7 +106,6 @@ void FooMainWindow::createMenus()
     addLocationAction = new QAction (tr ("Add Lo&cation"), this);
     connect (addLocationAction, SIGNAL (triggered ()), this, SLOT (addLocation ()));
     fileMenu->addAction (addLocationAction);
-    addLocationAction->setEnabled(false);
 
     fileMenu->addSeparator ();
 
@@ -760,7 +759,7 @@ void FooMainWindow::addFiles ()
 
 void FooMainWindow::addFolder ()
 {
-    QString dirName = QFileDialog::getExistingDirectory(this, tr("Select directory"), QDir::currentPath());
+    QString dirName = QFileDialog::getExistingDirectory(this, tr("Select directory"), QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
 
     if (dirName.isEmpty())
         return;
@@ -782,6 +781,22 @@ void FooMainWindow::addFolder ()
 
 void FooMainWindow::addLocation ()
 {
+    bool ok;
+    QString locName = QInputDialog::getText(this, tr("Add Location"), tr("Enter adress:"),
+                                            QLineEdit::Normal, "http://", &ok);
+    qDebug() << "Location" << locName;
+    if (!ok || locName.isEmpty())
+        return;
+
+    QUrl adress = QUrl(locName);
+    if (!adress.isValid())
+        return;
+
+    FooPlaylistWidget * wid = static_cast<FooPlaylistWidget *> (fooTabWidget->currentWidget());
+    if (!wid)
+        return;
+
+    wid->addFile(locName, -1);
 }
 
 void FooMainWindow::newPlaylist ()
