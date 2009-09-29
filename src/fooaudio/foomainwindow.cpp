@@ -336,7 +336,6 @@ void FooMainWindow::createMenus()
     defaultOrderAction = new QAction (tr ("&Default"), this);
     connect (defaultOrderAction, SIGNAL (triggered ()), this, SLOT (defaultOrder ()));
     orderMenu->addAction (defaultOrderAction);
-    defaultOrderAction->setEnabled(false);
     defaultOrderAction->setCheckable(true);
 
     repeatPlaylistAction = new QAction (tr ("Repeat (&playlist)"), this);
@@ -347,7 +346,6 @@ void FooMainWindow::createMenus()
     repeatTrackAction = new QAction (tr ("Repeat (&track)"), this);
     connect (repeatTrackAction, SIGNAL (triggered ()), this, SLOT (repeatTrack ()));
     orderMenu->addAction (repeatTrackAction);
-    repeatTrackAction->setEnabled(true);
     repeatTrackAction->setCheckable(true);
 
     randomOrderAction = new QAction (tr ("Ra&ndom"), this);
@@ -359,7 +357,6 @@ void FooMainWindow::createMenus()
     shuffleTracksAction = new QAction (tr ("&Shuffle (tracks)"), this);
     connect (shuffleTracksAction, SIGNAL (triggered ()), this, SLOT (shuffleTracks ()));
     orderMenu->addAction (shuffleTracksAction);
-    shuffleTracksAction->setEnabled(true);
     shuffleTracksAction->setCheckable(true);
 
     shuffleAlbumsAction = new QAction (tr ("S&huffle (albums)"), this);
@@ -386,6 +383,7 @@ void FooMainWindow::createMenus()
     playbackMenu->addAction (playbackFollowsCursorAction);
     playbackFollowsCursorAction->setEnabled(false);
 
+    // it is by default now
     cursorFollowsPlaybackAction = new QAction (tr ("&Cursor follows playback"), this);
     connect (cursorFollowsPlaybackAction, SIGNAL (triggered ()), this, SLOT (cursorFollowsPlayback ()));
     playbackMenu->addAction (cursorFollowsPlaybackAction);
@@ -566,7 +564,7 @@ QUrl FooMainWindow::getNextFile()
         case PlayOrder::repeatTrack:
             file = this->fooTabWidget->currentPlayingItem->text(0);
         default:
-            file = fooTabWidget->nextFile(true);
+            file = fooTabWidget->nextFile(this->order == PlayOrder::repeatPlaylist);
         }
     }
     else
@@ -950,7 +948,7 @@ void FooMainWindow::play ()
 void FooMainWindow::previous ()
 {
     qDebug() << "FooMainWindow::previous";
-    emit prevSignal (fooTabWidget->previousFile(true));
+    emit prevSignal (fooTabWidget->previousFile(this->order == PlayOrder::repeatPlaylist));
 }
 
 void FooMainWindow::next ()
