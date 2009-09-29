@@ -31,7 +31,7 @@ class ApplicationLogic : public QThread
 
     QMap<QString, QSharedPointer<QObject> > controllersList;
 
-    static ApplicationLogic* instance;
+    static ApplicationLogic* Instance;
 
 public:
     ApplicationLogic();
