@@ -784,10 +784,10 @@ void FooMainWindow::addFolder ()
 
 void FooMainWindow::addLocation ()
 {
-    bool ok;
+    bool ok = false;
     QString locName = QInputDialog::getText(this, tr("Add Location"), tr("Enter adress:"),
                                             QLineEdit::Normal, "http://", &ok);
-    qDebug() << "Location" << locName;
+    qDebug() << "Main Window: Add Location:" << locName;
     if (!ok || locName.isEmpty())
         return;
 

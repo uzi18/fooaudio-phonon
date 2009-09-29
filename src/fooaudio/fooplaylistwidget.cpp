@@ -97,7 +97,7 @@ void FooPlaylistWidget::contextMenuEvent ( QContextMenuEvent * event )
 void FooPlaylistWidget::addFile (const QString &file, int index)
 {
     foreach (const QString &filter, Filters)
-        if (file.endsWith (filter, Qt::CaseInsensitive))
+        if (file.endsWith (filter, Qt::CaseInsensitive) || file.startsWith("http://" ,Qt::CaseInsensitive))
         {
             QTreeWidgetItem *wid = new QTreeWidgetItem (this);
 
