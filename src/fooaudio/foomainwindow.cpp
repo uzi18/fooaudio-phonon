@@ -1,6 +1,4 @@
-#include <iostream>
-
-using namespace std;
+#include <QtDebug>
 
 #include <QtGui>
 #include <QUrl>
@@ -42,10 +40,10 @@ void FooMainWindow::setAudioEngine(FooPhononAudioEngine * engine)
 
     connect(this, SIGNAL(nextSignal(QUrl)), fooAudioEngine, SLOT(playFile(QUrl)));
     connect(this, SIGNAL(prevSignal(QUrl)), fooAudioEngine, SLOT(playFile(QUrl)));
+    connect(this, SIGNAL(randomSignal(QUrl)), fooAudioEngine, SLOT(playFile(QUrl)));
     connect(fooAudioEngine, SIGNAL(aboutToFinish()), this, SLOT(enqueueNextFile()));
     connect(this, SIGNAL(enqueueNextFile(QUrl)), fooAudioEngine, SLOT(enqueueNextFile(QUrl)));
     connect(fooAudioEngine, SIGNAL(willPlayNow (QUrl)), this, SLOT(addToPrevQueue(QUrl)));
-
     connect(this, SIGNAL(playSignal()), fooAudioEngine, SLOT(play()));
     connect(this, SIGNAL(pauseSignal()), fooAudioEngine, SLOT(pause()) );
     connect(this, SIGNAL(stopSignal()), fooAudioEngine, SLOT(stop()));
@@ -56,6 +54,7 @@ void FooMainWindow::setAudioEngine(FooPhononAudioEngine * engine)
 
 void FooMainWindow::init()
 {
+    qsrand(QTime::currentTime().second());
     fooTabWidget = new FooTabWidget();
     setCentralWidget(fooTabWidget);
 
@@ -328,7 +327,7 @@ void FooMainWindow::createMenus()
     randomAction = new QAction (tr ("&Random"), this);
     connect (randomAction, SIGNAL (triggered ()), this, SLOT (random ()));
     playbackMenu->addAction (randomAction);
-    randomAction->setEnabled(false);
+    randomAction->setEnabled(true);
 
     playbackMenu->addSeparator ();
 
@@ -349,7 +348,7 @@ void FooMainWindow::createMenus()
     repeatTrackAction = new QAction (tr ("Repeat (&track)"), this);
     connect (repeatTrackAction, SIGNAL (triggered ()), this, SLOT (repeatTrack ()));
     orderMenu->addAction (repeatTrackAction);
-    repeatTrackAction->setEnabled(false);
+    repeatTrackAction->setEnabled(true);
     repeatTrackAction->setCheckable(true);
 
     randomOrderAction = new QAction (tr ("Ra&ndom"), this);
@@ -361,7 +360,7 @@ void FooMainWindow::createMenus()
     shuffleTracksAction = new QAction (tr ("&Shuffle (tracks)"), this);
     connect (shuffleTracksAction, SIGNAL (triggered ()), this, SLOT (shuffleTracks ()));
     orderMenu->addAction (shuffleTracksAction);
-    shuffleTracksAction->setEnabled(false);
+    shuffleTracksAction->setEnabled(true);
     shuffleTracksAction->setCheckable(true);
 
     shuffleAlbumsAction = new QAction (tr ("S&huffle (albums)"), this);
@@ -379,7 +378,9 @@ void FooMainWindow::createMenus()
     stopAfterCurrentAction = new QAction (tr ("S&top after current"), this);
     connect (stopAfterCurrentAction, SIGNAL (triggered ()), this, SLOT (stopAfterCurrent ()));
     playbackMenu->addAction (stopAfterCurrentAction);
-    stopAfterCurrentAction->setEnabled(false);
+    stopAfterCurrentAction->setCheckable(true);
+    stopAfterCurrentAction->setChecked(false);
+
 
     playbackFollowsCursorAction = new QAction (tr ("Playback &follows cursor"), this);
     connect (playbackFollowsCursorAction, SIGNAL (triggered ()), this, SLOT (playbackFollowsCursor ()));
@@ -479,7 +480,7 @@ void FooMainWindow::createToolBars ()
     randomToolBarAction = new QAction (QIcon (":images/random.png"), tr ("Random"),this);
     connect (randomToolBarAction, SIGNAL (triggered ()), this, SLOT (random ()));
     playbackToolBar->addAction (randomToolBarAction);
-    randomToolBarAction->setEnabled(false);
+    randomToolBarAction->setEnabled(true);
 
     addToolBar (playbackToolBar);
 }
@@ -495,36 +496,35 @@ void FooMainWindow::createStatusBar()
 
 void FooMainWindow::createSystrayIcon()
 {
-    if (QSystemTrayIcon::isSystemTrayAvailable())
-    {
-        trayIcon = new QSystemTrayIcon(this);
-        trayIcon->setIcon(QIcon(":images/icon64.png"));
+    if (!QSystemTrayIcon::isSystemTrayAvailable())
+        return;
 
-        trayMenu = new QMenu();
-        trayMenu->addAction (stopAction);
-        trayMenu->addAction (pauseAction);
-        trayMenu->addAction (playAction);
-        trayMenu->addAction (previousAction);
-        trayMenu->addAction (nextAction);
-        trayMenu->addAction (randomAction);
+    trayIcon = new QSystemTrayIcon(this);
+    trayIcon->setIcon(QIcon(":images/icon64.png"));
 
-        trayMenu->addSeparator ();
+    trayMenu = new QMenu();
+    trayMenu->addAction (stopAction);
+    trayMenu->addAction (pauseAction);
+    trayMenu->addAction (playAction);
+    trayMenu->addAction (previousAction);
+    trayMenu->addAction (nextAction);
+    trayMenu->addAction (randomAction);
 
-        trayMenu->addAction (orderMenu->menuAction ());
-        trayMenu->addAction (stopAfterCurrentAction);
-        trayMenu->addAction (playbackFollowsCursorAction);
-        trayMenu->addAction (cursorFollowsPlaybackAction);
+    trayMenu->addSeparator ();
 
-        trayMenu->addSeparator();
+    trayMenu->addAction (orderMenu->menuAction ());
+    trayMenu->addAction (stopAfterCurrentAction);
+    trayMenu->addAction (playbackFollowsCursorAction);
+    trayMenu->addAction (cursorFollowsPlaybackAction);
 
-        trayMenu->addAction(tr ("&Exit"), this, SLOT (exit()));
+    trayMenu->addSeparator();
 
-        trayIcon->setContextMenu(trayMenu);
+    trayMenu->addAction(tr ("&Exit"), this, SLOT (exit()));
 
-        connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-                this, SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
+    trayIcon->setContextMenu(trayMenu);
 
-    }
+    connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+            this, SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
 }
 
 void FooMainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
@@ -546,10 +546,10 @@ void FooMainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
 
 void FooMainWindow::itemDoubleClicked(QTreeWidgetItem * item, int column)
 {
-    cerr << "FooMainWindow::itemDoubleClicked" << endl;
+    qDebug() << "FooMainWindow::itemDoubleClicked";
 
     QString nextOne = item->text(0);
-    cerr << nextOne.toStdString() << endl;
+    qDebug() << nextOne;
 
     emit nextSignal(nextOne);
 }
@@ -557,29 +557,44 @@ void FooMainWindow::itemDoubleClicked(QTreeWidgetItem * item, int column)
 QUrl FooMainWindow::getNextFile()
 {
     QUrl file;
-
     if (queue.isEmpty())
     {
-        file = fooTabWidget->nextFile(true);
+        // if Queue is empty take order option
+        switch (this->order)
+        {
+        case PlayOrder::shuffleTracks:
+            file = this->randomTrack();
+        case PlayOrder::repeatTrack:
+            file = this->fooTabWidget->currentPlayingItem->text(0);
+        default:
+            file = fooTabWidget->nextFile(true);
+        }
     }
     else
     {
-        cerr << "FooMainWindow::Queue" << endl;
+        // if we have Queue priority is on these files
+        // TODO what about order here?
+        qDebug() << "FooMainWindow::Queue";
         file = queue.takeLast();
     }
 
-    cerr << "FooMainWindow:: nextFile : " << file.toLocalFile().toStdString() << endl;
+    qDebug() << "FooMainWindow:: nextFile : " << file.toLocalFile();
     return file;
 }
 
 void FooMainWindow::enqueueNextFile()
 {
-    emit enqueueNextFile(getNextFile());
+    if (!this->stopAfterCurrentAction->isChecked())
+        emit enqueueNextFile(getNextFile());
+    else
+    {
+        this->stopAfterCurrentAction->setChecked(false);
+    }
 }
 
 void FooMainWindow::writeSettings()
 {
-    cerr << "Save Settings" << endl;
+    qDebug() << "Save Settings";
     QSettings settings("fooaudio", "fooaudio");
 
     settings.clear();
@@ -589,6 +604,7 @@ void FooMainWindow::writeSettings()
     settings.setValue("size", size());
     settings.setValue("toolBarsPosition", saveState());
     settings.setValue("trayIcon", trayIconAction->isChecked());
+    settings.setValue("playOrder", this->order);
     settings.endGroup();
 
     settings.beginGroup("Volume");
@@ -625,7 +641,7 @@ void FooMainWindow::writeSettings()
 
 void FooMainWindow::readSettings()
 {
-    cerr << "Read Settings" << endl;
+    qDebug() << "Read Settings";
     QSettings settings("fooaudio", "fooaudio");
 
     settings.beginGroup("FooMainWindow");
@@ -635,6 +651,26 @@ void FooMainWindow::readSettings()
     move(pos);
     restoreState(settings.value("toolBarsPosition", QVariant()).toByteArray());
     trayIconAction->setChecked(settings.value("trayIcon", false).toBool());
+    this->order = (PlayOrder::playOrder) settings.value("playOrder", PlayOrder::defaultOrder).toInt();
+    switch (this->order)
+    {
+        case PlayOrder::repeatTrack:
+        {
+            this->repeatTrackAction->setChecked(true);
+            break;
+        }
+        case PlayOrder::shuffleTracks:
+        {
+            this->shuffleTracksAction->setChecked(true);
+            break;
+        }
+        default:
+        {
+            this->repeatPlaylistAction->setChecked(true);
+            break;
+        }
+    }
+
     settings.endGroup();
 
     settings.beginGroup("Volume");
@@ -703,7 +739,7 @@ void FooMainWindow::openAudioCD ()
 
 void FooMainWindow::addFiles ()
 {
-    cerr << "FooMainWindow::addFiles" << endl;
+    qDebug() << "FooMainWindow::addFiles";
     QStringList files = QFileDialog::getOpenFileNames(this, tr("Select Music Files"), QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
 
     if (files.isEmpty())
@@ -855,29 +891,29 @@ void FooMainWindow::mute ()
 
 void FooMainWindow::stop ()
 {
-    cerr << "FooMainWindow::stop" << endl;
+    qDebug() << "FooMainWindow::stop";
     trackSlider->setValue(0);
     emit stopSignal();
 }
 
 void FooMainWindow::pause ()
 {
-    cerr << "FooMainWindow::pause" << endl;
+    qDebug() << "FooMainWindow::pause";
     emit pauseSignal ();
 }
 
 void FooMainWindow::play ()
 {
-    cerr << "FooMainWindow::play" << endl;
+    qDebug() << "FooMainWindow::play";
 
     if (fooAudioEngine->isPaused())
     {
-        cerr << "was PausedState" << endl;
+        qDebug() << "was PausedState";
         emit playSignal();
     }
     else if (fooAudioEngine->isStopped())
     {
-        cerr << "was StoppedState" << endl;
+        qDebug() << "was StoppedState";
         FooPlaylistWidget *playlist = (FooPlaylistWidget*)fooTabWidget->currentWidget();
         if (!playlist)
             return;
@@ -885,26 +921,26 @@ void FooMainWindow::play ()
         fooTabWidget->setCurrentPlaylist(fooTabWidget->currentIndex());
         fooTabWidget->setCurrentItem(0);
         QUrl file = playlist->file(0);
-        cerr << file.toString().toStdString() << endl;
+        qDebug() << file.toString();
 
         emit nextSignal (file);
     }
     else
     {
         // implement this
-        cerr << "Inny state" << endl;
+        qDebug() << "Inny state";
     }
 }
 
 void FooMainWindow::previous ()
 {
-    cerr << "FooMainWindow::previous" << endl;
+    qDebug() << "FooMainWindow::previous";
     emit prevSignal (fooTabWidget->previousFile(true));
 }
 
 void FooMainWindow::next ()
 {
-    cerr << "FooMainWindow::next" << endl;
+    qDebug() << "FooMainWindow::next";
 
     emit nextSignal (getNextFile());
 }
@@ -939,40 +975,90 @@ void FooMainWindow::removeFromQueue()
     }
 }
 
+QUrl FooMainWindow::randomTrack()
+{
+    int count = this->fooTabWidget->currentPlayingPlaylist->plistCount();
+    int randomIndex = qrand() % count;
+    this->fooTabWidget->setCurrentItem(randomIndex);
+    return QUrl(this->fooTabWidget->currentPlayingItem->text(0));
+}
+
+void FooMainWindow::uncheckAllOrders()
+{
+    this->repeatPlaylistAction->setChecked(false);
+    this->repeatTrackAction->setChecked(false);
+    this->shuffleAlbumsAction->setChecked(false);
+    this->shuffleFoldersAction->setChecked(false);
+    this->shuffleTracksAction->setChecked(false);
+    this->defaultOrderAction->setChecked(false);
+}
+
 void FooMainWindow::random ()
 {
+    emit randomSignal(randomTrack());
 }
 
 void FooMainWindow::defaultOrder ()
 {
+    uncheckAllOrders();
+    this->order = PlayOrder::defaultOrder;
+    this->defaultOrderAction->setChecked(true);
+
 }
 
 void FooMainWindow::repeatPlaylist ()
 {
+    uncheckAllOrders();
+    this->order = PlayOrder::repeatPlaylist;
+    this->repeatPlaylistAction->setChecked(true);
+
 }
 
 void FooMainWindow::repeatTrack ()
 {
+    uncheckAllOrders();
+    this->order = PlayOrder::repeatTrack;
+    this->repeatTrackAction->setChecked(true);
 }
 
 void FooMainWindow::randomOrder ()
 {
+    uncheckAllOrders();
+    this->order = PlayOrder::random;
+    this->randomOrderAction->setChecked(true);
 }
 
 void FooMainWindow::shuffleTracks ()
 {
+    uncheckAllOrders();
+    this->order = PlayOrder::shuffleTracks;
+    this->shuffleTracksAction->setChecked(true);
 }
 
 void FooMainWindow::shuffleAlbums ()
 {
+    uncheckAllOrders();
+    this->order = PlayOrder::shuffleAlbums;
+    this->shuffleAlbumsAction->setChecked(true);
 }
 
 void FooMainWindow::shuffleFolders ()
 {
+    uncheckAllOrders();
+    this->order = PlayOrder::shuffleFolders;
+    this->shuffleFoldersAction->setChecked(true);
 }
 
 void FooMainWindow::stopAfterCurrent ()
 {
+    if(!stopAfterCurrentAction->isChecked())
+    {
+        this->stopAfterCurrentAction->setChecked(false);
+    }
+    else
+    {
+        this->stopAfterCurrentAction->setChecked(true);
+    }
 }
 
 void FooMainWindow::playbackFollowsCursor ()
@@ -1057,20 +1143,20 @@ void FooMainWindow::addToPrevQueue (QUrl path)
 
 void FooMainWindow::addFileToQueue (QUrl file)
 {
-    cerr << "FooMainWindow::addToQueue" << endl;
-    cerr << "plik dodany do kolejki: " << file.toString().toStdString() << endl;
+    qDebug() << "FooMainWindow::addToQueue";
+    qDebug() << "plik dodany do kolejki: " << file.toString();
     queue.prepend(file);
 }
 
 void FooMainWindow::removeFileFromQueue (QUrl file)
 {
-    cerr << "FooMainWindow::removeFromQueue" << endl;
-    cerr << "plik usuniety z kolejki: " << file.toString().toStdString() << endl;
+    qDebug() << "FooMainWindow::removeFromQueue";
+    qDebug() << "plik usuniety z kolejki: " << file.toString();
     queue.removeOne(file);
 }
 
 void FooMainWindow::clearQueue()
 {
-    cerr << "FooMainWindow::clearQueue" << endl;
+    qDebug() << "FooMainWindow::clearQueue";
     queue.clear();
 }

@@ -19,7 +19,7 @@
 
 #include "phononengine.h"
 
-#include <QDebug>
+#include <QtDebug>
 #include <QtPlugin>
 #include <Phonon/AudioOutput>
 #include <Phonon/MediaObject>

@@ -1,12 +1,9 @@
-#include <QDebug>
 #include <QLabel>
 #include <QStringList>
 #include <QtGui>
 #include <QUrl>
 
-#include <iostream>
-
-using namespace std;
+#include <QtDebug>
 
 #include "foomainwindow.hpp"
 
@@ -100,19 +97,19 @@ void FooPlaylistWidget::contextMenuEvent ( QContextMenuEvent * event )
 void FooPlaylistWidget::addFile (const QString &file, int index)
 {
     foreach (const QString &filter, Filters)
-	if (file.endsWith (filter, Qt::CaseInsensitive))
-	{
-	    QTreeWidgetItem *wid = new QTreeWidgetItem (this);
+        if (file.endsWith (filter, Qt::CaseInsensitive))
+        {
+            QTreeWidgetItem *wid = new QTreeWidgetItem (this);
 
-	    wid->setText(0, file);
-	    insertTopLevelItem (index == -1 ? topLevelItemCount() : index, wid);
-	    return;
-	}
+            wid->setText(0, file);
+            insertTopLevelItem (index == -1 ? topLevelItemCount() : index, wid);
+            return;
+        }
 }
 
 int FooPlaylistWidget::plistFindFname (const char *fname)
 {
-    cerr << "FooPlaylistWidget::plistFindFname" << endl;
+    qDebug() << "FooPlaylistWidget::plistFindFname";
     for (int i = 0; i < topLevelItemCount(); i++)
     {
         QTreeWidgetItem *wid = topLevelItem(i);
@@ -143,9 +140,9 @@ int FooPlaylistWidget::plistNext(int i)
 
 QUrl FooPlaylistWidget::file(int i)
 {
-    cerr << "FooPlaylistWidget::file" << endl;
-    cerr << this->topLevelItemCount() << endl;
-    cerr << i << endl;
+    qDebug() << "FooPlaylistWidget::file";
+    qDebug() << this->topLevelItemCount();
+    qDebug() << i;
     QString text = topLevelItem(i)->text(0);
     QUrl url(text);
     return url;
@@ -188,17 +185,18 @@ void FooPlaylistWidget::addFiles(int index, QList<QUrl> list, bool recursive)
 
     foreach (QUrl file, list)
     {
+        // toLocalPath() have problems with spaces in file/dir names - it just cut rest
         path = file.toString();
         info.setFile( path );
         if ( info.isFile() )
         {
-            cerr << "FooPlaylistWidget:: addFiles at " << index << endl;
+            qDebug() << "FooPlaylistWidget:: addFiles at " << index;
             addFile(path, index);
         }
 
         else if ( info.isDir() && recursive)
         {
-            cerr << "FooPlaylistWidget:: addDir at " << index << endl;
+            qDebug() << "FooPlaylistWidget:: addDir at " << index;
             QDir directory(path);
             QList<QUrl> urls;
 

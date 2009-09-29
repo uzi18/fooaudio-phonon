@@ -1,5 +1,3 @@
-#include <iostream>
-using namespace std;
 
 #include "footabbar.hpp"
 #include "foochangename.hpp"
@@ -12,7 +10,7 @@ using namespace std;
 #include <QStyle>
 #include <QUrl>
 
-#include <QDebug>
+#include <QtDebug>
 
 FooTabBar::FooTabBar (QWidget *parent) : QTabBar (parent), m_showTabBarWhenOneTab(true)
 {
@@ -81,7 +79,7 @@ void FooTabBar::closeTab()
 {
     if (QAction *action = qobject_cast<QAction *> (sender ()))
     {
-        cerr << "FooTabBar::closeTab" << endl;
+        qDebug() << "FooTabBar::closeTab";
         int index = action->data().toInt();
         emit closeTab (index);
     }

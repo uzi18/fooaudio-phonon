@@ -1,7 +1,4 @@
 #include <QPluginLoader>
-#include <iostream>
-
-using namespace std;
 
 #include "fooaudioengineplugin.hpp"
 
