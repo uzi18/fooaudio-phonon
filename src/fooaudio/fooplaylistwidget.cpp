@@ -100,7 +100,7 @@ void FooPlaylistWidget::addFile (const QString &file, int index)
     QUrl adress(file);
 
     foreach (const QString &filter, Filters)
-        if (file.endsWith (filter, Qt::CaseInsensitive) || (!adress.sheme().isEmpty() && !adress.host().isEmpty()))
+        if (file.endsWith (filter, Qt::CaseInsensitive) || (!adress.scheme().isEmpty() && !adress.host().isEmpty()))
         {
             QTreeWidgetItem *wid = new QTreeWidgetItem (this);
 

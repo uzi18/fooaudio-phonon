@@ -560,11 +560,14 @@ QUrl FooMainWindow::getNextFile()
         switch (this->order)
         {
         case PlayOrder::shuffleTracks:
-            file = this->randomTrack();
+            file = randomTrack();
+            break;
         case PlayOrder::repeatTrack:
-            file = this->fooTabWidget->currentPlayingItem->text(0);
+            file = fooTabWidget->currentPlayingItem->text(0);
+            break;
         default:
             file = fooTabWidget->nextFile(this->order == PlayOrder::repeatPlaylist);
+            break;
         }
     }
     else
@@ -581,11 +584,11 @@ QUrl FooMainWindow::getNextFile()
 
 void FooMainWindow::enqueueNextFile()
 {
-    if (!this->stopAfterCurrentAction->isChecked())
-        emit enqueueNextFile(getNextFile());
+    if (this->stopAfterCurrentAction->isChecked())
+        this->stopAfterCurrentAction->setChecked(false);
     else
     {
-        this->stopAfterCurrentAction->setChecked(false);
+        emit enqueueNextFile(getNextFile());
     }
 }
 
