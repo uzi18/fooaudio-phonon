@@ -1,7 +1,7 @@
 #include <QApplication>
 #include <QPluginLoader>
 
-#include <Phonon/AudiOutput>
+#include <Phonon/AudioOutput>
 #include <Phonon/MediaObject>
 #include <Phonon/BackendCapabilities>
 
