@@ -651,6 +651,11 @@ void FooMainWindow::readSettings()
     this->order = (PlayOrder::playOrder) settings.value("playOrder", PlayOrder::defaultOrder).toInt();
     switch (this->order)
     {
+        case PlayOrder::defaultOrder:
+        {
+            this->defaultOrderAction->setChecked(true);
+            break;
+        }
         case PlayOrder::repeatTrack:
         {
             this->repeatTrackAction->setChecked(true);
