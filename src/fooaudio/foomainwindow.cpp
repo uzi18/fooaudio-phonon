@@ -106,7 +106,6 @@ void FooMainWindow::createMenus()
     addLocationAction = new QAction (tr ("Add Lo&cation"), this);
     connect (addLocationAction, SIGNAL (triggered ()), this, SLOT (addLocation ()));
     fileMenu->addAction (addLocationAction);
-    addLocationAction->setEnabled(false);
 
     fileMenu->addSeparator ();
 
@@ -337,7 +336,6 @@ void FooMainWindow::createMenus()
     defaultOrderAction = new QAction (tr ("&Default"), this);
     connect (defaultOrderAction, SIGNAL (triggered ()), this, SLOT (defaultOrder ()));
     orderMenu->addAction (defaultOrderAction);
-    defaultOrderAction->setEnabled(false);
     defaultOrderAction->setCheckable(true);
 
     repeatPlaylistAction = new QAction (tr ("Repeat (&playlist)"), this);
@@ -348,7 +346,6 @@ void FooMainWindow::createMenus()
     repeatTrackAction = new QAction (tr ("Repeat (&track)"), this);
     connect (repeatTrackAction, SIGNAL (triggered ()), this, SLOT (repeatTrack ()));
     orderMenu->addAction (repeatTrackAction);
-    repeatTrackAction->setEnabled(true);
     repeatTrackAction->setCheckable(true);
 
     randomOrderAction = new QAction (tr ("Ra&ndom"), this);
@@ -360,7 +357,6 @@ void FooMainWindow::createMenus()
     shuffleTracksAction = new QAction (tr ("&Shuffle (tracks)"), this);
     connect (shuffleTracksAction, SIGNAL (triggered ()), this, SLOT (shuffleTracks ()));
     orderMenu->addAction (shuffleTracksAction);
-    shuffleTracksAction->setEnabled(true);
     shuffleTracksAction->setCheckable(true);
 
     shuffleAlbumsAction = new QAction (tr ("S&huffle (albums)"), this);
@@ -387,6 +383,7 @@ void FooMainWindow::createMenus()
     playbackMenu->addAction (playbackFollowsCursorAction);
     playbackFollowsCursorAction->setEnabled(false);
 
+    // it is by default now
     cursorFollowsPlaybackAction = new QAction (tr ("&Cursor follows playback"), this);
     connect (cursorFollowsPlaybackAction, SIGNAL (triggered ()), this, SLOT (cursorFollowsPlayback ()));
     playbackMenu->addAction (cursorFollowsPlaybackAction);
@@ -567,7 +564,7 @@ QUrl FooMainWindow::getNextFile()
         case PlayOrder::repeatTrack:
             file = this->fooTabWidget->currentPlayingItem->text(0);
         default:
-            file = fooTabWidget->nextFile(true);
+            file = fooTabWidget->nextFile(this->order == PlayOrder::repeatPlaylist);
         }
     }
     else
@@ -654,6 +651,11 @@ void FooMainWindow::readSettings()
     this->order = (PlayOrder::playOrder) settings.value("playOrder", PlayOrder::defaultOrder).toInt();
     switch (this->order)
     {
+        case PlayOrder::defaultOrder:
+        {
+            this->defaultOrderAction->setChecked(true);
+            break;
+        }
         case PlayOrder::repeatTrack:
         {
             this->repeatTrackAction->setChecked(true);
@@ -760,7 +762,7 @@ void FooMainWindow::addFiles ()
 
 void FooMainWindow::addFolder ()
 {
-    QString dirName = QFileDialog::getExistingDirectory(this, tr("Select directory"), QDir::currentPath());
+    QString dirName = QFileDialog::getExistingDirectory(this, tr("Select directory"), QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
 
     if (dirName.isEmpty())
         return;
@@ -782,6 +784,22 @@ void FooMainWindow::addFolder ()
 
 void FooMainWindow::addLocation ()
 {
+    bool ok;
+    QString locName = QInputDialog::getText(this, tr("Add Location"), tr("Enter adress:"),
+                                            QLineEdit::Normal, "http://", &ok);
+    qDebug() << "Location" << locName;
+    if (!ok || locName.isEmpty())
+        return;
+
+    QUrl adress = QUrl(locName);
+    if (!adress.isValid())
+        return;
+
+    FooPlaylistWidget * wid = static_cast<FooPlaylistWidget *> (fooTabWidget->currentWidget());
+    if (!wid)
+        return;
+
+    wid->addFile(locName, -1);
 }
 
 void FooMainWindow::newPlaylist ()
@@ -935,7 +953,7 @@ void FooMainWindow::play ()
 void FooMainWindow::previous ()
 {
     qDebug() << "FooMainWindow::previous";
-    emit prevSignal (fooTabWidget->previousFile(true));
+    emit prevSignal (fooTabWidget->previousFile(this->order == PlayOrder::repeatPlaylist));
 }
 
 void FooMainWindow::next ()
