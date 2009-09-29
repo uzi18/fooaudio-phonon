@@ -792,7 +792,7 @@ void FooMainWindow::addLocation ()
         return;
 
     QUrl adress = QUrl(locName);
-    if (!adress.isValid())
+    if (!adress.isValid() || adress.host().isEmpty())
         return;
 
     FooPlaylistWidget * wid = static_cast<FooPlaylistWidget *> (fooTabWidget->currentWidget());
