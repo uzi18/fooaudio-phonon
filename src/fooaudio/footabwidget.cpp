@@ -137,7 +137,7 @@ void FooTabWidget::itemClicked(QTreeWidgetItem * item, int column)
 	emit itemDoubleClickedSignal(item, column);
 }
 
-QUrl FooTabWidget::nextFile(bool repeat)
+QUrl FooTabWidget::nextFile(bool repeat, bool follow)
 {
         qDebug() << "FooTabWidget::nextFile";
 	int c = count();
@@ -163,7 +163,7 @@ QUrl FooTabWidget::nextFile(bool repeat)
 
 					currentPlayingPlaylist = wid;
 					currentPlayingItem = wid->topLevelItem(0);
-					wid->setCurrentItem(currentPlayingItem);
+					if (follow) wid->setCurrentItem(currentPlayingItem);
 					return wid->file(0);
 				}
 				else if (index < (max - 1))
@@ -172,7 +172,7 @@ QUrl FooTabWidget::nextFile(bool repeat)
 
 					currentPlayingPlaylist = wid;
 					currentPlayingItem = wid->itemBelow(currentPlayingItem);
-					wid->setCurrentItem(currentPlayingItem);
+					if (follow) wid->setCurrentItem(currentPlayingItem);
 					return wid->file(++index);
 				}
 				else if (index == (max - 1) && !repeat)
@@ -187,7 +187,7 @@ QUrl FooTabWidget::nextFile(bool repeat)
 	return QUrl();
 }
 
-QUrl FooTabWidget::previousFile(bool repeat)
+QUrl FooTabWidget::previousFile(bool repeat, bool follow)
 {
         qDebug() << "FooTabWidget::previousFile";
 	int c = count();
@@ -213,7 +213,7 @@ QUrl FooTabWidget::previousFile(bool repeat)
 
 					currentPlayingPlaylist = wid;
 					currentPlayingItem = wid->topLevelItem(max - 1);
-					wid->setCurrentItem(currentPlayingItem);
+					if (follow) wid->setCurrentItem(currentPlayingItem);
 					return wid->file(max - 1);
 				}
 				else if (index > 0)
@@ -222,7 +222,7 @@ QUrl FooTabWidget::previousFile(bool repeat)
 
 					currentPlayingPlaylist = wid;
 					currentPlayingItem = wid->itemAbove(currentPlayingItem);
-					wid->setCurrentItem(currentPlayingItem);
+					if (follow) wid->setCurrentItem(currentPlayingItem);
 					return wid->file(--index);
 				}
 				else if (index == 0 && !repeat)

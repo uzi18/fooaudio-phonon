@@ -46,8 +46,8 @@ public slots:
 
 	void itemClicked(QTreeWidgetItem *, int);
 
-	QUrl nextFile(bool repeat);
-	QUrl previousFile(bool repeat);
+	QUrl nextFile(bool repeat, bool follow = true);
+	QUrl previousFile(bool repeat, bool follow = true);
 
 	void cut (bool remove = true);
 	void remove ();

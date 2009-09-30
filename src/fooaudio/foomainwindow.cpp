@@ -566,7 +566,7 @@ QUrl FooMainWindow::getNextFile()
             file = fooTabWidget->currentPlayingItem->text(0);
             break;
         default:
-            file = fooTabWidget->nextFile(this->order == PlayOrder::repeatPlaylist);
+            file = fooTabWidget->nextFile(this->order == PlayOrder::repeatPlaylist, isCursorFollowsPlayback());
             break;
         }
     }
@@ -965,7 +965,7 @@ void FooMainWindow::play ()
 void FooMainWindow::previous ()
 {
     qDebug() << "FooMainWindow::previous";
-    emit prevSignal (fooTabWidget->previousFile(this->order == PlayOrder::repeatPlaylist));
+    emit prevSignal (fooTabWidget->previousFile(this->order == PlayOrder::repeatPlaylist, isCursorFollowsPlayback()));
 }
 
 void FooMainWindow::next ()
