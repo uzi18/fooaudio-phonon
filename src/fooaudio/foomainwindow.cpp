@@ -383,11 +383,11 @@ void FooMainWindow::createMenus()
     playbackMenu->addAction (playbackFollowsCursorAction);
     playbackFollowsCursorAction->setEnabled(false);
 
-    // it is by default now
     cursorFollowsPlaybackAction = new QAction (tr ("&Cursor follows playback"), this);
     connect (cursorFollowsPlaybackAction, SIGNAL (triggered ()), this, SLOT (cursorFollowsPlayback ()));
     playbackMenu->addAction (cursorFollowsPlaybackAction);
-    cursorFollowsPlaybackAction->setEnabled(false);
+    cursorFollowsPlaybackAction->setCheckable(true);
+    cursorFollowsPlaybackAction->setChecked(false);
 
     libraryMenu = menuBar ()->addMenu (tr ("&Library"));
 
@@ -604,6 +604,7 @@ void FooMainWindow::writeSettings()
     settings.setValue("size", size());
     settings.setValue("toolBarsPosition", saveState());
     settings.setValue("trayIcon", trayIconAction->isChecked());
+    settings.setValue("cursorFollowsPlayback", cursorFollowsPlaybackAction->isChecked());
     settings.setValue("playOrder", this->order);
     settings.endGroup();
 
@@ -651,6 +652,8 @@ void FooMainWindow::readSettings()
     move(pos);
     restoreState(settings.value("toolBarsPosition", QVariant()).toByteArray());
     trayIconAction->setChecked(settings.value("trayIcon", false).toBool());
+    cursorFollowsPlaybackAction->setChecked(settings.value("cursorFollowsPlayback", true).toBool());
+
     this->order = (PlayOrder::playOrder) settings.value("playOrder", PlayOrder::defaultOrder).toInt();
     switch (this->order)
     {
@@ -720,19 +723,25 @@ void FooMainWindow::readSettings()
 
 }
 
- void FooMainWindow::closeEvent(QCloseEvent *event)
- {
-    if (trayIconAction->isChecked())
+bool FooMainWindow::isCursorFollowsPlayback ()
+{
+    return cursorFollowsPlaybackAction->isChecked ();
+}
+
+
+void FooMainWindow::closeEvent (QCloseEvent *event)
+{
+    if (trayIconAction->isChecked ())
     {
-    hide();
-    event->ignore();
+	hide();
+	event->ignore();
     }
     else
     {
-    writeSettings();
-    event->accept();
+	writeSettings();
+	event->accept();
     }
- }
+}
 
 void FooMainWindow::open ()
 {
@@ -968,7 +977,7 @@ void FooMainWindow::next ()
 
 void FooMainWindow::addToQueue ()
 {
-            FooPlaylistWidget * foo = (FooPlaylistWidget*)fooTabWidget->currentWidget();
+    FooPlaylistWidget * foo = (FooPlaylistWidget*)fooTabWidget->currentWidget();
     if (!foo)
         return;
 
@@ -983,7 +992,7 @@ void FooMainWindow::addToQueue ()
 
 void FooMainWindow::removeFromQueue()
 {
-            FooPlaylistWidget * foo = (FooPlaylistWidget*)fooTabWidget->currentWidget();
+    FooPlaylistWidget * foo = (FooPlaylistWidget*)fooTabWidget->currentWidget();
     if (!foo)
         return;
 
@@ -998,10 +1007,15 @@ void FooMainWindow::removeFromQueue()
 
 QUrl FooMainWindow::randomTrack()
 {
-    int count = this->fooTabWidget->currentPlayingPlaylist->plistCount();
+    FooPlaylistWidget * playlist = this->fooTabWidget->currentPlayingPlaylist;
+    if (!playlist)
+	return QUrl();
+
+    int count = playlist->plistCount();
     int randomIndex = qrand() % count;
-    this->fooTabWidget->setCurrentItem(randomIndex);
-    return QUrl(this->fooTabWidget->currentPlayingItem->text(0));
+    if (isCursorFollowsPlayback()) 
+	this->fooTabWidget->setCurrentItem(randomIndex);
+    return QUrl(playlist->plistGetFile(randomIndex));
 }
 
 void FooMainWindow::uncheckAllOrders()

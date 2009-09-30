@@ -42,6 +42,8 @@ public:
 
 	void readSettings();
 	void writeSettings();
+	
+	bool isCursorFollowsPlayback();
 
 	void addFileToQueue (QUrl file);
 	void removeFileFromQueue (QUrl file);
