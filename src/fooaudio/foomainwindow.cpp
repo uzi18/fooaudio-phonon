@@ -106,7 +106,6 @@ void FooMainWindow::createMenus()
     addLocationAction = new QAction (tr ("Add Lo&cation"), this);
     connect (addLocationAction, SIGNAL (triggered ()), this, SLOT (addLocation ()));
     fileMenu->addAction (addLocationAction);
-    addLocationAction->setEnabled(false);
 
     fileMenu->addSeparator ();
 
@@ -337,7 +336,6 @@ void FooMainWindow::createMenus()
     defaultOrderAction = new QAction (tr ("&Default"), this);
     connect (defaultOrderAction, SIGNAL (triggered ()), this, SLOT (defaultOrder ()));
     orderMenu->addAction (defaultOrderAction);
-    defaultOrderAction->setEnabled(false);
     defaultOrderAction->setCheckable(true);
 
     repeatPlaylistAction = new QAction (tr ("Repeat (&playlist)"), this);
@@ -348,7 +346,6 @@ void FooMainWindow::createMenus()
     repeatTrackAction = new QAction (tr ("Repeat (&track)"), this);
     connect (repeatTrackAction, SIGNAL (triggered ()), this, SLOT (repeatTrack ()));
     orderMenu->addAction (repeatTrackAction);
-    repeatTrackAction->setEnabled(true);
     repeatTrackAction->setCheckable(true);
 
     randomOrderAction = new QAction (tr ("Ra&ndom"), this);
@@ -360,7 +357,6 @@ void FooMainWindow::createMenus()
     shuffleTracksAction = new QAction (tr ("&Shuffle (tracks)"), this);
     connect (shuffleTracksAction, SIGNAL (triggered ()), this, SLOT (shuffleTracks ()));
     orderMenu->addAction (shuffleTracksAction);
-    shuffleTracksAction->setEnabled(true);
     shuffleTracksAction->setCheckable(true);
 
     shuffleAlbumsAction = new QAction (tr ("S&huffle (albums)"), this);
@@ -390,7 +386,8 @@ void FooMainWindow::createMenus()
     cursorFollowsPlaybackAction = new QAction (tr ("&Cursor follows playback"), this);
     connect (cursorFollowsPlaybackAction, SIGNAL (triggered ()), this, SLOT (cursorFollowsPlayback ()));
     playbackMenu->addAction (cursorFollowsPlaybackAction);
-    cursorFollowsPlaybackAction->setEnabled(false);
+    cursorFollowsPlaybackAction->setCheckable(true);
+    cursorFollowsPlaybackAction->setChecked(false);
 
     libraryMenu = menuBar ()->addMenu (tr ("&Library"));
 
@@ -563,11 +560,14 @@ QUrl FooMainWindow::getNextFile()
         switch (this->order)
         {
         case PlayOrder::shuffleTracks:
-            file = this->randomTrack();
+            file = randomTrack();
+            break;
         case PlayOrder::repeatTrack:
-            file = this->fooTabWidget->currentPlayingItem->text(0);
+            file = fooTabWidget->currentPlayingItem->text(0);
+            break;
         default:
-            file = fooTabWidget->nextFile(true);
+            file = fooTabWidget->nextFile(this->order == PlayOrder::repeatPlaylist, isCursorFollowsPlayback());
+            break;
         }
     }
     else
@@ -584,11 +584,11 @@ QUrl FooMainWindow::getNextFile()
 
 void FooMainWindow::enqueueNextFile()
 {
-    if (!this->stopAfterCurrentAction->isChecked())
-        emit enqueueNextFile(getNextFile());
+    if (this->stopAfterCurrentAction->isChecked())
+        this->stopAfterCurrentAction->setChecked(false);
     else
     {
-        this->stopAfterCurrentAction->setChecked(false);
+        emit enqueueNextFile(getNextFile());
     }
 }
 
@@ -604,6 +604,7 @@ void FooMainWindow::writeSettings()
     settings.setValue("size", size());
     settings.setValue("toolBarsPosition", saveState());
     settings.setValue("trayIcon", trayIconAction->isChecked());
+    settings.setValue("cursorFollowsPlayback", cursorFollowsPlaybackAction->isChecked());
     settings.setValue("playOrder", this->order);
     settings.endGroup();
 
@@ -651,9 +652,16 @@ void FooMainWindow::readSettings()
     move(pos);
     restoreState(settings.value("toolBarsPosition", QVariant()).toByteArray());
     trayIconAction->setChecked(settings.value("trayIcon", false).toBool());
+    cursorFollowsPlaybackAction->setChecked(settings.value("cursorFollowsPlayback", true).toBool());
+
     this->order = (PlayOrder::playOrder) settings.value("playOrder", PlayOrder::defaultOrder).toInt();
     switch (this->order)
     {
+        case PlayOrder::defaultOrder:
+        {
+            this->defaultOrderAction->setChecked(true);
+            break;
+        }
         case PlayOrder::repeatTrack:
         {
             this->repeatTrackAction->setChecked(true);
@@ -715,19 +723,25 @@ void FooMainWindow::readSettings()
 
 }
 
- void FooMainWindow::closeEvent(QCloseEvent *event)
- {
-    if (trayIconAction->isChecked())
+bool FooMainWindow::isCursorFollowsPlayback ()
+{
+    return cursorFollowsPlaybackAction->isChecked ();
+}
+
+
+void FooMainWindow::closeEvent (QCloseEvent *event)
+{
+    if (trayIconAction->isChecked ())
     {
-    hide();
-    event->ignore();
+	hide();
+	event->ignore();
     }
     else
     {
-    writeSettings();
-    event->accept();
+	writeSettings();
+	event->accept();
     }
- }
+}
 
 void FooMainWindow::open ()
 {
@@ -760,7 +774,7 @@ void FooMainWindow::addFiles ()
 
 void FooMainWindow::addFolder ()
 {
-    QString dirName = QFileDialog::getExistingDirectory(this, tr("Select directory"), QDir::currentPath());
+    QString dirName = QFileDialog::getExistingDirectory(this, tr("Select directory"), QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
 
     if (dirName.isEmpty())
         return;
@@ -782,6 +796,22 @@ void FooMainWindow::addFolder ()
 
 void FooMainWindow::addLocation ()
 {
+    bool ok = false;
+    QString locName = QInputDialog::getText(this, tr("Add Location"), tr("Enter adress:"),
+                                            QLineEdit::Normal, "http://", &ok);
+    qDebug() << "Main Window: Add Location:" << locName;
+    if (!ok || locName.isEmpty())
+        return;
+
+    QUrl adress = QUrl(locName);
+    if (!adress.isValid() || adress.host().isEmpty())
+        return;
+
+    FooPlaylistWidget * wid = static_cast<FooPlaylistWidget *> (fooTabWidget->currentWidget());
+    if (!wid)
+        return;
+
+    wid->addFile(locName, -1);
 }
 
 void FooMainWindow::newPlaylist ()
@@ -935,7 +965,7 @@ void FooMainWindow::play ()
 void FooMainWindow::previous ()
 {
     qDebug() << "FooMainWindow::previous";
-    emit prevSignal (fooTabWidget->previousFile(true));
+    emit prevSignal (fooTabWidget->previousFile(this->order == PlayOrder::repeatPlaylist, isCursorFollowsPlayback()));
 }
 
 void FooMainWindow::next ()
@@ -947,7 +977,7 @@ void FooMainWindow::next ()
 
 void FooMainWindow::addToQueue ()
 {
-            FooPlaylistWidget * foo = (FooPlaylistWidget*)fooTabWidget->currentWidget();
+    FooPlaylistWidget * foo = (FooPlaylistWidget*)fooTabWidget->currentWidget();
     if (!foo)
         return;
 
@@ -962,7 +992,7 @@ void FooMainWindow::addToQueue ()
 
 void FooMainWindow::removeFromQueue()
 {
-            FooPlaylistWidget * foo = (FooPlaylistWidget*)fooTabWidget->currentWidget();
+    FooPlaylistWidget * foo = (FooPlaylistWidget*)fooTabWidget->currentWidget();
     if (!foo)
         return;
 
@@ -977,10 +1007,15 @@ void FooMainWindow::removeFromQueue()
 
 QUrl FooMainWindow::randomTrack()
 {
-    int count = this->fooTabWidget->currentPlayingPlaylist->plistCount();
+    FooPlaylistWidget * playlist = this->fooTabWidget->currentPlayingPlaylist;
+    if (!playlist)
+	return QUrl();
+
+    int count = playlist->plistCount();
     int randomIndex = qrand() % count;
-    this->fooTabWidget->setCurrentItem(randomIndex);
-    return QUrl(this->fooTabWidget->currentPlayingItem->text(0));
+    if (isCursorFollowsPlayback()) 
+	this->fooTabWidget->setCurrentItem(randomIndex);
+    return QUrl(playlist->plistGetFile(randomIndex));
 }
 
 void FooMainWindow::uncheckAllOrders()

@@ -21,7 +21,7 @@
 
 #include <QDebug>
 
-ApplicationLogic* ApplicationLogic::instance = 0;
+ApplicationLogic* ApplicationLogic::Instance = 0;
 
 ApplicationLogic::ApplicationLogic()
 {
@@ -44,26 +44,26 @@ QSharedPointer<QObject> ApplicationLogic::getController(QString controllerName)
 
 ApplicationLogic* ApplicationLogic::getInstance()
 {
-    if(!instance)
-        instance = new ApplicationLogic;
+    if(!Instance)
+        Instance = new ApplicationLogic;
 
-    return instance;
+    return Instance;
 }
 
 void ApplicationLogic::Release()
 {
-    if(!instance)
+    if(Instance)
         return;
 
-    instance->quit();
-    while(instance->isRunning())
+    Instance->quit();
+    while(Instance->isRunning())
     {
         QApplication::processEvents();
         QApplication::instance()->thread()->msleep(100);
     }
 
-    delete instance;
-    instance = 0;
+    delete Instance;
+    Instance = 0;
 }
 
 void ApplicationLogic::run()
