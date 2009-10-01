@@ -128,7 +128,11 @@ int FooPlaylistWidget::plistFindFname (const char *fname)
 
 QString FooPlaylistWidget::plistGetFile(int i)
 {
-    return topLevelItem(i)->text(0);
+    QTreeWidgetItem *item = this->topLevelItem(i);
+    if (!item)
+	return QString();
+
+    return item->text(0);
 }
 
 int FooPlaylistWidget::plistCount()
@@ -138,7 +142,8 @@ int FooPlaylistWidget::plistCount()
 
 int FooPlaylistWidget::plistNext(int i)
 {
-    return (topLevelItemCount() == i) ? 1 : ++i;
+    // TODO this not support repeat etc. and it is not used?
+    return (topLevelItemCount() == i) ? 0 : ++i;
 }
 
 QUrl FooPlaylistWidget::file(int i)
@@ -146,9 +151,11 @@ QUrl FooPlaylistWidget::file(int i)
     qDebug() << "FooPlaylistWidget::file";
     qDebug() << this->topLevelItemCount();
     qDebug() << i;
-    QString text = topLevelItem(i)->text(0);
-    QUrl url(text);
-    return url;
+    QTreeWidgetItem *item = this->topLevelItem(i);
+    if (!item)
+	return QUrl();
+
+    return QUrl(item->text(0));
 }
 
 QList<QTreeWidgetItem *> FooPlaylistWidget::itemsList()
