@@ -160,7 +160,12 @@ QUrl FooPlaylistWidget::file(int i)
 
 QList<QTreeWidgetItem *> FooPlaylistWidget::itemsList()
 {
-    return QList<QTreeWidgetItem *> ();
+  QList<QTreeWidgetItem *> list;
+  for (quint64 i=0, size=topLevelItemCount();i<size;i++)
+  {
+    list.append(topLevelItem(i));
+  }
+  return list;
 }
 
 void FooPlaylistWidget::dragEnterEvent(QDragEnterEvent * event)

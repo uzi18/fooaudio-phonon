@@ -117,12 +117,10 @@ void FooMainWindow::createMenus()
     loadPlaylistAction = new QAction (tr ("&Load playlist"), this);
     connect (loadPlaylistAction, SIGNAL (triggered ()), this, SLOT (loadPlaylist ()));
     fileMenu->addAction (loadPlaylistAction);
-    loadPlaylistAction->setEnabled(false);
 
     savePlaylistAction = new QAction (tr ("&Save playlist"), this);
     connect (savePlaylistAction, SIGNAL (triggered ()), this, SLOT (savePlaylist ()));
     fileMenu->addAction (savePlaylistAction);
-    savePlaylistAction->setEnabled(false);
 
     fileMenu->addSeparator ();
 
@@ -238,7 +236,7 @@ void FooMainWindow::createMenus()
     removeDeadItemsAction = new QAction (tr ("Remove dead &items"), this);
     connect (removeDeadItemsAction, SIGNAL (triggered ()), this, SLOT (removeDeadItems ()));
     editMenu->addAction (removeDeadItemsAction);
-    removeDeadItemsAction->setEnabled(false);
+    removeDeadItemsAction->setEnabled(true);
 
     viewMenu = menuBar ()->addMenu (tr ("&View"));
 
@@ -820,6 +818,63 @@ void FooMainWindow::newPlaylist ()
 
 void FooMainWindow::loadPlaylist ()
 {
+  QString play_list = QFileDialog::getOpenFileName(this, tr(
+  "Choose playlist file"), QDesktopServices::storageLocation(
+  QDesktopServices::MusicLocation), "Playlists (*.m3u *.pls)");
+  
+  if (!play_list.isEmpty())
+  {
+    QFile file(play_list);
+    if (file.open(QIODevice::ReadOnly))
+    {
+      QList<QUrl> urls;
+      QTextStream stream(&file);
+      QString line;
+      while (!stream.atEnd())
+      {
+	line = stream.readLine();
+	if (!line.isEmpty())
+	{
+	  if ( play_list.toUpper().endsWith(".M3U") ) //check if we have a m3u playlist file
+	  {
+	    if ( !line.startsWith('#'))
+	    {
+	      urls.append(QUrl(line));
+	    }
+	    else if (line.toUpper().startsWith("#EXTINF:") )
+	    {
+	      // line.remove(0,line.indexOf(':')+1);
+	      // QStringList lineList = line.split(",");
+	      // lineList.at(0) - length of song in seconds
+	      // lineList.at(1) - title of song
+	    }
+	  }
+	  else // we have a pls playlist file
+	  {
+	    qDebug() << line;
+	    QStringList lineList = line.split('=');
+	    if (lineList.at(0).toUpper().startsWith("FILE")){
+	      urls.append(QUrl(lineList.at(1)));
+	    }
+	    else if (lineList.at(0).toUpper().startsWith("TITLE"))
+	    {
+	      // in lineList.at(1) we have a title of song
+	    }
+	    else if (lineList.at(0).toUpper().startsWith("LENGTH"))
+	    {
+	      // in lineList.at(1) we have a length of sonf in seconds
+	    }
+	  }
+	}
+      }
+      file.close();
+      FooPlaylistWidget * wid = static_cast<FooPlaylistWidget *> (fooTabWidget->currentWidget());
+      if (!wid)
+	return;
+      wid->clear();
+      wid->addFiles(-1, urls, false);
+    }
+  }
 }
 
 void FooMainWindow::savePlaylist ()
@@ -878,10 +933,22 @@ void FooMainWindow::search ()
 
 void FooMainWindow::removeDuplicates ()
 {
+  
 }
 
 void FooMainWindow::removeDeadItems ()
 {
+  FooPlaylistWidget * wid = static_cast<FooPlaylistWidget *> (fooTabWidget->currentWidget());
+  if (!wid) return;
+  QList<QTreeWidgetItem*> items =  wid->itemsList();
+  foreach(QTreeWidgetItem* item, items)
+  {
+    QFile file(QUrl(item->text(0)).toLocalFile());
+    if (!file.exists())
+    {
+      wid->takeTopLevelItem(wid->indexOfTopLevelItem(item));
+    }
+   }
 }
 
 void FooMainWindow::alwaysOnTop ()
