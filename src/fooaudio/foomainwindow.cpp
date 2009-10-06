@@ -879,6 +879,7 @@ void FooMainWindow::loadPlaylist ()
 
 void FooMainWindow::savePlaylist ()
 {
+  
 }
 
 void FooMainWindow::preferences ()
@@ -933,18 +934,31 @@ void FooMainWindow::search ()
 
 void FooMainWindow::removeDuplicates ()
 {
-  
+  FooPlaylistWidget * wid = static_cast<FooPlaylistWidget *> (fooTabWidget->currentWidget());
+  if (!wid) return;
+  QVector<QString> files;
+  foreach(QTreeWidgetItem* item, wid->itemsList())
+  {
+    if (files.contains(item->text(0)))
+    {
+      wid->takeTopLevelItem(wid->indexOfTopLevelItem(item));
+    }
+    else
+    {
+      files.append(item->text(0));
+    }
+   }
 }
 
 void FooMainWindow::removeDeadItems ()
 {
   FooPlaylistWidget * wid = static_cast<FooPlaylistWidget *> (fooTabWidget->currentWidget());
   if (!wid) return;
-  QList<QTreeWidgetItem*> items =  wid->itemsList();
-  foreach(QTreeWidgetItem* item, items)
+  QFileInfo fileInfo;
+  foreach(QTreeWidgetItem* item, wid->itemsList())
   {
-    QFile file(QUrl(item->text(0)).toLocalFile());
-    if (!file.exists())
+    fileInfo.setFile(item->text(0));
+    if (fileInfo.isFile() && !fileInfo.exists())
     {
       wid->takeTopLevelItem(wid->indexOfTopLevelItem(item));
     }
