@@ -821,7 +821,7 @@ void FooMainWindow::loadPlaylist ()
   QString play_list = QFileDialog::getOpenFileName(this, tr(
   "Choose playlist file"), QDesktopServices::storageLocation(
   QDesktopServices::MusicLocation), "Playlists (*.m3u *.pls)");
-  
+
   if (!play_list.isEmpty())
   {
     QFile file(play_list);
@@ -933,13 +933,16 @@ void FooMainWindow::search ()
 
 void FooMainWindow::removeDuplicates ()
 {
-  
+
 }
 
 void FooMainWindow::removeDeadItems ()
 {
   FooPlaylistWidget * wid = static_cast<FooPlaylistWidget *> (fooTabWidget->currentWidget());
   if (!wid) return;
+
+  // TODO to check this out
+
   QList<QTreeWidgetItem*> items =  wid->itemsList();
   foreach(QTreeWidgetItem* item, items)
   {
