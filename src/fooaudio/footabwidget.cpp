@@ -82,12 +82,15 @@ void FooTabWidget::cloneTab (int index)
 
 void FooTabWidget::closeTab (int index)
 {
-	QWidget* current = widget(index);
-	delete current;
-
-	if (count() == 0)
+	if (count() > 1)
 	{
-		newTab("Default");
+		QWidget* current = widget(index);
+		if (current==currentPlayingPlaylist)
+		{
+			setCurrentPlaylist(getCurrentPlaylistIndex()-1);
+			setCurrentItem(0);
+		}
+		delete current;
 	}
 }
 
