@@ -139,3 +139,4 @@ void FooPhononAudioEngine::mimeTypes()
 {
 	emit mimeTypes(Phonon::BackendCapabilities::availableMimeTypes());
 }
+

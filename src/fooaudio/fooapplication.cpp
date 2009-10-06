@@ -61,3 +61,4 @@ void FooApplication::InitializeLogic()
 {
     ApplicationLogic::getInstance()->start();
 }
+

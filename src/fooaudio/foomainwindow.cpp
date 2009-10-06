@@ -1013,7 +1013,7 @@ QUrl FooMainWindow::randomTrack()
 
     int count = playlist->plistCount();
     int randomIndex = qrand() % count;
-    if (isCursorFollowsPlayback()) 
+    if (isCursorFollowsPlayback())
 	this->fooTabWidget->setCurrentItem(randomIndex);
     return QUrl(playlist->plistGetFile(randomIndex));
 }
