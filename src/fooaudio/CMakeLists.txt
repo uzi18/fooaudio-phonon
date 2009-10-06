@@ -17,18 +17,18 @@ set( fooaudio_SRCS
 )
 
 set( fooaudio_MOC
-    abstractaudiointerface.h
+    #abstractaudiointerface.h
     abstractaudioplugin.h
     fooabout.hpp
     fooaudioengine.hpp
     fooaudioengineplugin.hpp
     foochangename.hpp
     foomainwindow.hpp
-    fooplaylistwidget.hpp
+    #fooplaylistwidget.hpp
     footabbar.hpp
     footabwidget.hpp
-    footrack.hpp
-    footracklist.hpp
+    #footrack.hpp
+    #footracklist.hpp
     fooapplication.h
     tracklistmodel.hpp
     logic/applicationlogic.h
