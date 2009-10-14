@@ -5,6 +5,9 @@ project(fooaudio)
 find_package(Qt4 REQUIRED)
 find_package(PkgConfig REQUIRED)
 
+# this does not work sometimes
+#SET(QT_USE_PHONON 1)
+
 include(${QT_USE_FILE})
 
 pkg_check_modules(PHONON REQUIRED phonon)

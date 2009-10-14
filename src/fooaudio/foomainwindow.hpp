@@ -259,6 +259,8 @@ private:
 	void createSystrayIcon();
 
 protected:
+	void savePlaylistToPls(QString filePath);
+	void savePlaylistToM3u(QString filePath);
 	void closeEvent(QCloseEvent *);
 };
 

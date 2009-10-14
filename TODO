@@ -11,6 +11,7 @@ TODO :
 - playlista jakaś sensowna (z metadanymi)
 - sortowanie playlisty
 - dodanie skryptow cmake do budowania fooaudio
+- poprawienie kodu metody savePlaylist (uzycie QFileDialog::getSaveFileName) - info w kodzie metody
 
 Ideas:
 - use libmagic or something simmilar for detecting file type

@@ -654,22 +654,22 @@ void FooMainWindow::readSettings()
 	this->order = (PlayOrder::playOrder) settings.value("playOrder", PlayOrder::defaultOrder).toInt();
 	switch (this->order)
 	{
-		  case PlayOrder::defaultOrder:
+		case PlayOrder::defaultOrder:
 		{
 			this->defaultOrderAction->setChecked(true);
 			break;
 		}
-		  case PlayOrder::repeatTrack:
+		case PlayOrder::repeatTrack:
 		{
 			this->repeatTrackAction->setChecked(true);
 			break;
 		}
-		  case PlayOrder::shuffleTracks:
+		case PlayOrder::shuffleTracks:
 		{
 			this->shuffleTracksAction->setChecked(true);
 			break;
 		}
-		  default:
+		default:
 		{
 			this->repeatPlaylistAction->setChecked(true);
 			break;
@@ -878,6 +878,94 @@ void FooMainWindow::loadPlaylist ()
 
 void FooMainWindow::savePlaylist ()
 {
+	FooPlaylistWidget * wid = static_cast<FooPlaylistWidget *> (fooTabWidget->currentWidget());
+	if (!wid)
+		return;
+	if (wid->topLevelItemCount() > 0)
+	{
+		// TODO: fix and use this metod (now the getting selected filter is not working)
+		//QString fileName = QFileDialog::getSaveFileName(this, tr("Choose a filename to save playlist"),QDesktopServices::storageLocation(QDesktopServices::MusicLocation)+"playlist.pls", "M3U Playlist (*.m3u);; Pls Playlist (*.pls)",&selFilter);
+		QStringList formats;
+		formats.append("m3u");
+		formats.append("pls");
+		QFileDialog dialog(this, tr("Choose a filename to save playlist"));
+		dialog.setAcceptMode(QFileDialog::AcceptSave);
+		dialog.setFileMode(QFileDialog::AnyFile);
+		dialog.setNameFilters(formats);
+		if (dialog.exec() == QDialog::Accepted)
+		{
+			QString selectedFilter = dialog.selectedNameFilter();
+			QString fileName = dialog.selectedFiles()[0];
+			if (!fileName.isEmpty())
+			{
+				fileName.append("."+selectedFilter); // add selected extension to file name
+				if (fileName.endsWith("pls"))
+				{
+					savePlaylistToPls(fileName);
+				}
+				else
+				{
+					savePlaylistToM3u(fileName);
+				}
+			}
+		}
+	}
+}
+
+void FooMainWindow::savePlaylistToPls(QString filePath)
+{
+	FooPlaylistWidget * wid = static_cast<FooPlaylistWidget *> (fooTabWidget->currentWidget());
+	if (!wid)
+		return;
+
+	QFile file(filePath);
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+		return;
+
+	QTextStream out(&file);
+	// first, we write a header of playlist file and info about number of songs in playlist
+	out << "[playlist]\n";
+	out << "NumberOfEntries="<<wid->topLevelItemCount()<<endl;
+	out << endl;
+
+	for (uint nr = 0, size=wid->topLevelItemCount();nr<size;nr++)
+	{
+		/*
+	 Now write sample informations about song,
+	 a length of song in seconds and a title.
+	 For now write a "Simple title" as a title and a 1234 as a length.
+	 */
+		out << "\nFile" << nr <<"="<<wid->topLevelItem(nr)->text(0)<<endl;
+		out << "Title" << nr <<"=Sample title"<<endl;
+		out << "Length" << nr <<"=1234"<<endl;
+	}
+	file.close();
+}
+
+void FooMainWindow::savePlaylistToM3u(QString filePath)
+{
+	FooPlaylistWidget * wid = static_cast<FooPlaylistWidget *> (fooTabWidget->currentWidget());
+	if (!wid)
+		return;
+
+	QFile file(filePath);
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+		return;
+
+	QTextStream out(&file);
+	// first, we write a header of playlist file and a empty line after that to make it more readable
+	out << "#EXTM3U\n";
+
+	for (uint nr = 0, size=wid->topLevelItemCount();nr<size;nr++)
+	{
+		/*
+	 now write sample informations about song,
+	 a length of song in seconds and a title
+	 */
+		out << "\n#EXTINF:123,Sample title\n";
+		out << wid->topLevelItem(nr)->text(0) << endl;
+	}
+	file.close();
 }
 
 void FooMainWindow::preferences ()
@@ -932,18 +1020,34 @@ void FooMainWindow::search ()
 
 void FooMainWindow::removeDuplicates ()
 {
-
+	FooPlaylistWidget * wid = static_cast<FooPlaylistWidget *> (fooTabWidget->currentWidget());
+	if (!wid) return;
+	QVector<QString> files;
+	foreach(QTreeWidgetItem* item, wid->itemsList())
+	{
+		if (files.contains(item->text(0)))
+		{
+			wid->takeTopLevelItem(wid->indexOfTopLevelItem(item));
+		}
+		else
+		{
+			files.append(item->text(0));
+		}
+	}
 }
 
 void FooMainWindow::removeDeadItems ()
 {
 	FooPlaylistWidget * wid = static_cast<FooPlaylistWidget *> (fooTabWidget->currentWidget());
 	if (!wid) return;
-	QList<QTreeWidgetItem*> items =  wid->itemsList();
-	foreach(QTreeWidgetItem* item, items)
+
+	// TODO to check this out
+
+	QFileInfo fileInfo;
+	foreach(QTreeWidgetItem* item, wid->itemsList())
 	{
-		QFile file(QUrl(item->text(0)).toLocalFile());
-		if (!file.exists())
+		fileInfo.setFile(item->text(0));
+		if (fileInfo.isFile() && !fileInfo.exists())
 		{
 			wid->takeTopLevelItem(wid->indexOfTopLevelItem(item));
 		}
