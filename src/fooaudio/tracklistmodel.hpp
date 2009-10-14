@@ -16,11 +16,10 @@ const int TrackRole = FooRoles + 5;
 
 class TrackListModel : public QAbstractItemModel
 {
-    Q_OBJECT
-
+	Q_OBJECT
 
 public:
-    TrackListModel();
+	TrackListModel();
 };
 
 #endif // TRACKLISTMODEL_HPP

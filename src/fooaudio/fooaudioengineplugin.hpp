@@ -2,6 +2,7 @@
 #define _FOOAUDIOENGINEPLUGIN_HPP_
 
 #include <QUrl>
+#include <QMultiMap>
 
 class FooAudioEnginePlugin : public QObject
 {
@@ -16,12 +17,12 @@ public:
 	virtual bool isMuted() = 0;
 	virtual void setMuted(bool) = 0;
 	virtual qint64 totalTime() = 0;
-	virtual void seek (qint64 time) = 0;
+	virtual void seek(qint64 time) = 0;
 
 signals:
-	void aboutToFinish ();
-	void progress (qint64 time);
-	void willPlayNow (QUrl file);
+	void aboutToFinish();
+	void progress(qint64 time);
+	void willPlayNow(QUrl file);
 
 public slots:
 	virtual void stop() = 0;
@@ -29,14 +30,14 @@ public slots:
 	virtual void pause() = 0;
 	virtual void clearQueue() = 0;
 	virtual void enqueueNextFile(QUrl path) = 0;
-	virtual void playFile (QUrl path) = 0;
+	virtual void playFile(QUrl path) = 0;
 
-	virtual void setVolume (int vol) = 0;
+	virtual void setVolume(int vol) = 0;
 
-	virtual void metaData(QUrl) = 0;
-	virtual void metaData(const QString &, QUrl) = 0;
+	virtual void metaData(QMultiMap<QString, QString> &, QUrl) = 0;
+	virtual void metaData(QStringList &, const QString &, QUrl) = 0;
 
-	virtual void mimeTypes() = 0;
+	virtual void mimeTypes(QStringList &) = 0;
 };
 
 #endif // _FOOAUDIOENGINEPLUGIN_HPP_

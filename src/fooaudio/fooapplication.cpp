@@ -24,41 +24,41 @@
 
 FooApplication::FooApplication()
 {
-    InitializeLogic();
+	InitializeLogic();
 }
 
 FooApplication::~FooApplication()
 {
-    delete m_application;
+	delete m_application;
 }
 
 int FooApplication::start(int argc, char *argv[])
 {
-    m_application = new QApplication(argc, argv);
+	m_application = new QApplication(argc, argv);
 
-    QObject::connect(m_application, SIGNAL(aboutToQuit()), this, SLOT(quitApp()));
+	QObject::connect(m_application, SIGNAL(aboutToQuit()), this, SLOT(quitApp()));
 
-    QTextCodec::setCodecForCStrings (QTextCodec::codecForName ("UTF-8"));
-    m_application->setApplicationName("fooaudio");
-    m_application->setQuitOnLastWindowClosed(true);
+	QTextCodec::setCodecForCStrings (QTextCodec::codecForName ("UTF-8"));
+	m_application->setApplicationName("fooaudio");
+	m_application->setQuitOnLastWindowClosed(true);
 
-    FooPhononAudioEngine *fooAudioEngine = new FooPhononAudioEngine(m_application);
+	FooPhononAudioEngine *fooAudioEngine = new FooPhononAudioEngine(m_application);
 
-    FooMainWindow *fooMainWindow = new FooMainWindow();
-    fooMainWindow->setAudioEngine(fooAudioEngine);
+	FooMainWindow *fooMainWindow = new FooMainWindow();
+	fooMainWindow->setAudioEngine(fooAudioEngine);
 
-    fooMainWindow->show();
+	fooMainWindow->show();
 
-    return m_application->exec();
+	return m_application->exec();
 }
 
 void FooApplication::quitApp()
 {
-    ApplicationLogic::Release();
+	ApplicationLogic::Release();
 }
 
 void FooApplication::InitializeLogic()
 {
-    ApplicationLogic::getInstance()->start();
+	ApplicationLogic::getInstance()->start();
 }
 

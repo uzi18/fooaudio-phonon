@@ -6,10 +6,10 @@
 #include "footabwidget.hpp"
 namespace PlayOrder
 {
-    enum playOrder
-    {
-        repeatPlaylist,repeatTrack,shuffleTracks,shuffleAlbums,shuffleFolders,defaultOrder,random
-    };
+	enum playOrder
+	{
+		repeatPlaylist, repeatTrack, shuffleTracks, shuffleAlbums, shuffleFolders, defaultOrder, random
+	};
 }
 
 class	QSystemTrayIcon;
@@ -42,7 +42,7 @@ public:
 
 	void readSettings();
 	void writeSettings();
-	
+
 	bool isCursorFollowsPlayback();
 
 	void addFileToQueue (QUrl file);
@@ -56,7 +56,7 @@ signals:
 	void prevSignal(QUrl);
 	void stopSignal();
 	void nextSignal(QUrl);
-        void randomSignal(QUrl);
+	void randomSignal(QUrl);
 	void pauseSignal();
 	void enqueueNextFile(QUrl);
 
@@ -117,9 +117,9 @@ private slots:
 	void albumList ();
 	void searchAlbum ();
 	void configure ();
-        void uncheckAllOrders();
+	void uncheckAllOrders();
 	void about ();
-        QUrl randomTrack();
+	QUrl randomTrack();
 
 	void cutLayout();
 	void copyLayout();
@@ -145,7 +145,7 @@ private slots:
 
 private:
 	const int maxProgress;
-        PlayOrder::playOrder order;
+	PlayOrder::playOrder order;
 	FooPhononAudioEngine *fooAudioEngine;
 
 	QList<QUrl> queue;
@@ -155,88 +155,88 @@ private:
 	QSystemTrayIcon *trayIcon;
 
 	QMenu *fileMenu;
-		QAction *openAction;
-		QAction *openAudioCDAction;
-		QAction *addFilesAction;
-		QAction *addFolderAction;
-		QAction *addLocationAction;
-		QAction *newPlaylistAction;
-		QAction *loadPlaylistAction;
-		QAction *savePlaylistAction;
-		QAction *preferencesAction;
-		QAction *exitAction;
+	QAction *openAction;
+	QAction *openAudioCDAction;
+	QAction *addFilesAction;
+	QAction *addFolderAction;
+	QAction *addLocationAction;
+	QAction *newPlaylistAction;
+	QAction *loadPlaylistAction;
+	QAction *savePlaylistAction;
+	QAction *preferencesAction;
+	QAction *exitAction;
 
 	QMenu *editMenu;
-		QAction *undoAction;
-		QAction *redoAction;
-		QAction *cutAction;
-		QAction *copyAction;
-		QAction *pasteAction;
-		QAction *removeAction;
-		QAction *clearAction;
-		QAction *selectAllAction;
-		QMenu *queueMenu;
-			QAction *addToQueueAction;
-			QAction *removeFromQueueAction;
-			QAction *clearQueueAction;
-		QMenu *sortMenu;
-			QAction *sortByAction;
-			QAction *randomizeAction;
-			QAction *reverseAction;
-			QAction *sortByFilePatchAction;
-			QAction *sortByAlbumAction;
-			QAction *sortByTrackNumberAction;
-			QAction *sortByTitleAction;
-		QAction *searchAction;
-		QAction *removeDuplicatesAction;
-		QAction *removeDeadItemsAction;
+	QAction *undoAction;
+	QAction *redoAction;
+	QAction *cutAction;
+	QAction *copyAction;
+	QAction *pasteAction;
+	QAction *removeAction;
+	QAction *clearAction;
+	QAction *selectAllAction;
+	QMenu *queueMenu;
+	QAction *addToQueueAction;
+	QAction *removeFromQueueAction;
+	QAction *clearQueueAction;
+	QMenu *sortMenu;
+	QAction *sortByAction;
+	QAction *randomizeAction;
+	QAction *reverseAction;
+	QAction *sortByFilePatchAction;
+	QAction *sortByAlbumAction;
+	QAction *sortByTrackNumberAction;
+	QAction *sortByTitleAction;
+	QAction *searchAction;
+	QAction *removeDuplicatesAction;
+	QAction *removeDeadItemsAction;
 
 	QMenu *viewMenu;
-		QAction *alwaysOnTopAction;
-		QMenu *visualisationsMenu;
-		QAction *consoleAction;
-		QAction *equalizerAction;
-		QAction *playlistManagerAction;
-		QMenu *layoutMenu;
-			QAction *quickSetupAction;
-			QAction *enableLayoutEditionModeAction;
-			QAction *createScratchboxAction;
-			QAction *cutLayoutAction;
-			QAction *copyLayoutAction;
-			QAction *pasteLayoutAction;
+	QAction *alwaysOnTopAction;
+	QMenu *visualisationsMenu;
+	QAction *consoleAction;
+	QAction *equalizerAction;
+	QAction *playlistManagerAction;
+	QMenu *layoutMenu;
+	QAction *quickSetupAction;
+	QAction *enableLayoutEditionModeAction;
+	QAction *createScratchboxAction;
+	QAction *cutLayoutAction;
+	QAction *copyLayoutAction;
+	QAction *pasteLayoutAction;
 
 	QMenu *playbackMenu;
-		QAction *stopAction;
-		QAction *pauseAction;
-		QAction *playAction;
-		QAction *previousAction;
-		QAction *nextAction;
-		QAction *randomAction;
-		QMenu *orderMenu;
-			QAction *defaultOrderAction;
-			QAction *repeatPlaylistAction;
-			QAction *repeatTrackAction;
-			QAction *randomOrderAction;
-			QAction *shuffleTracksAction;
-			QAction *shuffleAlbumsAction;
-			QAction *shuffleFoldersAction;
-		QAction *stopAfterCurrentAction;
-		QAction *playbackFollowsCursorAction;
-		QAction *cursorFollowsPlaybackAction;
+	QAction *stopAction;
+	QAction *pauseAction;
+	QAction *playAction;
+	QAction *previousAction;
+	QAction *nextAction;
+	QAction *randomAction;
+	QMenu *orderMenu;
+	QAction *defaultOrderAction;
+	QAction *repeatPlaylistAction;
+	QAction *repeatTrackAction;
+	QAction *randomOrderAction;
+	QAction *shuffleTracksAction;
+	QAction *shuffleAlbumsAction;
+	QAction *shuffleFoldersAction;
+	QAction *stopAfterCurrentAction;
+	QAction *playbackFollowsCursorAction;
+	QAction *cursorFollowsPlaybackAction;
 
 	QMenu *libraryMenu;
-		QAction *albumListAction;
-		QAction *searchAlbumAction;
-		QAction *configureAction;
+	QAction *albumListAction;
+	QAction *searchAlbumAction;
+	QAction *configureAction;
 
 	QMenu *settingsMenu;
-		QAction *trayIconAction;
+	QAction *trayIconAction;
 
 	QMenu *helpMenu;
-		QAction *aboutAction;
-		QAction *aboutQtAction;
+	QAction *aboutAction;
+	QAction *aboutQtAction;
 
-    QMenu *trayMenu;
+	QMenu *trayMenu;
 
 	QAction *volumeToolBarAction;
 	QAction *stopToolBarAction;

@@ -27,21 +27,21 @@
 
 class ApplicationLogic : public QThread
 {
-    Q_OBJECT
+	Q_OBJECT
 
-    QMap<QString, QSharedPointer<QObject> > controllersList;
+	QMap<QString, QSharedPointer<QObject> > controllersList;
 
-    static ApplicationLogic* Instance;
+	static ApplicationLogic* Instance;
 
 public:
-    ApplicationLogic();
-    ~ApplicationLogic();
+	ApplicationLogic();
+	~ApplicationLogic();
 
-    QSharedPointer<QObject> getController(QString controllerName);
-    void run();
-    void InitializeControllers();
-    static ApplicationLogic* getInstance();
-    static void Release();
+	QSharedPointer<QObject> getController(QString controllerName);
+	void run();
+	void InitializeControllers();
+	static ApplicationLogic* getInstance();
+	static void Release();
 };
 
 #endif // LOGICTHREAD_H

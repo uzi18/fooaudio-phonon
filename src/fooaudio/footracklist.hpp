@@ -17,13 +17,13 @@
 
 class FooTrackList : public QList<FooTrack>
 {
-    QString Name;
+	QString Name;
 
 public:
-    FooTrackList(QString name = "");
+	FooTrackList(QString name = "");
 
-    const QString & name() { return Name; }
-    void setName (const QString &name) { Name=name; }
+	const QString & name() { return Name; }
+	void setName (const QString &name) { Name=name; }
 };
 
 #endif

@@ -17,7 +17,7 @@
 #include "fooabout.hpp"
 
 FooAbout::FooAbout(QWidget *parent)
-	: QWidget(parent, Qt::Window)
+		: QWidget(parent, Qt::Window)
 {
 	setWindowTitle(tr("About"));
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -120,5 +120,7 @@ FooAbout::~FooAbout()
 void FooAbout::keyPressEvent(QKeyEvent *ke_event)
 {
 	if (ke_event->key() == Qt::Key_Escape)
+	{
 		close();
+	}
 }

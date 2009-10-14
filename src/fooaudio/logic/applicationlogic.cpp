@@ -33,42 +33,47 @@ ApplicationLogic::~ApplicationLogic()
 
 void ApplicationLogic::InitializeControllers()
 {
-// example:
-//    controllersList["Controller"] = QSharedPointer<Controller>(new Controller);
+	// example:
+	//    controllersList["Controller"] = QSharedPointer<Controller>(new Controller);
 }
 
 QSharedPointer<QObject> ApplicationLogic::getController(QString controllerName)
 {
-    return controllersList[controllerName];
+	return controllersList[controllerName];
 }
 
 ApplicationLogic* ApplicationLogic::getInstance()
 {
-    if(!Instance)
-        Instance = new ApplicationLogic;
+	if(!Instance)
+	{
+		Instance = new ApplicationLogic;
+	}
 
-    return Instance;
+	return Instance;
 }
 
 void ApplicationLogic::Release()
 {
-    if(Instance)
-        return;
+	if (Instance)
+	{
+		return;
+	}
 
-    Instance->quit();
-    while(Instance->isRunning())
-    {
-        QApplication::processEvents();
-        QApplication::instance()->thread()->msleep(100);
-    }
+	Instance->quit();
 
-    delete Instance;
-    Instance = 0;
+	while(Instance->isRunning())
+	{
+		QApplication::processEvents();
+		QApplication::instance()->thread()->msleep(100);
+	}
+
+	delete Instance;
+	Instance = 0;
 }
 
 void ApplicationLogic::run()
 {
-    InitializeControllers();
+	InitializeControllers();
 
-    exec();
+	exec();
 }

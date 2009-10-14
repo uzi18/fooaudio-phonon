@@ -15,29 +15,29 @@
 
 class FooTrack
 {
-    QUrl File;
+	QUrl File;
 
-    QString Title;
-    QString Artist;
-    QString Year;
-    QString Album;
-    QString Track;
+	QString Title;
+	QString Artist;
+	QString Year;
+	QString Album;
+	QString Track;
 
 public:
-    FooTrack(QUrl &file);
+	FooTrack(QUrl &file);
 
-    const QUrl & file() { return File; }
+	const QUrl & file() { return File; }
 
-    const QString & title() { return Title; }
-    void setTitle (QString title) { Title=title; }
-    const QString & artist() { return Artist; }
-    void setArtist (QString artist) { Artist=artist; }
-    const QString & year() { return Year; }
-    void setYear (QString year) { Year=year; }
-    const QString & album() { return Album; }
-    void setAlbum (QString album) { Album=album; }
-    const QString & track() { return Track; }
-    void setTrack (QString track) { Track=track; }
+	const QString & title() { return Title; }
+	void setTitle (QString title) { Title=title; }
+	const QString & artist() { return Artist; }
+	void setArtist (QString artist) { Artist=artist; }
+	const QString & year() { return Year; }
+	void setYear (QString year) { Year=year; }
+	const QString & album() { return Album; }
+	void setAlbum (QString album) { Album=album; }
+	const QString & track() { return Track; }
+	void setTrack (QString track) { Track=track; }
 };
 
 #endif

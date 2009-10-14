@@ -4,8 +4,12 @@
 
 FooTrackList::FooTrackList(QString name)
 {
-    if (name.isNull())
-        Name = QObject::tr("New Playlist");
-    else
-        Name = name;
+	if (name.isNull())
+	{
+		Name = QObject::tr("New Playlist");
+	}
+	else
+	{
+		Name = name;
+	}
 }

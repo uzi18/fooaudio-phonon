@@ -12,7 +12,7 @@
 
 FooPhononAudioEngine::FooPhononAudioEngine (QObject* parent) : FooAudioEnginePlugin(parent)
 {
-        qDebug() <<  "FooPhononAudioEngine";
+	qDebug() <<  "FooPhononAudioEngine";
 
 	audioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
 	mediaObject = new Phonon::MediaObject(this);
@@ -23,7 +23,7 @@ FooPhononAudioEngine::FooPhononAudioEngine (QObject* parent) : FooAudioEnginePlu
 	// this is needed - default = 0 => no ticks
 	mediaObject->setTickInterval(10);
 
-	connect(mediaObject, SIGNAL (tick(qint64)), this, SIGNAL (progress(qint64)));
+	connect(mediaObject, SIGNAL(tick(qint64)), this, SIGNAL(progress(qint64)));
 	connect(mediaObject, SIGNAL(aboutToFinish()), this, SIGNAL(aboutToFinish()));
 }
 
@@ -65,11 +65,14 @@ void FooPhononAudioEngine::seek (qint64 time)
 
 void FooPhononAudioEngine::enqueueNextFile (QUrl path)
 {
-        qDebug() <<  "FooPhononAudioEngine::enqueueNextFile";
+	qDebug() <<  "FooPhononAudioEngine::enqueueNextFile";
 
-        qDebug() <<  "Kolejna piosenka: " << path.toString();
+	qDebug() <<  "Kolejna piosenka: " << path.toString();
+
 	if (path.isEmpty())
+	{
 		return;
+	}
 
 	mediaObject->enqueue(path.toString());
 	emit willPlayNow (path);
@@ -77,20 +80,23 @@ void FooPhononAudioEngine::enqueueNextFile (QUrl path)
 
 void FooPhononAudioEngine::playFile (QUrl path)
 {
-        qDebug() <<  "FooPhononAudioEngine::playFile";
+	qDebug() <<  "FooPhononAudioEngine::playFile";
 
 	if (!path.isEmpty())
-		  {
-                                         qDebug() <<  "FooPhononAudioEngine::playFile: is not Empty: " << path.toString();
-					 emit willPlayNow (path);
+	{
+		qDebug() <<  "FooPhononAudioEngine::playFile: is not Empty: " << path.toString();
+
+		emit willPlayNow (path);
+
 		mediaObject->stop();
 		mediaObject->clearQueue();
-					 mediaObject->setCurrentSource(path.toString());
+		mediaObject->setCurrentSource(path.toString());
 		mediaObject->play();
 	}
 	else
 	{
-                qDebug() <<  "FooPhononAudioEngine::playFile: is Empty";
+		qDebug() <<  "FooPhononAudioEngine::playFile: is Empty";
+
 		mediaObject->stop();
 	}
 }
@@ -123,20 +129,20 @@ void FooPhononAudioEngine::clearQueue()
 	mediaObject->clearQueue();
 }
 
-void FooPhononAudioEngine::metaData(QUrl url)
+void FooPhononAudioEngine::metaData(QMultiMap<QString, QString> &out, QUrl url)
 {
 	metaInformation->setCurrentSource(url);
-	emit metaData(metaInformation->metaData());
+	out = metaInformation->metaData();
 }
 
-void FooPhononAudioEngine::metaData (const QString &key, const QUrl url)
+void FooPhononAudioEngine::metaData (QStringList & out, const QString &key, const QUrl url)
 {
 	metaInformation->setCurrentSource(url);
-	emit metaData(metaInformation->metaData(key));
+	out = metaInformation->metaData(key);
 }
 
-void FooPhononAudioEngine::mimeTypes()
+void FooPhononAudioEngine::mimeTypes(QStringList & out)
 {
-	emit mimeTypes(Phonon::BackendCapabilities::availableMimeTypes());
+	out = Phonon::BackendCapabilities::availableMimeTypes();
 }
 

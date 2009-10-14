@@ -21,7 +21,7 @@
 
 namespace FooAudio
 {
-    AbstractAudioPlugin::AbstractAudioPlugin(QObject *parent) : QObject(parent)
-    {
-    }
+	AbstractAudioPlugin::AbstractAudioPlugin(QObject *parent) : QObject(parent)
+	{
+	}
 }

@@ -24,18 +24,18 @@
 
 class FooApplication : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    FooApplication();
-    ~FooApplication();
-    int start(int argc, char *argv[]);
+	FooApplication();
+	~FooApplication();
+	int start(int argc, char *argv[]);
 
 private:
-    void InitializeLogic();
-    QApplication *m_application;
+	void InitializeLogic();
+	QApplication *m_application;
 
 public slots:
-    void quitApp();
+	void quitApp();
 };
 
 #endif // FOOAPPLICATION_H

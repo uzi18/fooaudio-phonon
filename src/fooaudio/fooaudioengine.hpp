@@ -5,7 +5,8 @@
 #include <QMultiMap>
 #include <QStringList>
 
-namespace Phonon {
+namespace Phonon
+{
 	class MediaObject;
 	class AudioOutput;
 }
@@ -18,32 +19,27 @@ class FooPhononAudioEngine : public FooAudioEnginePlugin
 public:
 	FooPhononAudioEngine (QObject * parent = 0);
 
-virtual	bool isPlaying();
-virtual	bool isStopped();
-virtual	bool isPaused();
-virtual	bool isMuted();
-virtual	void setMuted(bool);
-virtual	qint64 totalTime();
-virtual	void seek(qint64 time);
+	virtual bool isPlaying();
+	virtual bool isStopped();
+	virtual bool isPaused();
+	virtual bool isMuted();
+	virtual void setMuted(bool);
+	virtual qint64 totalTime();
+	virtual void seek(qint64 time);
 
 public slots:
-virtual	void stop();
-virtual	void play();
-virtual	void pause();
-virtual	void clearQueue();
-virtual	void enqueueNextFile(QUrl);
-virtual	void playFile(QUrl);
+	virtual void stop();
+	virtual void play();
+	virtual void pause();
+	virtual void clearQueue();
+	virtual void enqueueNextFile(QUrl);
+	virtual void playFile(QUrl);
 
-virtual	void setVolume(int);
+	virtual void setVolume(int);
 
-virtual void metaData(QUrl);
-virtual void metaData(const QString &, QUrl);
-virtual void mimeTypes();
-
-signals:
-void metaData(QMultiMap<QString, QString>);
-void metaData(QStringList);
-void mimeTypes(QStringList);
+	virtual void metaData(QMultiMap<QString, QString> &, QUrl);
+	virtual void metaData(QStringList &, const QString &, QUrl);
+	virtual void mimeTypes(QStringList &);
 
 private:
 	Phonon::MediaObject *mediaObject;

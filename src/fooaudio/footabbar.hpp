@@ -41,7 +41,7 @@ private slots:
 	void closeOtherTabs ();
 	void renameTab ();
 	void contextMenuRequested (const QPoint &);
-//	void updateViewToolBarAction();
+	//	void updateViewToolBarAction();
 
 private:
 	void updateVisibility ();
