@@ -1305,12 +1305,16 @@ void FooMainWindow::updateWindowTitle(QMultiMap<QString, QString> newMetaData)
 */
 	// TODO: make it configurable
 	// TODO: add more radio support here (radio - artist - title)
-	QString newTitle = QString("%1 %2 - %3").arg(
-		"fooaudio",
+	QString newTitle = QString("%1 - %2").arg(
 		newMetaData.take("ARTIST"),
 		newMetaData.take("TITLE")
 	);
-	setWindowTitle(newTitle);
+	setWindowTitle(QString("fooaudio").append(newTitle));
+
+	if (!QSystemTrayIcon::isSystemTrayAvailable())
+		return;
+
+	trayIcon->setToolTip(newTitle);
 }
 
 void FooMainWindow::cutLayout ()
