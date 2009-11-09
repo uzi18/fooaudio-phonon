@@ -53,6 +53,7 @@ namespace FooAudio
 
         connect(d->mediaObject, SIGNAL (tick(qint64)), this, SIGNAL (progress(qint64)));
         connect(d->mediaObject, SIGNAL(aboutToFinish()), this, SIGNAL(aboutToFinish()));
+        connect(d->mediaObject, SIGNAL(metaDataChanged()), this, SLOT(newMetaData()));
 
     }
 
@@ -171,6 +172,11 @@ namespace FooAudio
     void PhononEngine::mimeTypes()
     {
         emit mimeTypes(Phonon::BackendCapabilities::availableMimeTypes());
+    }
+
+    void PhononEngine::newMetaData()
+    {
+	emit metaDataChanged(d->mediaObject->metaData());
     }
 };
 

@@ -46,6 +46,10 @@ private:
 	Phonon::AudioOutput *audioOutput;
 
 	Phonon::MediaObject *metaInformation;
+
+private slots:
+	void newMetaData();
+
 };
 
 #endif // _FOOPHONONAUDIOENGINE_HPP_

@@ -25,6 +25,7 @@ FooPhononAudioEngine::FooPhononAudioEngine (QObject* parent) : FooAudioEnginePlu
 
 	connect(mediaObject, SIGNAL(tick(qint64)), this, SIGNAL(progress(qint64)));
 	connect(mediaObject, SIGNAL(aboutToFinish()), this, SIGNAL(aboutToFinish()));
+	connect(mediaObject, SIGNAL(metaDataChanged()), this, SLOT(newMetaData()));
 }
 
 bool FooPhononAudioEngine::isPlaying()
@@ -146,3 +147,7 @@ void FooPhononAudioEngine::mimeTypes(QStringList & out)
 	out = Phonon::BackendCapabilities::availableMimeTypes();
 }
 
+void FooPhononAudioEngine::newMetaData()
+{
+	emit metaDataChanged(mediaObject->metaData());
+}

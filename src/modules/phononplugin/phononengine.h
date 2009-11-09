@@ -49,6 +49,7 @@ namespace FooAudio
         void progress(const qint64 time);
         void willPlayNow(const QUrl file);
         void metaData(QMultiMap<QString, QString>);
+	void metaDataChanged(QMultiMap<QString, QString> newMetaData);
         void metaData(QStringList);
         void mimeTypes(QStringList);
 
@@ -63,6 +64,10 @@ namespace FooAudio
         void metaData(const QUrl url);
         void metaData(const QString &key, const QUrl url);
         void mimeTypes();
+
+
+    private slots:
+        void newMetaData();
 
     private:
         class PhononEnginePrivate;

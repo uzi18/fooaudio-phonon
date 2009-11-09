@@ -23,6 +23,7 @@ signals:
 	void aboutToFinish();
 	void progress(qint64 time);
 	void willPlayNow(QUrl file);
+	void metaDataChanged(QMultiMap<QString, QString> newMetaData);
 
 public slots:
 	virtual void stop() = 0;

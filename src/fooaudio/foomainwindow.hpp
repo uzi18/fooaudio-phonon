@@ -143,6 +143,9 @@ private slots:
 	void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
 	void setTrayIcon ();
 
+	// update window title according to new meta data
+	void updateWindowTitle(QMultiMap<QString, QString> newMetaData);
+
 private:
 	const int maxProgress;
 	PlayOrder::playOrder order;

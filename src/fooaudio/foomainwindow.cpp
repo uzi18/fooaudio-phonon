@@ -43,6 +43,7 @@ void FooMainWindow::setAudioEngine(FooPhononAudioEngine * engine)
 	connect(fooAudioEngine, SIGNAL(aboutToFinish()), this, SLOT(enqueueNextFile()));
 	connect(this, SIGNAL(enqueueNextFile(QUrl)), fooAudioEngine, SLOT(enqueueNextFile(QUrl)));
 	connect(fooAudioEngine, SIGNAL(willPlayNow (QUrl)), this, SLOT(addToPrevQueue(QUrl)));
+	connect(fooAudioEngine, SIGNAL(metaDataChanged(QMultiMap<QString,QString>)), this, SLOT(updateWindowTitle(QMultiMap<QString,QString>)));
 	connect(this, SIGNAL(playSignal()), fooAudioEngine, SLOT(play()));
 	connect(this, SIGNAL(pauseSignal()), fooAudioEngine, SLOT(pause()) );
 	connect(this, SIGNAL(stopSignal()), fooAudioEngine, SLOT(stop()));
@@ -1289,6 +1290,27 @@ void FooMainWindow::configure ()
 void FooMainWindow::setTrayIcon ()
 {
 	trayIcon->setVisible(trayIconAction->isChecked());
+}
+
+void FooMainWindow::updateWindowTitle(QMultiMap<QString, QString> newMetaData)
+{
+/*
+	metaData("ARTIST"));
+	metaData("ALBUM"));
+	metaData("TITLE"));
+	metaData("DATE"));
+	metaData("GENRE"));
+	metaData("TRACKNUMBER"));
+	metaData("DESCRIPTION"));
+*/
+	// TODO: make it configurable
+	// TODO: add more radio support here (radio - artist - title)
+	QString newTitle = QString("%1 %2 - %3").arg(
+		"fooaudio",
+		newMetaData.take("ARTIST"),
+		newMetaData.take("TITLE")
+	);
+	setWindowTitle(newTitle);
 }
 
 void FooMainWindow::cutLayout ()
