@@ -1309,7 +1309,12 @@ void FooMainWindow::updateWindowTitle(QMultiMap<QString, QString> newMetaData)
 		newMetaData.take("ARTIST"),
 		newMetaData.take("TITLE")
 	);
-	setWindowTitle(QString("fooaudio").append(newTitle));
+
+	QString appName = qApp->applicationName();
+	appName.append(" ");
+	appName.append(newTitle);
+
+	setWindowTitle(appName);
 
 	if (!QSystemTrayIcon::isSystemTrayAvailable())
 		return;
