@@ -24,6 +24,7 @@ class FooTrack
 	QString Track;
 
 public:
+	FooTrack();
 	FooTrack(QUrl &file);
 
 	const QUrl & file() { return File; }
@@ -38,6 +39,10 @@ public:
 	void setAlbum (QString album) { Album=album; }
 	const QString & track() { return Track; }
 	void setTrack (QString track) { Track=track; }
+	
+	bool operator == (const FooTrack &compare) const;
+	bool operator < (const FooTrack &compare) const;
+	bool operator != (const FooTrack &compare) const;
 };
 
 #endif
