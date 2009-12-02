@@ -428,7 +428,10 @@ void FooMainWindow::createMenus()
 
 void FooMainWindow::createToolBars ()
 {
+	iconSize = new QSize(16, 16);
+
 	trackToolBar = new QToolBar (tr("TrackToolBar"), this);
+	trackToolBar->setIconSize(*iconSize);
 	trackToolBar->setObjectName("trackToolBar");
 	trackToolBar->setFloatable (false);
 	trackSlider = new QSlider (Qt::Horizontal);
@@ -437,6 +440,7 @@ void FooMainWindow::createToolBars ()
 	addToolBar (trackToolBar);
 
 	volumeToolBar = new QToolBar (tr("VolumeToolBar"), this);
+	volumeToolBar->setIconSize(*iconSize);
 	volumeToolBar->setObjectName("volumeToolBar");
 	volumeToolBar->setFloatable (false);
 	volumeToolBarAction = new QAction (tr("Mute"),this);
@@ -449,10 +453,12 @@ void FooMainWindow::createToolBars ()
 	addToolBar (volumeToolBar);
 
 	playbackToolBar = new QToolBar (tr("PlaybackToolBar"), this);
+	playbackToolBar->setIconSize(*iconSize);
 	playbackToolBar->setObjectName("playbackToolBar");
 	playbackToolBar->setFloatable (false);
 
 	stopToolBarAction = new QAction (QIcon (":images/stop.png"), tr ("Stop"),this);
+	stopToolBarAction->
 	connect (stopToolBarAction, SIGNAL (triggered ()), this, SLOT (stop ()));
 	playbackToolBar->addAction (stopToolBarAction);
 
