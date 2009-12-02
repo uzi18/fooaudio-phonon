@@ -56,3 +56,6 @@ ncscope.*
 *.orig
 *~
 \#*#
+
+# build dir
+build
