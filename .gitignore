@@ -41,6 +41,7 @@ qrc_*.cpp
 fooaudio
 lib
 bin
+*.pro..user
 
 # stgit generated dirs
 patches-*

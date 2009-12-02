@@ -24,8 +24,8 @@ HEADERS += abstractaudiointerface.h \
     footrack.hpp \
     footracklist.hpp \
     fooapplication.h \
-    tracklistmodel.hpp
-
+    tracklistmodel.hpp \
+    fooplaylistmanager.hpp
 SOURCES += abstractaudioplugin.cpp \
     fooabout.cpp \
     fooaudio.cpp \
@@ -39,8 +39,7 @@ SOURCES += abstractaudioplugin.cpp \
     footracklist.cpp \
     footrack.cpp \
     fooapplication.cpp \
-    tracklistmodel.cpp
-
+    tracklistmodel.cpp \
+    fooplaylistmanager.cpp
 include(logic/logic.pro)
-
 RESOURCES += resource.qrc
