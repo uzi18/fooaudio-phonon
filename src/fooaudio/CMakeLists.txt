@@ -10,6 +10,7 @@ set( fooaudio_SRCS
     footabbar.cpp
     footabwidget.cpp
     footracklist.cpp
+	 fooplaylistmanager.cpp
     footrack.cpp
     fooapplication.cpp
     tracklistmodel.cpp
@@ -24,6 +25,7 @@ set( fooaudio_MOC
     fooaudioengineplugin.hpp
     foochangename.hpp
     foomainwindow.hpp
+	 fooplaylistmanager.hpp
     #fooplaylistwidget.hpp
     footabbar.hpp
     footabwidget.hpp
