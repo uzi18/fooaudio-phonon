@@ -11,6 +11,7 @@
 #define FOOTRACKLIST_HPP
 
 #include <QList>
+#include <QUuid>
 #include <QString>
 
 #include "footrack.hpp"
@@ -18,12 +19,14 @@
 class FooTrackList : public QList<FooTrack>
 {
 	QString Name;
+	QUuid Uuid;
 
 public:
-	FooTrackList(QString name = "");
+	FooTrackList(QString name = "", QUuid uuid = 0);
 
+	const QUuid & uuid() { return Uuid; }
 	const QString & name() { return Name; }
-	void setName (const QString &name) { Name=name; }
+	void setName (const QString &name) { Name = name; }
 };
 
 #endif
