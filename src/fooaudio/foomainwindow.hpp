@@ -150,6 +150,7 @@ private:
 	const int maxProgress;
 	PlayOrder::playOrder order;
 	FooPhononAudioEngine *fooAudioEngine;
+	QSize *iconSize;
 
 	QList<QUrl> queue;
 	QList<QUrl> prevqueue;
