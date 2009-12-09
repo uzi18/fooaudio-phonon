@@ -1,12 +1,14 @@
 #include <QtDebug>
-
 #include <QtGui>
 #include <QUrl>
 
 #include "fooabout.hpp"
 #include "fooaudioengine.hpp"
 #include "foomainwindow.hpp"
+#include "fooplaylistmanager.hpp"
 #include "fooplaylistwidget.hpp"
+#include "footrack.hpp"
+#include "footracklist.hpp"
 
 FooMainWindow * FooMainWindow::Instance = 0;
 
@@ -627,13 +629,13 @@ void FooMainWindow::writeSettings()
 
 		playlists.beginWriteArray("playlist");
 
-		FooPlaylistWidget * fooPlaylistWidget = (FooPlaylistWidget*) fooTabWidget->widget(i);
+/*		FooPlaylistWidget * fooPlaylistWidget = (FooPlaylistWidget*) fooTabWidget->widget(i);
 		for (int j = 0; j < fooPlaylistWidget->topLevelItemCount(); ++j)
 		{
 			playlists.setArrayIndex(j);
 			playlists.setValue("path", fooPlaylistWidget->file(j).toString());
 		}
-		playlists.endArray();
+		playlists.endArray();*/
 	}
 	playlists.endArray();
 
@@ -699,7 +701,7 @@ void FooMainWindow::readSettings()
 	{
 		for (int i = 0; i < tabsCount; ++i)
 		{
-			playlists.setArrayIndex(i);
+/*			playlists.setArrayIndex(i);
 			fooTabWidget->newTab(playlists.value("name").toString());
 
 			int songsCount = playlists.beginReadArray("playlist");
@@ -711,7 +713,21 @@ void FooMainWindow::readSettings()
 
 				fooPlaylistWidget->addFile(playlists.value("path").toString());
 			}
+			playlists.endArray();*/
+
+			playlists.setArrayIndex(i);
+			FooTrackList *tracklist = new FooTrackList(playlists.value("name").toString());
+			int songsCount = playlists.beginReadArray("playlist");
+
+			for (int j = 0; j < songsCount; ++j)
+			{
+				playlists.setArrayIndex(j);
+
+				FooTrack track(QUrl(playlists.value("path").toString()));
+				tracklist->append(track);
+			}
 			playlists.endArray();
+			FooPlaylistManager::instance()->addPlaylist(tracklist);
 		}
 	}
 	else
@@ -720,11 +736,13 @@ void FooMainWindow::readSettings()
 	}
 	playlists.endArray();
 
-	playlists.beginGroup("current");
-	fooTabWidget->setCurrentPlaylist(playlists.value("playlist", 0).toInt());
-	fooTabWidget->setCurrentItem(playlists.value("path", 0).toInt());
-	playlists.endGroup();
+	//playlists.beginGroup("current");
+	//fooTabWidget->setCurrentPlaylist(playlists.value("playlist", 0).toInt());
+	//fooTabWidget->setCurrentItem(playlists.value("path", 0).toInt());
+	//playlists.endGroup();
 
+	//foreach (FooTrackList tracklist, FooPlaylistManager::instance()->)
+	//qDebug() << FooPlaylistManager::instance()
 }
 
 bool FooMainWindow::isCursorFollowsPlayback ()
@@ -742,7 +760,7 @@ void FooMainWindow::closeEvent (QCloseEvent *event)
 	}
 	else
 	{
-		writeSettings();
+		//writeSettings();
 		event->accept();
 	}
 }
@@ -877,7 +895,7 @@ void FooMainWindow::loadPlaylist ()
 			FooPlaylistWidget * wid = static_cast<FooPlaylistWidget *> (fooTabWidget->currentWidget());
 			if (!wid)
 				return;
-			wid->clear();
+// 			wid->clear();
 			wid->addFiles(-1, urls, false);
 		}
 	}
@@ -888,7 +906,7 @@ void FooMainWindow::savePlaylist ()
 	FooPlaylistWidget * wid = static_cast<FooPlaylistWidget *> (fooTabWidget->currentWidget());
 	if (!wid)
 		return;
-	if (wid->topLevelItemCount() > 0)
+/*	if (wid->topLevelItemCount() > 0)
 	{
 		// TODO: fix and use this metod (now the getting selected filter is not working)
 		//QString fileName = QFileDialog::getSaveFileName(this, tr("Choose a filename to save playlist"),QDesktopServices::storageLocation(QDesktopServices::MusicLocation)+"playlist.pls", "M3U Playlist (*.m3u);; Pls Playlist (*.pls)",&selFilter);
@@ -916,7 +934,7 @@ void FooMainWindow::savePlaylist ()
 				}
 			}
 		}
-	}
+	}*/
 }
 
 void FooMainWindow::savePlaylistToPls(QString filePath)
@@ -925,7 +943,7 @@ void FooMainWindow::savePlaylistToPls(QString filePath)
 	if (!wid)
 		return;
 
-	QFile file(filePath);
+/*	QFile file(filePath);
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
 		return;
 
@@ -942,11 +960,11 @@ void FooMainWindow::savePlaylistToPls(QString filePath)
 	 a length of song in seconds and a title.
 	 For now write a "Simple title" as a title and a 1234 as a length.
 	 */
-		out << "\nFile" << nr <<"="<<wid->topLevelItem(nr)->text(0)<<endl;
-		out << "Title" << nr <<"=Sample title"<<endl;
-		out << "Length" << nr <<"=1234"<<endl;
-	}
-	file.close();
+// 		out << "\nFile" << nr <<"="<<wid->topLevelItem(nr)->text(0)<<endl;
+// 		out << "Title" << nr <<"=Sample title"<<endl;
+// 		out << "Length" << nr <<"=1234"<<endl;
+//	}
+//	file.close();*/
 }
 
 void FooMainWindow::savePlaylistToM3u(QString filePath)
@@ -963,16 +981,16 @@ void FooMainWindow::savePlaylistToM3u(QString filePath)
 	// first, we write a header of playlist file and a empty line after that to make it more readable
 	out << "#EXTM3U\n";
 
-	for (uint nr = 0, size=wid->topLevelItemCount();nr<size;nr++)
-	{
-		/*
-	 now write sample informations about song,
-	 a length of song in seconds and a title
-	 */
-		out << "\n#EXTINF:123,Sample title\n";
-		out << wid->topLevelItem(nr)->text(0) << endl;
-	}
-	file.close();
+// 	for (uint nr = 0, size=wid->topLevelItemCount();nr<size;nr++)
+// 	{
+// 		/*
+// 	 now write sample informations about song,
+// 	 a length of song in seconds and a title
+// 	 */
+// 		out << "\n#EXTINF:123,Sample title\n";
+// 		out << wid->topLevelItem(nr)->text(0) << endl;
+// 	}
+// 	file.close();
 }
 
 void FooMainWindow::preferences ()
@@ -981,7 +999,7 @@ void FooMainWindow::preferences ()
 
 void FooMainWindow::exit ()
 {
-	writeSettings();
+	//writeSettings();
 	qApp->quit();
 }
 
@@ -1032,14 +1050,14 @@ void FooMainWindow::removeDuplicates ()
 	QVector<QString> files;
 	foreach(QTreeWidgetItem* item, wid->itemsList())
 	{
-		if (files.contains(item->text(0)))
-		{
-			wid->takeTopLevelItem(wid->indexOfTopLevelItem(item));
-		}
-		else
-		{
-			files.append(item->text(0));
-		}
+// 		if (files.contains(item->text(0)))
+// 		{
+// 			wid->takeTopLevelItem(wid->indexOfTopLevelItem(item));
+// 		}
+// 		else
+// 		{
+// 			files.append(item->text(0));
+// 		}
 	}
 }
 
@@ -1056,7 +1074,7 @@ void FooMainWindow::removeDeadItems ()
 		fileInfo.setFile(item->text(0));
 		if (fileInfo.isFile() && !fileInfo.exists())
 		{
-			wid->takeTopLevelItem(wid->indexOfTopLevelItem(item));
+// 			wid->takeTopLevelItem(wid->indexOfTopLevelItem(item));
 		}
 	}
 }
@@ -1158,13 +1176,13 @@ void FooMainWindow::addToQueue ()
 	if (!foo)
 		return;
 
-	foreach (QTreeWidgetItem * item, foo->selectedItems())
-	{
-		if (item)
-		{
-			addFileToQueue(QUrl(item->text(0)));
-		}
-	}
+// 	foreach (QTreeWidgetItem * item, foo->selectedItems())
+// 	{
+// 		if (item)
+// 		{
+// 			addFileToQueue(QUrl(item->text(0)));
+// 		}
+// 	}
 }
 
 void FooMainWindow::removeFromQueue()
@@ -1173,26 +1191,26 @@ void FooMainWindow::removeFromQueue()
 	if (!foo)
 		return;
 
-	foreach (QTreeWidgetItem * item, foo->selectedItems())
-	{
-		if (item)
-		{
-			removeFileFromQueue(QUrl(item->text(0)));
-		}
-	}
+// 	foreach (QTreeWidgetItem * item, foo->selectedItems())
+// 	{
+// 		if (item)
+// 		{
+// 			removeFileFromQueue(QUrl(item->text(0)));
+// 		}
+// 	}
 }
 
 QUrl FooMainWindow::randomTrack()
 {
-	FooPlaylistWidget * playlist = this->fooTabWidget->currentPlayingPlaylist;
+/*	FooPlaylistWidget * playlist = this->fooTabWidget->currentPlayingPlaylist;
 	if (!playlist)
 		return QUrl();
 
 	int count = playlist->plistCount();
 	int randomIndex = qrand() % count;
 	if (isCursorFollowsPlayback())
-		this->fooTabWidget->setCurrentItem(randomIndex);
-	return QUrl(playlist->plistGetFile(randomIndex));
+		this->fooTabWidget->setCurrentItem(randomIndex);*/
+	return QUrl(/*playlist->plistGetFile(randomIndex)*/);
 }
 
 void FooMainWindow::uncheckAllOrders()
