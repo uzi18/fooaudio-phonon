@@ -33,6 +33,9 @@ public:
 
 	virtual QVariant data(const QModelIndex &index, int role) const;
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+	
+	virtual QModelIndex index(int row, int column, const QModelIndex &parent) const;
+	virtual QModelIndex parent(const QModelIndex &child) const;
 
 	FooTrack track(const QModelIndex &index) const;
 	int trackIndex(FooTrack track);
