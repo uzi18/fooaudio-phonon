@@ -315,7 +315,7 @@ void FooTabWidget::paste ()
 			foo->insertTopLevelItem(line, item->clone());
 			line++;
 		}
-	}
+	}*/
 }
 
 void FooTabWidget::clear ()
@@ -324,7 +324,7 @@ void FooTabWidget::clear ()
 	if (!foo)
 		return;
 
-	foo->clear ();
+// 	foo->clear ();
 }
 
 void FooTabWidget::selectAll ()
@@ -333,31 +333,48 @@ void FooTabWidget::selectAll ()
 	if (!foo)
 		return;
 
-	foo->selectAll ();
+// 	foo->selectAll ();
 }
 
 void FooTabWidget::setCurrentPlaylist(int index)
 {
 	qDebug() << "TabWidget: playlista :" << index;
-	currentPlayingPlaylist = static_cast<FooPlaylistWidget *> (widget(index));
-	setCurrentIndex(index);
+// 	currentPlayingPlaylist = static_cast<FooPlaylistWidget *> (widget(index));
+// 	setCurrentIndex(index);
 }
 
 int FooTabWidget::getCurrentPlaylistIndex()
 {
-	qDebug() << "TabWidget: playlista :" << indexOf(currentPlayingPlaylist);
-	return indexOf(currentPlayingPlaylist);
+// 	qDebug() << "TabWidget: playlista :" << indexOf(currentPlayingPlaylist);
+// 	return indexOf(currentPlayingPlaylist);
 }
 
 void FooTabWidget::setCurrentItem(int index)
 {
-	qDebug() << "TabWidget: utwor :" << index;
-	currentPlayingItem = currentPlayingPlaylist->topLevelItem(index);
-	currentPlayingPlaylist->setCurrentItem(currentPlayingItem);
+// 	qDebug() << "TabWidget: utwor :" << index;
+// 	currentPlayingItem = currentPlayingPlaylist->topLevelItem(index);
+// 	currentPlayingPlaylist->setCurrentItem(currentPlayingItem);
 }
 
 int FooTabWidget::getCurrentItemIndex()
 {
-	qDebug() << "TabWidget: utwor :" << currentPlayingPlaylist->indexOfTopLevelItem(currentPlayingItem);
-	return currentPlayingPlaylist->indexOfTopLevelItem(currentPlayingItem);
+// 	qDebug() << "TabWidget: utwor :" << currentPlayingPlaylist->indexOfTopLevelItem(currentPlayingItem);
+// 	return currentPlayingPlaylist->indexOfTopLevelItem(currentPlayingItem);
+}
+
+void FooTabWidget::playlistAdded(FooTrackList *playlist)
+{
+	qDebug() << "TabWidget: playlista :" << playlist->name();
+
+	FooPlaylistWidget *fpw = new FooPlaylistWidget (this);
+	fpw->setModel(new TrackListModel(playlist, this));
+	addTab (fpw, (playlist->name()));
+
+	connect(fpw, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)),
+			  this, SLOT(itemClicked(QTreeWidgetItem *, int)));
+
+}
+
+void FooTabWidget::playlistRemoved(FooTrackList *playlist)
+{
 }
