@@ -48,6 +48,9 @@ FooTabWidget::FooTabWidget (QWidget *parent) : QTabWidget (parent), m_newTabActi
 		this, SLOT(playlistRemoved(FooTrackList*)));
 	connect(FooPlaylistManager::instance(), SIGNAL(currentPlaylistChanged(FooTrackList*)),
 		this, SLOT(currentPlaylistChanged(FooTrackList*)));
+	connect(this, SIGNAL(currentChanged(int)),
+		FooPlaylistManager::instance(), SLOT(currentTabChanged(int)));
+
 }
 
 QAction *FooTabWidget::newTabAction() const
