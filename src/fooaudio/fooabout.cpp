@@ -53,6 +53,8 @@ FooAbout::FooAbout(QWidget *parent)
 	tb_info->setWordWrapMode(QTextOption::NoWrap);
 	QString info_text;
 	info_text += "This is foobar-like audio player";
+	info_text += "";
+	info_text += "version 0.1.91 devel alpha";
 	tb_info->setText(info_text);
 
 	// authors
