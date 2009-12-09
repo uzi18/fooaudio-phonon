@@ -23,13 +23,13 @@ FooPlaylistWidget::FooPlaylistWidget (QWidget *parent) : QTreeView(parent)
 	// Context Menu
 	setContextMenuPolicy(Qt::DefaultContextMenu);
 
-	QStringList l;
-	l << tr("File");
-	setHeaderLabels(l);
-
-	// TODO Remove and add something normal
-	Filters << ".mp3"  << ".wma" << ".mp4" << ".mpg" << ".mpeg" << ".m4a";
-	Filters << ".flac" << ".ogg" << ".wav" << ".3gp" << ".ac3" << ".aac";
+// 	QStringList l;
+// 	l << tr("File");
+// 	setHeaderLabels(l);
+// 
+// 	// TODO Remove and add something normal
+// 	Filters << ".mp3"  << ".wma" << ".mp4" << ".mpg" << ".mpeg" << ".m4a";
+// 	Filters << ".flac" << ".ogg" << ".wav" << ".3gp" << ".ac3" << ".aac";
 
 	// TODO .m3u .m4u
 }
@@ -46,9 +46,9 @@ void FooPlaylistWidget::contextMenuEvent ( QContextMenuEvent * event )
 	QMenu menu;
 	QAction *action;
 
-	QTreeWidgetItem * item = itemAt (event->pos());
-	int index = indexOfTopLevelItem(item);
-	int countSelectedItems = selectedItems().count();
+/*	QTreeWidgetItem * item = itemAt (event->pos());*/
+	int index/* = indexOfTopLevelItem(item)*/;
+	int countSelectedItems/* = selectedItems().count()*/;
 
 	// TODO implement actions
 
@@ -103,10 +103,10 @@ void FooPlaylistWidget::addFile (const QString &file, int index)
 	{
 		if (file.endsWith (filter, Qt::CaseInsensitive) || (!adress.scheme().isEmpty() && !adress.host().isEmpty()))
 		{
-			QTreeWidgetItem *wid = new QTreeWidgetItem (this);
+/*			QTreeWidgetItem *wid = new QTreeWidgetItem (this);
 
 			wid->setText(0, file);
-			insertTopLevelItem (index == -1 ? topLevelItemCount() : index, wid);
+			insertTopLevelItem (index == -1 ? topLevelItemCount() : index, wid);*/
 			return;
 		}
 	}
@@ -115,61 +115,62 @@ void FooPlaylistWidget::addFile (const QString &file, int index)
 int FooPlaylistWidget::plistFindFname (const char *fname)
 {
 	qDebug() << "FooPlaylistWidget::plistFindFname";
-	for (int i = 0; i < topLevelItemCount(); i++)
-	{
-		QTreeWidgetItem *wid = topLevelItem(i);
-
-		if (wid->text(0) == fname)
-		{
-			return i;
-			break;
-		}
-	}
+// 	for (int i = 0; i < topLevelItemCount(); i++)
+// 	{
+// 		QTreeWidgetItem *wid = topLevelItem(i);
+// 
+// 		if (wid->text(0) == fname)
+// 		{
+// 			return i;
+// 			break;
+// 		}
+// 	}
 	return -1;
 }
 
 QString FooPlaylistWidget::plistGetFile(int i)
 {
-	QTreeWidgetItem *item = this->topLevelItem(i);
-	if (!item)
-		return QString();
-
-	return item->text(0);
+// 	QTreeWidgetItem *item = this->topLevelItem(i);
+// 	if (!item)
+// 		return QString();
+// 
+// 	return item->text(0);
+return QString();
 }
 
 int FooPlaylistWidget::plistCount()
 {
-	return topLevelItemCount ();
+	return 0 /*topLevelItemCount ()*/;
 }
 
 int FooPlaylistWidget::plistNext(int i)
 {
 	// TODO this not support repeat etc. and it is not used?
-	return (topLevelItemCount() == i) ? 0 : ++i;
+	return (/*topLevelItemCount()*/0  == i) ? 0 : ++i;
 }
 
 QUrl FooPlaylistWidget::file(int i)
 {
 	qDebug() << "FooPlaylistWidget::file";
-	qDebug() << this->topLevelItemCount();
+// 	qDebug() << this->topLevelItemCount();
 	qDebug() << i;
-	QTreeWidgetItem *item = this->topLevelItem(i);
+// 	QTreeWidgetItem *item = this->topLevelItem(i);
+// 
+// 	if (!item)
+// 	{
+// 		return QUrl();
+// 	}
 
-	if (!item)
-	{
-		return QUrl();
-	}
-
-	return QUrl(item->text(0));
+	return QUrl(/*item->text(0)*/);
 }
 
 QList<QTreeWidgetItem *> FooPlaylistWidget::itemsList()
 {
 	QList<QTreeWidgetItem *> list;
-	for (quint64 i=0, size=topLevelItemCount();i<size;i++)
-	{
-		list.append(topLevelItem(i));
-	}
+// 	for (quint64 i=0, size=topLevelItemCount();i<size;i++)
+// 	{
+// 		list.append(topLevelItem(i));
+// 	}
 
 	return list;
 }
@@ -192,7 +193,7 @@ void FooPlaylistWidget::dropEvent(QDropEvent * event)
 		// if just text was dropped, urlList is empty (size == 0)
 		if ( urlList.size() > 0)
 		{
-			int index = indexOfTopLevelItem(itemAt (event->pos()));
+			int index /*= indexOfTopLevelItem(itemAt (event->pos()))*/;
 			addFiles(index, urlList, true);
 		}
 	}
