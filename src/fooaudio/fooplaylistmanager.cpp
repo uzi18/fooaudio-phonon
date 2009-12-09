@@ -5,7 +5,7 @@
 
 FooPlaylistManager *FooPlaylistManager::Instance = 0;
 
-FooPlaylistManager::FooPlaylistManager() : CurrentPlaylist(0)
+FooPlaylistManager::FooPlaylistManager() : CurrentPlaylist(0), CurrentlySelected(0)
 {
 }
 

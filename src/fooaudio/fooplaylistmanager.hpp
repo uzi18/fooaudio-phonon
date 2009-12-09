@@ -14,7 +14,10 @@ class FooPlaylistManager : public QObject
 	static FooPlaylistManager *Instance;
 
 	QList<FooTrackList *> Playlists;
+	// one that played
 	FooTrackList * CurrentPlaylist;
+	// one that selected by tab
+	FooTrackList * CurrentlySelected;
 
 	void init();
 
@@ -31,6 +34,8 @@ public:
 	
 	void setCurrentPlaylist(FooTrackList* playlist) { CurrentPlaylist = playlist; }
 	FooTrackList* currentPlaylist() { return CurrentPlaylist;}
+
+	FooTrackList* currentlySelected() { return CurrentlySelected;}
 
 signals:
 	void playlistAdded(FooTrackList *playlist);
