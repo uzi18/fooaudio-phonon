@@ -1,11 +1,14 @@
+#include <QDebug>
+
 #include "footrack.hpp"
 
 FooTrack::FooTrack()
 {
 }
 
-FooTrack::FooTrack(QUrl &file) : File(file)
+FooTrack::FooTrack(QUrl file) : File(file)
 {
+	qDebug() << "footrack " <<file.toString();
 }
 
 bool FooTrack::operator == (const FooTrack &compare) const
