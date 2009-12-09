@@ -1,3 +1,5 @@
+#include <QDebug>
+
 #include "fooplaylistmanager.hpp"
 #include "footracklist.hpp"
 
@@ -5,8 +7,6 @@ FooPlaylistManager *FooPlaylistManager::Instance = 0;
 
 FooPlaylistManager::FooPlaylistManager()
 {
-	Instance = this;
-	init();
 }
 
 FooPlaylistManager::~FooPlaylistManager()
@@ -15,7 +15,7 @@ FooPlaylistManager::~FooPlaylistManager()
 
 void FooPlaylistManager::init()
 {
-	playlists = new QList<FooTrackList *>;
+	qDebug() << "MANAGER INIT";
 }
 
 FooPlaylistManager* FooPlaylistManager::instance()
@@ -29,26 +29,29 @@ FooPlaylistManager* FooPlaylistManager::instance()
 	return Instance;
 }
 
-void FooPlaylistManager::addPlaylist(FooTrackList *fooTrackList)
+void FooPlaylistManager::addPlaylist(FooTrackList *playlist)
 {
-	playlists->append(fooTrackList);
+	qDebug() << "MANAGER ADD" << playlist->name();
+
+	playlists.append(playlist);
+	emit playlistAdded(playlist);
 }
 
 void FooPlaylistManager::deletePlaylist(int i)
 {
-	if (i < 0 || i >= playlists->size())
+	if (i < 0 || i >= playlists.size())
 	{
 		return;
 	}
 	else
 	{
-		playlists->removeAt(i);
+		playlists.removeAt(i);
 	}
 }
 
-void FooPlaylistManager::deletePlaylist(FooTrackList *fooTrackList)
+void FooPlaylistManager::deletePlaylist(FooTrackList *playlist)
 {
-	int i = playlists->indexOf(fooTrackList);
+	int i = playlists.indexOf(playlist);
 
 	if (i < 0)
 	{
@@ -56,11 +59,16 @@ void FooPlaylistManager::deletePlaylist(FooTrackList *fooTrackList)
 	}
 	else
 	{
-		playlists->removeAt(i);
+		playlists.removeAt(i);
 	}
+	
+	emit playlistRemoved(playlist);
+	delete playlist;
+	playlist = 0;
+	
 }
 
-QList<FooTrackList *>* FooPlaylistManager::getPlaylists()
+QList<FooTrackList *> FooPlaylistManager::getPlaylists()
 {
 	return playlists;
 }

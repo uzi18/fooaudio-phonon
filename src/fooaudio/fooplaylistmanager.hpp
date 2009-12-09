@@ -2,14 +2,18 @@
 #define FOOPLAYLISTMANAGER_HPP
 
 #include <QList>
+#include <QObject>
 
 class FooTrackList;
 
-class FooPlaylistManager
+class FooPlaylistManager : public QObject
 {
+  
+	Q_OBJECT
+
 	static FooPlaylistManager *Instance;
 
-	QList<FooTrackList *> *playlists;
+	QList<FooTrackList *> playlists;
 
 	void init();
 
@@ -19,10 +23,14 @@ public:
 
 	static FooPlaylistManager* instance();
 
-	void addPlaylist(FooTrackList *);
-	void deletePlaylist(FooTrackList *);
+	void addPlaylist(FooTrackList *playlist);
+	void deletePlaylist(FooTrackList *playlist);
 	void deletePlaylist(int);
-	QList<FooTrackList *>* getPlaylists();
+	QList<FooTrackList*> getPlaylists();
+	
+signals:
+	void playlistAdded(FooTrackList *playlist);
+	void playlistRemoved(FooTrackList *playlist);
 };
 
 #endif // FOOPLAYLISTMANAGER_HPP
