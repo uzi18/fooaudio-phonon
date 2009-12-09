@@ -1,7 +1,10 @@
 
 #include "footabwidget.hpp"
 #include "footabbar.hpp"
+#include "fooplaylistmanager.hpp"
+#include "tracklistmodel.hpp"
 #include "fooplaylistwidget.hpp"
+#include "footracklist.hpp"
 
 #include <QCompleter>
 #include <QEvent>
@@ -37,6 +40,12 @@ FooTabWidget::FooTabWidget (QWidget *parent) : QTabWidget (parent), m_newTabActi
 
 	m_tabBar->setTabsClosable(false);
 	m_tabBar->setSelectionBehaviorOnRemove(QTabBar::SelectPreviousTab);
+	
+	
+	connect(FooPlaylistManager::instance(), SIGNAL(playlistAdded(FooTrackList*)),
+		this, SLOT(playlistAdded(FooTrackList*)));
+	connect(FooPlaylistManager::instance(), SIGNAL(playlistRemoved(FooTrackList*)),
+		this, SLOT(playlistRemoved(FooTrackList*)));
 }
 
 QAction *FooTabWidget::newTabAction() const

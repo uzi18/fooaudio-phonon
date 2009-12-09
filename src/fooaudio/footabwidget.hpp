@@ -8,6 +8,7 @@
 #include "fooplaylistwidget.hpp"
 
 class FooTabBar;
+class FooTrackList;
 
 class FooTabWidget : public QTabWidget
 {
@@ -55,6 +56,10 @@ public slots:
 	void paste ();
 	void clear ();
 	void selectAll ();
+
+	void playlistAdded(FooTrackList *playlist);
+	void playlistRemoved(FooTrackList *playlist);
+
 
 private:
 	QAction *m_recentlyClosedTabAction;
