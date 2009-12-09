@@ -44,6 +44,8 @@ signals:
 	void playlistRemoved(FooTrackList *playlist);
 	void currentPlaylistChanged(FooTrackList *playlist);
 
+public slots:
+	void currentTabChanged(int tab);
 };
 
 #endif // FOOPLAYLISTMANAGER_HPP

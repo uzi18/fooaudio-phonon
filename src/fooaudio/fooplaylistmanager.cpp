@@ -78,6 +78,11 @@ void FooPlaylistManager::setCurrentPlaylist(FooTrackList* playlist)
 	emit currentPlaylistChanged(playlist);
 }
 
+void FooPlaylistManager::currentTabChanged(int tab)
+{
+	CurrentlySelected = Playlists.at(tab);
+}
+
 QList<FooTrackList *> FooPlaylistManager::playlists()
 {
 	return Playlists;
