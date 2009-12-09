@@ -72,6 +72,12 @@ void FooPlaylistManager::deletePlaylist(FooTrackList *playlist)
 	
 }
 
+void FooPlaylistManager::setCurrentPlaylist(FooTrackList* playlist)
+{
+	CurrentPlaylist = playlist;
+	emit currentPlaylistChanged(playlist);
+}
+
 QList<FooTrackList *> FooPlaylistManager::playlists()
 {
 	return Playlists;

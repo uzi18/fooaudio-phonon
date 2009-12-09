@@ -31,8 +31,7 @@ public:
 	void deletePlaylist(FooTrackList *playlist);
 	void deletePlaylist(int);
 	QList<FooTrackList*> playlists();
-	
-	void setCurrentPlaylist(FooTrackList* playlist) { CurrentPlaylist = playlist; }
+	void setCurrentPlaylist(FooTrackList* playlist);
 	FooTrackList* currentPlaylist() { return CurrentPlaylist;}
 
 	FooTrackList* currentlySelected() { return CurrentlySelected;}
@@ -40,6 +39,8 @@ public:
 signals:
 	void playlistAdded(FooTrackList *playlist);
 	void playlistRemoved(FooTrackList *playlist);
+	void currentPlaylistChanged(FooTrackList *playlist);
+
 };
 
 #endif // FOOPLAYLISTMANAGER_HPP
