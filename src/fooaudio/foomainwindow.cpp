@@ -736,10 +736,11 @@ void FooMainWindow::readSettings()
 	}
 	playlists.endArray();
 
-	//playlists.beginGroup("current");
-	//fooTabWidget->setCurrentPlaylist(playlists.value("playlist", 0).toInt());
+	playlists.beginGroup("current");
+	// TODO save uuid and set by UUID
+	FooPlaylistManager::instance()->setCurrentPlaylist(FooPlaylistManager::instance()->playlists().at(playlists.value("playlist", 0).toInt()));
 	//fooTabWidget->setCurrentItem(playlists.value("path", 0).toInt());
-	//playlists.endGroup();
+	playlists.endGroup();
 
 	//foreach (FooTrackList tracklist, FooPlaylistManager::instance()->)
 	//qDebug() << FooPlaylistManager::instance()
