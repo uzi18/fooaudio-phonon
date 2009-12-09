@@ -81,7 +81,7 @@ QModelIndex TrackListModel::trackModelIndex(FooTrack track)
 	return createIndex(trackIndex(track), 0, 0);
 }
 
-QModelIndex TrackListModel::index(int row, int column, const QModelIndex &parent = QModelIndex()) const
+QModelIndex TrackListModel::index(int row, int column, const QModelIndex &parent) const
 {
 	return createIndex(row, column, parent.isValid() ? parent.row() : -1);
 }
