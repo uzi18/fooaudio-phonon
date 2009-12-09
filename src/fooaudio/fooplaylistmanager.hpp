@@ -13,7 +13,8 @@ class FooPlaylistManager : public QObject
 
 	static FooPlaylistManager *Instance;
 
-	QList<FooTrackList *> playlists;
+	QList<FooTrackList *> Playlists;
+	FooTrackList * CurrentPlaylist;
 
 	void init();
 
@@ -26,8 +27,11 @@ public:
 	void addPlaylist(FooTrackList *playlist);
 	void deletePlaylist(FooTrackList *playlist);
 	void deletePlaylist(int);
-	QList<FooTrackList*> getPlaylists();
+	QList<FooTrackList*> playlists();
 	
+	void setCurrentPlaylist(FooTrackList* playlist) { CurrentPlaylist = playlist; }
+	FooTrackList* currentPlaylist() { return CurrentPlaylist;}
+
 signals:
 	void playlistAdded(FooTrackList *playlist);
 	void playlistRemoved(FooTrackList *playlist);
