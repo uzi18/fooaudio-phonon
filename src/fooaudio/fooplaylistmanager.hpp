@@ -31,6 +31,9 @@ public:
 	void deletePlaylist(FooTrackList *playlist);
 	void deletePlaylist(int);
 	QList<FooTrackList*> playlists();
+	FooTrackList* playlist(int number) { return Playlists.at(number);}
+	int playlist(FooTrackList* playlist) { return Playlists.indexOf(playlist);}
+
 	void setCurrentPlaylist(FooTrackList* playlist);
 	FooTrackList* currentPlaylist() { return CurrentPlaylist;}
 
