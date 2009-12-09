@@ -7,7 +7,7 @@
 #include "foomainwindow.hpp"
 #include "fooplaylistwidget.hpp"
 
-FooPlaylistWidget::FooPlaylistWidget () : QTreeWidget()
+FooPlaylistWidget::FooPlaylistWidget (QWidget *parent) : QTreeView(parent)
 {
 	setSelectionMode(QAbstractItemView::ExtendedSelection);
 	setSelectionBehavior(QAbstractItemView::SelectRows);

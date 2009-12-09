@@ -2,12 +2,12 @@
 #define _FOOPLAYLIST_HPP_
 
 #include <QStringList>
-#include <QTreeWidget>
+#include <QTreeView>
 
-class FooPlaylistWidget : public QTreeWidget
+class FooPlaylistWidget : public QTreeView
 {
 public:
-	FooPlaylistWidget ();
+	FooPlaylistWidget (QWidget *parent = 0);
 
 	void addFile (const QString &file, int index = -1);
 	int plistFindFname (const char *);
