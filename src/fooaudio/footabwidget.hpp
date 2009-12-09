@@ -59,6 +59,7 @@ public slots:
 
 	void playlistAdded(FooTrackList *playlist);
 	void playlistRemoved(FooTrackList *playlist);
+	void currentPlaylistChanged(FooTrackList *playlist);
 
 
 private:

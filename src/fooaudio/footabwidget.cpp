@@ -46,6 +46,8 @@ FooTabWidget::FooTabWidget (QWidget *parent) : QTabWidget (parent), m_newTabActi
 		this, SLOT(playlistAdded(FooTrackList*)));
 	connect(FooPlaylistManager::instance(), SIGNAL(playlistRemoved(FooTrackList*)),
 		this, SLOT(playlistRemoved(FooTrackList*)));
+	connect(FooPlaylistManager::instance(), SIGNAL(currentPlaylistChanged(FooTrackList*)),
+		this, SLOT(currentPlaylistChanged(FooTrackList*)));
 }
 
 QAction *FooTabWidget::newTabAction() const
@@ -377,4 +379,12 @@ void FooTabWidget::playlistAdded(FooTrackList *playlist)
 
 void FooTabWidget::playlistRemoved(FooTrackList *playlist)
 {
+}
+
+void FooTabWidget::currentPlaylistChanged(FooTrackList *playlist)
+{
+	if (!playlist)
+		return;
+	
+	setCurrentIndex(FooPlaylistManager::instance()->playlists().indexOf(playlist));
 }
