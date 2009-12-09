@@ -1140,12 +1140,10 @@ void FooMainWindow::play ()
 	else if (fooAudioEngine->isStopped())
 	{
 		qDebug() << "was StoppedState";
-		FooTrackList *playlist = FooPlaylistManager::instance()->currentPlaylist();
+		FooTrackList *playlist = FooPlaylistManager::instance()->currentlySelected();
 		if (!playlist)
 			return;
 
-		//fooTabWidget->setCurrentPlaylist(fooTabWidget->currentIndex());
-		//fooTabWidget->setCurrentItem(0);
 		QUrl file = playlist->first().file();
 		qDebug() << file.toString();
 
