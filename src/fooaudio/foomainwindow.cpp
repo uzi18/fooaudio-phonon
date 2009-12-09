@@ -738,7 +738,9 @@ void FooMainWindow::readSettings()
 
 	playlists.beginGroup("current");
 	// TODO save uuid and set by UUID
-	FooPlaylistManager::instance()->setCurrentPlaylist(FooPlaylistManager::instance()->playlists().at(playlists.value("playlist", 0).toInt()));
+	int current = playlists.value("playlist", 0).toInt();
+	FooPlaylistManager::instance()->setCurrentPlaylist(FooPlaylistManager::instance()->playlist(current));
+	FooPlaylistManager::instance()->currentTabChanged(current);
 	//fooTabWidget->setCurrentItem(playlists.value("path", 0).toInt());
 	playlists.endGroup();
 
