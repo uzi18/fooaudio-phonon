@@ -51,11 +51,11 @@ FooAbout::FooAbout(QWidget *parent)
 	tb_info->setReadOnly(true);
 	tb_info->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
 	tb_info->setWordWrapMode(QTextOption::NoWrap);
-	QString info_text;
+	QStringList info_text;
 	info_text += "This is foobar-like audio player";
 	info_text += "";
 	info_text += "version 0.1.91 devel alpha";
-	tb_info->setText(info_text);
+	tb_info->setText(info_text.join("\n"));
 
 	// authors
 	QTextEdit *tb_authors = new QTextEdit(tw_about);
