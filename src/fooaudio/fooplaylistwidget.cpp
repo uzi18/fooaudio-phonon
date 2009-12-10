@@ -22,6 +22,7 @@ FooPlaylistWidget::FooPlaylistWidget (QWidget *parent) : QTreeView(parent)
 	setDropIndicatorShown(true);
 	// Context Menu
 	setContextMenuPolicy(Qt::DefaultContextMenu);
+	setItemsExpandable(false);
 
 // 	QStringList l;
 // 	l << tr("File");
