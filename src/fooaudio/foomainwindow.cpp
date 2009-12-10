@@ -1203,15 +1203,17 @@ void FooMainWindow::removeFromQueue()
 
 QUrl FooMainWindow::randomTrack()
 {
-/*	FooPlaylistWidget * playlist = this->fooTabWidget->currentPlayingPlaylist;
+	FooTrackList *playlist = FooPlaylistManager::instance()->currentlySelected();
 	if (!playlist)
 		return QUrl();
 
-	int count = playlist->plistCount();
+	int count = playlist->count();
 	int randomIndex = qrand() % count;
-	if (isCursorFollowsPlayback())
-		this->fooTabWidget->setCurrentItem(randomIndex);*/
-	return QUrl(/*playlist->plistGetFile(randomIndex)*/);
+	
+	//if (isCursorFollowsPlayback())
+	//	this->fooTabWidget->setCurrentItem(randomIndex);
+
+	return QUrl((*playlist)[randomIndex].file());
 }
 
 void FooMainWindow::uncheckAllOrders()
