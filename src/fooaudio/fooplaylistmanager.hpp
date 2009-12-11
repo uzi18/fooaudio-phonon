@@ -31,11 +31,16 @@ class FooPlaylistManager : public QObject
 	QList<FooTrackList *> Playlists;
 	// one that played
 	FooTrackList * CurrentPlaylist;
+	int CurrentTruck;
 	// one that selected by tab
 	FooTrackList * CurrentlySelected;
 
 	PlayOrder::PlayOrder Order;
 	
+	QList<QUrl> Queue;
+	QList<QUrl> PrevQueue;
+	int prevqueueindex;
+
 	void init();
 
 public:
@@ -60,6 +65,16 @@ public:
 	void setOrder(PlayOrder::PlayOrder order) { Order = order;}
 	PlayOrder::PlayOrder order() { return Order;}
 
+	QUrl getNextFile();
+	QUrl nextFile(bool repeat, bool follow);
+
+	void clearQueue ();
+	void addFileToQueue (QUrl file);
+	void removeFileFromQueue (QUrl file);
+	QList<QUrl> getQueue () {return Queue;}
+	void addToPrevQueue (QUrl path);
+	
+	QUrl randomTrack();
 
 signals:
 	void playlistAdded(FooTrackList *playlist);

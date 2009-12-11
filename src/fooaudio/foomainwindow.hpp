@@ -38,10 +38,6 @@ public:
 
 	bool isCursorFollowsPlayback();
 
-	void addFileToQueue (QUrl file);
-	void removeFileFromQueue (QUrl file);
-	QList<QUrl> getQueue () {return queue;}
-
 	QUrl getNextFile();
 
 signals:
@@ -112,7 +108,6 @@ private slots:
 	void configure ();
 	void uncheckAllOrders();
 	void about ();
-	QUrl randomTrack();
 
 	void cutLayout();
 	void copyLayout();
@@ -131,8 +126,6 @@ private slots:
 	// volume slider
 	void sliderReleased ();
 
-	void addToPrevQueue (QUrl path);
-
 	void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
 	void setTrayIcon ();
 
@@ -143,10 +136,6 @@ private:
 	const int maxProgress;
 	FooPhononAudioEngine *fooAudioEngine;
 	QSize *iconSize;
-
-	QList<QUrl> queue;
-	QList<QUrl> prevqueue;
-	int prevqueueindex;
 
 	QSystemTrayIcon *trayIcon;
 

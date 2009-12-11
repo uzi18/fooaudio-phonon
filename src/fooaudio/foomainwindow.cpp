@@ -559,33 +559,7 @@ void FooMainWindow::itemDoubleClicked(QTreeWidgetItem * item, int column)
 
 QUrl FooMainWindow::getNextFile()
 {
-	QUrl file;
-	if (queue.isEmpty())
-	{
-		// if Queue is empty take order option
-		switch (this->order)
-		{
-		case PlayOrder::shuffleTracks:
-			file = randomTrack();
-			break;
-		case PlayOrder::repeatTrack:
-			file = fooTabWidget->currentPlayingItem->text(0);
-			break;
-		default:
-			file = fooTabWidget->nextFile(this->order == PlayOrder::repeatPlaylist, isCursorFollowsPlayback());
-			break;
-		}
-	}
-	else
-	{
-		// if we have Queue priority is on these files
-		// TODO what about order here?
-		qDebug() << "FooMainWindow::Queue";
-		file = queue.takeLast();
-	}
-
-	qDebug() << "FooMainWindow:: nextFile : " << file.toLocalFile();
-	return file;
+	return FooPlaylistManager::instance()->getNextFile();
 }
 
 void FooMainWindow::enqueueNextFile()
@@ -1147,6 +1121,7 @@ void FooMainWindow::play ()
 		if (!playlist)
 			return;
 
+		FooPlaylistManager::instance()->useSelectedPlaylist();
 		QUrl file = playlist->first().file();
 		qDebug() << file.toString();
 
@@ -1202,19 +1177,9 @@ void FooMainWindow::removeFromQueue()
 // 	}
 }
 
-QUrl FooMainWindow::randomTrack()
+void FooMainWindow::clearQueue()
 {
-	FooTrackList *playlist = FooPlaylistManager::instance()->currentlySelected();
-	if (!playlist)
-		return QUrl();
-
-	int count = playlist->count();
-	int randomIndex = qrand() % count;
-	
-	//if (isCursorFollowsPlayback())
-	//	this->fooTabWidget->setCurrentItem(randomIndex);
-
-	return QUrl((*playlist)[randomIndex].file());
+	FooPlaylistManager::instance()->clearQueue();
 }
 
 void FooMainWindow::uncheckAllOrders()
@@ -1229,7 +1194,7 @@ void FooMainWindow::uncheckAllOrders()
 
 void FooMainWindow::random ()
 {
-	emit randomSignal(randomTrack());
+	emit randomSignal(FooPlaylistManager::instance()->randomTrack());
 }
 
 void FooMainWindow::defaultOrder ()
@@ -1401,26 +1366,3 @@ void FooMainWindow::sliderReleased()
 	slider_pos = -1;
 }
 
-void FooMainWindow::addToPrevQueue (QUrl path)
-{
-}
-
-void FooMainWindow::addFileToQueue (QUrl file)
-{
-	qDebug() << "FooMainWindow::addToQueue";
-	qDebug() << "plik dodany do kolejki: " << file.toString();
-	queue.prepend(file);
-}
-
-void FooMainWindow::removeFileFromQueue (QUrl file)
-{
-	qDebug() << "FooMainWindow::removeFromQueue";
-	qDebug() << "plik usuniety z kolejki: " << file.toString();
-	queue.removeOne(file);
-}
-
-void FooMainWindow::clearQueue()
-{
-	qDebug() << "FooMainWindow::clearQueue";
-	queue.clear();
-}
