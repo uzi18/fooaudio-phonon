@@ -78,8 +78,8 @@ void FooTabWidget::newTab(QString name)
 	FooPlaylistWidget *fpw = new FooPlaylistWidget ();
 	addTab (fpw, (name.isEmpty() ? "New Playlist" : name));
 
-	connect(fpw, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)),
-			  this, SLOT(itemClicked(QTreeWidgetItem *, int)));
+	connect(fpw, SIGNAL(doubleClicked ( const QModelIndex & index )),
+			  this, SLOT(doubleClicked ( const QModelIndex & index )));
 }
 
 void FooTabWidget::cloneTab (int index)
@@ -89,8 +89,8 @@ void FooTabWidget::cloneTab (int index)
 	FooPlaylistWidget *fpwCopy = new FooPlaylistWidget ();
 	addTab (fpwCopy, newName);
 
-	connect(fpwCopy, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)),
-			  this, SLOT(itemClicked(QTreeWidgetItem *, int)));
+	connect(fpwCopy, SIGNAL(doubleClicked ( const QModelIndex & index )),
+			  this, SLOT(doubleClicked ( const QModelIndex & index )));
 
 }
 
@@ -250,8 +250,8 @@ int FooTabWidget::getCurrentPlaylistIndex()
 
 void FooTabWidget::setCurrentItem(int index)
 {
-// 	qDebug() << "TabWidget: utwor :" << index;
-// 	currentPlayingItem = currentPlayingPlaylist->topLevelItem(index);
+//	qDebug() << "TabWidget: utwor :" << index;
+//	currentPlayingItem = currentPlayingPlaylist->topLevelItem(index);
 // 	currentPlayingPlaylist->setCurrentItem(currentPlayingItem);
 }
 
@@ -269,8 +269,8 @@ void FooTabWidget::playlistAdded(FooTrackList *playlist)
 	fpw->setModel(new TrackListModel(playlist, this));
 	addTab (fpw, (playlist->name()));
 
-	connect(fpw, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)),
-			  this, SLOT(itemClicked(QTreeWidgetItem *, int)));
+	connect(fpw, SIGNAL(doubleClicked ( const QModelIndex & index )),
+			  this, SLOT(doubleClicked ( const QModelIndex & index )));
 
 }
 
