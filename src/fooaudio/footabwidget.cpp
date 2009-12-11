@@ -283,5 +283,5 @@ void FooTabWidget::currentPlaylistChanged(FooTrackList *playlist)
 	if (!playlist)
 		return;
 	
-	setCurrentIndex(FooPlaylistManager::instance()->playlists().indexOf(playlist));
+	setCurrentIndex(FooPlaylistManager::instance()->playlist(playlist));
 }
