@@ -55,6 +55,7 @@ public:
 	FooTrackList* currentPlaylist() { return CurrentPlaylist;}
 
 	FooTrackList* currentlySelected() { return CurrentlySelected;}
+	void useSelectedPlaylist() {CurrentPlaylist = CurrentlySelected; CurrentTruck = 0;}
 
 	void setOrder(PlayOrder::PlayOrder order) { Order = order;}
 	PlayOrder::PlayOrder order() { return Order;}
