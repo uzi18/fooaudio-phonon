@@ -166,16 +166,16 @@ QUrl FooPlaylistWidget::file(int i)
 	return QUrl(/*item->text(0)*/);
 }
 
-QList<QTreeWidgetItem *> FooPlaylistWidget::itemsList()
-{
-	QList<QTreeWidgetItem *> list;
+//QList<QTreeWidgetItem *> FooPlaylistWidget::itemsList()
+//{
+//	QList<QTreeWidgetItem *> list;
 // 	for (quint64 i=0, size=topLevelItemCount();i<size;i++)
 // 	{
 // 		list.append(topLevelItem(i));
 // 	}
 
-	return list;
-}
+//	return list;
+//}
 
 void FooPlaylistWidget::dragEnterEvent(QDragEnterEvent * event)
 {
