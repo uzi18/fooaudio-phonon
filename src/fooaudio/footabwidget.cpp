@@ -145,122 +145,14 @@ void FooTabWidget::previousTab()
 	setCurrentIndex(next);
 }
 
-void FooTabWidget::itemClicked(QTreeWidgetItem * item, int column)
-{
-	qDebug() << "FooTabWidget::itemClicked";
-	currentPlayingItem = item;
-	currentPlayingPlaylist = static_cast<FooPlaylistWidget *>(currentWidget());
-
-	emit itemDoubleClickedSignal(item, column);
-}
-
-QUrl FooTabWidget::nextFile(bool repeat, bool follow)
-{
-	qDebug() << "FooTabWidget::nextFile";
-	int c = count();
-
-	qDebug() << "TabWidget: nextFile: c: " << c;
-
-// 	for (int i = 0; i < c; i++)
-// 	{
-// 		qDebug() << "TabWidget: nextFile: for: i: " << i;
-// 		FooPlaylistWidget *wid = static_cast<FooPlaylistWidget *> (widget(i));
-// 		int index = wid->indexOfTopLevelItem(currentPlayingItem);
-// 		int max = wid->topLevelItemCount();
-// 		qDebug() << "TabWidget: nextFile: for: index: " << index;
-// 		qDebug() << "TabWidget: nextFile: for: max: " << max;
 // 
-// 		if (index >= 0)
-// 		{
-// 			qDebug() << "TabWidget: nextFile: for: if: index >= 0";
-// 
-// 			if (index == (max - 1) && repeat)
-// 			{
-// 				qDebug() << "TabWidget: nextFile: for: if: repeat";
-// 
-// 				currentPlayingPlaylist = wid;
-// 				currentPlayingItem = wid->topLevelItem(0);
-// 				if (follow) wid->setCurrentItem(currentPlayingItem);
-// 				return wid->file(0);
-// 			}
-// 			else if (index < (max - 1))
-// 			{
-// 				qDebug() << "TabWidget: nextFile: for: if: index < max";
-// 
-// 				currentPlayingPlaylist = wid;
-// 				currentPlayingItem = wid->itemBelow(currentPlayingItem);
-// 				if (follow) wid->setCurrentItem(currentPlayingItem);
-// 				return wid->file(++index);
-// 			}
-// 			else if (index == (max - 1) && !repeat)
-// 			{
-// 				qDebug() << "TabWidget: nextFile: for: if: !repeat";
-// 
-// 				return QUrl();
-// 			}
-// 		}
-// 	}
-
-	return QUrl();
-}
-
-QUrl FooTabWidget::previousFile(bool repeat, bool follow)
-{
-	qDebug() << "FooTabWidget::previousFile";
-	int c = count();
-
-	qDebug() << "TabWidget: previousFile: c: " << c;
-
-// 	for (int i = 0; i < c; i++)
-// 	{
-// 		qDebug() << "TabWidget: previousFile: for: i: " << i;
-// 		FooPlaylistWidget *wid = static_cast<FooPlaylistWidget *> (widget(i));
-// 		int index = wid->indexOfTopLevelItem(currentPlayingItem);
-// 		int max = wid->topLevelItemCount();
-// 		qDebug() << "TabWidget: previousFile: for: index: " << index;
-// 		qDebug() << "TabWidget: previousFile: for: max: " << max;
-// 
-// 		if (index >= 0)
-// 		{
-// 			qDebug() << "TabWidget: previousFile: for: if: index >= 0";
-// 
-// 			if (index == 0 && repeat)
-// 			{
-// 				qDebug() << "TabWidget: previousFile: for: if: repeat";
-// 
-// 				currentPlayingPlaylist = wid;
-// 				currentPlayingItem = wid->topLevelItem(max - 1);
-// 				if (follow) wid->setCurrentItem(currentPlayingItem);
-// 				return wid->file(max - 1);
-// 			}
-// 			else if (index > 0)
-// 			{
-// 				qDebug() << "TabWidget: previousFile: for: if: index > 0";
-// 
-// 				currentPlayingPlaylist = wid;
-// 				currentPlayingItem = wid->itemAbove(currentPlayingItem);
-// 				if (follow) wid->setCurrentItem(currentPlayingItem);
-// 				return wid->file(--index);
-// 			}
-// 			else if (index == 0 && !repeat)
-// 			{
-// 				qDebug() << "TabWidget: previousFile: for: if: !repeat";
-// 
-// 				return QUrl();
-// 			}
-// 		}
-// 	}
-
-	return QUrl();
-}
-
 void FooTabWidget::cut (bool remove)
 {
 	FooPlaylistWidget * foo = static_cast<FooPlaylistWidget *> (currentWidget());
 	if (!foo)
 		return;
 
-	buffer.clear();
+//	buffer.clear();
 
 // 	foreach (QTreeWidgetItem * item, foo->selectedItems())
 // 	{

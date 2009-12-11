@@ -1137,7 +1137,7 @@ void FooMainWindow::play ()
 void FooMainWindow::previous ()
 {
 	qDebug() << "FooMainWindow::previous";
-	emit prevSignal (fooTabWidget->previousFile(FooPlaylistManager::instance()->order() == PlayOrder::repeatPlaylist, isCursorFollowsPlayback()));
+	emit prevSignal (FooPlaylistManager::instance()->previousFile(FooPlaylistManager::instance()->order() == PlayOrder::repeatPlaylist, isCursorFollowsPlayback()));
 }
 
 void FooMainWindow::next ()

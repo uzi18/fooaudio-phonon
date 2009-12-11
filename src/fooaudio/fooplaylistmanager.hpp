@@ -66,7 +66,8 @@ public:
 	PlayOrder::PlayOrder order() { return Order;}
 
 	QUrl getNextFile();
-	QUrl nextFile(bool repeat, bool follow);
+	QUrl nextFile(bool repeat, bool follow = true);
+	QUrl previousFile(bool repeat, bool follow = true);
 
 	void clearQueue ();
 	void addFileToQueue (QUrl file);

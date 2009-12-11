@@ -127,55 +127,82 @@ QUrl FooPlaylistManager::getNextFile()
 	{
 		// if we have Queue priority is on these files
 		// TODO what about order here?
-		qDebug() << "FooMainWindow::Queue";
+		qDebug() << "FooPlaylistManager::Queue";
 		file = Queue.takeLast();
 	}
 
-	qDebug() << "FooMainWindow:: nextFile : " << file.toLocalFile();
+	qDebug() << "FooPlaylistManager:: nextFile : " << file.toLocalFile();
 	return file;
 }
 
 QUrl FooPlaylistManager::nextFile(bool repeat, bool follow)
 {
-	qDebug() << "FooTabWidget::nextFile";
-	int c = CurrentPlaylist->count();
+	qDebug() << "FooPlaylistManager::nextFile";
+	int index = CurrentTruck;
+	int max = CurrentPlaylist->count();
 
-	qDebug() << "TabWidget: nextFile: c: " << c;
+	if (!CurrentPlaylist || CurrentTruck < 0)
+		return QUrl();
 
-		int index = CurrentTruck;
-		int max = CurrentPlaylist->count();
-		qDebug() << "TabWidget: nextFile: for: index: " << index;
-		qDebug() << "TabWidget: nextFile: for: max: " << max;
+	index++;
 
-		if (index >= 0)
-		{
-			qDebug() << "TabWidget: nextFile: for: if: index >= 0";
+	if ( (index == max) && repeat)
+	{
+		qDebug() << "FooPlaylistManager: nextFile: for: if: repeat";
 
-			if (index == (max - 1) && repeat)
-			{
-				qDebug() << "TabWidget: nextFile: for: if: repeat";
+		//CurrentPlayingPlaylist = wid;
+		CurrentTruck = 0;
+		//if (follow) wid->setCurrentItem(currentPlayingItem);
+		return (*CurrentPlaylist)[CurrentTruck].file();
+	}
+	else if ((index == max) && !repeat)
+	{
+		qDebug() << "FooPlaylistManager: nextFile: for: if: !repeat";
 
-				//CurrentPlayingPlaylist = wid;
-				CurrentTruck = 0;
-				//if (follow) wid->setCurrentItem(currentPlayingItem);
-				return (*CurrentPlaylist)[CurrentTruck].file();
-			}
-			else if (index < (max - 1))
-			{
-				qDebug() << "TabWidget: nextFile: for: if: index < max";
+		return QUrl();
+	}
+	else if (index < max)
+	{
+		//currentPlayingPlaylist = wid;
+		CurrentTruck++;
+		//if (follow) wid->setCurrentItem(currentPlayingItem);
+		return (*CurrentPlaylist)[CurrentTruck].file();
+	}
 
-				//currentPlayingPlaylist = wid;
-				CurrentTruck++;
-				//if (follow) wid->setCurrentItem(currentPlayingItem);
-				return (*CurrentPlaylist)[CurrentTruck].file();
-			}
-			else if (index == (max - 1) && !repeat)
-			{
-				qDebug() << "TabWidget: nextFile: for: if: !repeat";
+	return QUrl();
+}
 
-				return QUrl();
-			}
-		}
+QUrl FooPlaylistManager::previousFile(bool repeat, bool follow)
+{
+	qDebug() << "FooPlaylistManager::previousFile";
+
+	if (!CurrentPlaylist || CurrentTruck < 0)
+		return QUrl();
+
+	int max = CurrentPlaylist->count();
+
+	if ( (CurrentTruck == 0) && repeat)
+	{
+		qDebug() << "FooPlaylistManager: nextFile: for: if: repeat";
+
+		//CurrentPlayingPlaylist = wid;
+		CurrentTruck = max - 1;
+		//if (follow) wid->setCurrentItem(currentPlayingItem);
+		return (*CurrentPlaylist)[CurrentTruck].file();
+	}
+	else if ((CurrentTruck == 0) && !repeat)
+	{
+		qDebug() << "FooPlaylistManager: nextFile: for: if: !repeat";
+
+		return QUrl();
+	}
+	else if (CurrentTruck < max)
+	{
+		//currentPlayingPlaylist = wid;
+		CurrentTruck--;
+		//if (follow) wid->setCurrentItem(currentPlayingItem);
+		return (*CurrentPlaylist)[CurrentTruck].file();
+	}
 
 	return QUrl();
 }
