@@ -58,6 +58,7 @@ public:
 
 	void setCurrentPlaylist(FooTrackList* playlist);
 	FooTrackList* currentPlaylist() { return CurrentPlaylist;}
+	int currentPlaylistIndex() { return Playlists.indexOf(CurrentPlaylist);}
 
 	FooTrackList* currentlySelected() { return CurrentlySelected;}
 	void useSelectedPlaylist() {CurrentPlaylist = CurrentlySelected; CurrentTruck = 0;}

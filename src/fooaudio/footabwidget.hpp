@@ -2,7 +2,6 @@
 #define _FOOTABWIDGET_HPP_
 
 #include <QTabWidget>
-#include <QtGui>
 
 #include "footabbar.hpp"
 #include "fooplaylistwidget.hpp"
@@ -19,7 +18,7 @@ signals:
 	void tabsChanged ();
 	void lastTabClosed ();
 
-	void itemDoubleClickedSignal(QTreeWidgetItem *item, int column);
+	//void itemDoubleClickedSignal(QTreeWidgetItem *item, int column);
 
 public:
 	FooTabWidget (QWidget *parent = 0);
@@ -34,8 +33,8 @@ public:
 	void setCurrentItem(int index);
 	int getCurrentItemIndex();
 
-	QTreeWidgetItem * currentPlayingItem;
-	FooPlaylistWidget *currentPlayingPlaylist;
+	//QTreeWidgetItem * currentPlayingItem;
+	//FooPlaylistWidget *currentPlayingPlaylist;
 
 public slots:
 	void newTab (QString name = QString());
@@ -45,10 +44,7 @@ public slots:
 	void nextTab ();
 	void previousTab ();
 
-	void itemClicked(QTreeWidgetItem *, int);
-
-	QUrl nextFile(bool repeat, bool follow = true);
-	QUrl previousFile(bool repeat, bool follow = true);
+	//void itemClicked(QTreeWidgetItem *, int);
 
 	void cut (bool remove = true);
 	void remove ();

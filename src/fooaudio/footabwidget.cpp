@@ -99,12 +99,14 @@ void FooTabWidget::closeTab (int index)
 	if (count() > 1)
 	{
 		QWidget* current = widget(index);
-		if (current==currentPlayingPlaylist)
+
+		if (FooPlaylistManager::instance()->currentPlaylistIndex() == index)
 		{
-			setCurrentPlaylist(getCurrentPlaylistIndex()-1);
-			setCurrentItem(0);
+			emit currentChanged(index - 1);
+			FooPlaylistManager::instance()->useSelectedPlaylist();
 		}
 		delete current;
+		FooPlaylistManager::instance()->deletePlaylist(index);
 	}
 }
 
