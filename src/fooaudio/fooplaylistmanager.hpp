@@ -3,6 +3,21 @@
 
 #include <QList>
 #include <QObject>
+#include <QUrl>
+
+namespace PlayOrder
+{
+	enum PlayOrder
+	{
+		repeatPlaylist,
+		repeatTrack,
+		shuffleTracks,
+		shuffleAlbums,
+		shuffleFolders,
+		defaultOrder,
+		randomOrder
+	};
+}
 
 class FooTrackList;
 
@@ -19,6 +34,8 @@ class FooPlaylistManager : public QObject
 	// one that selected by tab
 	FooTrackList * CurrentlySelected;
 
+	PlayOrder::PlayOrder Order;
+	
 	void init();
 
 public:
@@ -38,6 +55,10 @@ public:
 	FooTrackList* currentPlaylist() { return CurrentPlaylist;}
 
 	FooTrackList* currentlySelected() { return CurrentlySelected;}
+
+	void setOrder(PlayOrder::PlayOrder order) { Order = order;}
+	PlayOrder::PlayOrder order() { return Order;}
+
 
 signals:
 	void playlistAdded(FooTrackList *playlist);

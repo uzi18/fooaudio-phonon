@@ -4,13 +4,6 @@
 #include <QtGui>
 #include <QUrl>
 #include "footabwidget.hpp"
-namespace PlayOrder
-{
-	enum playOrder
-	{
-		repeatPlaylist, repeatTrack, shuffleTracks, shuffleAlbums, shuffleFolders, defaultOrder, random
-	};
-}
 
 class	QSystemTrayIcon;
 
@@ -148,7 +141,6 @@ private slots:
 
 private:
 	const int maxProgress;
-	PlayOrder::playOrder order;
 	FooPhononAudioEngine *fooAudioEngine;
 	QSize *iconSize;
 

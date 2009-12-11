@@ -611,7 +611,7 @@ void FooMainWindow::writeSettings()
 	settings.setValue("toolBarsPosition", saveState());
 	settings.setValue("trayIcon", trayIconAction->isChecked());
 	settings.setValue("cursorFollowsPlayback", cursorFollowsPlaybackAction->isChecked());
-	settings.setValue("playOrder", this->order);
+	settings.setValue("playOrder", FooPlaylistManager::instance()->order());
 	settings.endGroup();
 
 	settings.beginGroup("Volume");
@@ -660,8 +660,9 @@ void FooMainWindow::readSettings()
 	trayIconAction->setChecked(settings.value("trayIcon", false).toBool());
 	cursorFollowsPlaybackAction->setChecked(settings.value("cursorFollowsPlayback", true).toBool());
 
-	this->order = (PlayOrder::playOrder) settings.value("playOrder", PlayOrder::defaultOrder).toInt();
-	switch (this->order)
+	PlayOrder::PlayOrder order = (PlayOrder::PlayOrder) settings.value("playOrder", PlayOrder::defaultOrder).toInt();
+	FooPlaylistManager::instance()->setOrder(order);
+	switch (order)
 	{
 		case PlayOrder::defaultOrder:
 		{
@@ -1161,7 +1162,7 @@ void FooMainWindow::play ()
 void FooMainWindow::previous ()
 {
 	qDebug() << "FooMainWindow::previous";
-	emit prevSignal (fooTabWidget->previousFile(this->order == PlayOrder::repeatPlaylist, isCursorFollowsPlayback()));
+	emit prevSignal (fooTabWidget->previousFile(FooPlaylistManager::instance()->order() == PlayOrder::repeatPlaylist, isCursorFollowsPlayback()));
 }
 
 void FooMainWindow::next ()
@@ -1234,7 +1235,7 @@ void FooMainWindow::random ()
 void FooMainWindow::defaultOrder ()
 {
 	uncheckAllOrders();
-	this->order = PlayOrder::defaultOrder;
+	FooPlaylistManager::instance()->setOrder(PlayOrder::defaultOrder);
 	this->defaultOrderAction->setChecked(true);
 
 }
@@ -1242,7 +1243,7 @@ void FooMainWindow::defaultOrder ()
 void FooMainWindow::repeatPlaylist ()
 {
 	uncheckAllOrders();
-	this->order = PlayOrder::repeatPlaylist;
+	FooPlaylistManager::instance()->setOrder(PlayOrder::repeatPlaylist);
 	this->repeatPlaylistAction->setChecked(true);
 
 }
@@ -1250,35 +1251,35 @@ void FooMainWindow::repeatPlaylist ()
 void FooMainWindow::repeatTrack ()
 {
 	uncheckAllOrders();
-	this->order = PlayOrder::repeatTrack;
+	FooPlaylistManager::instance()->setOrder(PlayOrder::repeatTrack);
 	this->repeatTrackAction->setChecked(true);
 }
 
 void FooMainWindow::randomOrder ()
 {
 	uncheckAllOrders();
-	this->order = PlayOrder::random;
+	FooPlaylistManager::instance()->setOrder(PlayOrder::randomOrder);
 	this->randomOrderAction->setChecked(true);
 }
 
 void FooMainWindow::shuffleTracks ()
 {
 	uncheckAllOrders();
-	this->order = PlayOrder::shuffleTracks;
+	FooPlaylistManager::instance()->setOrder(PlayOrder::shuffleTracks);
 	this->shuffleTracksAction->setChecked(true);
 }
 
 void FooMainWindow::shuffleAlbums ()
 {
 	uncheckAllOrders();
-	this->order = PlayOrder::shuffleAlbums;
+	FooPlaylistManager::instance()->setOrder(PlayOrder::shuffleAlbums);
 	this->shuffleAlbumsAction->setChecked(true);
 }
 
 void FooMainWindow::shuffleFolders ()
 {
 	uncheckAllOrders();
-	this->order = PlayOrder::shuffleFolders;
+	FooPlaylistManager::instance()->setOrder(PlayOrder::shuffleFolders);
 	this->shuffleFoldersAction->setChecked(true);
 }
 
