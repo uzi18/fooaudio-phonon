@@ -1026,7 +1026,7 @@ void FooMainWindow::removeDuplicates ()
 	FooPlaylistWidget * wid = static_cast<FooPlaylistWidget *> (fooTabWidget->currentWidget());
 	if (!wid) return;
 	QVector<QString> files;
-	foreach(QTreeWidgetItem* item, wid->itemsList())
+//	foreach(QTreeWidgetItem* item, wid->itemsList())
 	{
 // 		if (files.contains(item->text(0)))
 // 		{
@@ -1039,6 +1039,7 @@ void FooMainWindow::removeDuplicates ()
 	}
 }
 
+// TODO move this to playlist
 void FooMainWindow::removeDeadItems ()
 {
 	FooPlaylistWidget * wid = static_cast<FooPlaylistWidget *> (fooTabWidget->currentWidget());
@@ -1047,14 +1048,14 @@ void FooMainWindow::removeDeadItems ()
 	// TODO to check this out
 
 	QFileInfo fileInfo;
-	foreach(QTreeWidgetItem* item, wid->itemsList())
-	{
-		fileInfo.setFile(item->text(0));
-		if (fileInfo.isFile() && !fileInfo.exists())
-		{
+//	foreach(QTreeWidgetItem* item, wid->itemsList())
+//	{
+//		fileInfo.setFile(item->text(0));
+//		if (fileInfo.isFile() && !fileInfo.exists())
+//		{
 // 			wid->takeTopLevelItem(wid->indexOfTopLevelItem(item));
-		}
-	}
+//		}
+//	}
 }
 
 void FooMainWindow::alwaysOnTop ()

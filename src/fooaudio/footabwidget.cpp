@@ -195,8 +195,8 @@ void FooTabWidget::paste ()
 	if (!foo)
 		return;
 
-	qDebug() << "TabWidget: count: " << buffer.count();
-	qDebug() << "TabWidget: size: " << buffer.size();
+	//qDebug() << "TabWidget: count: " << buffer.count();
+	//qDebug() << "TabWidget: size: " << buffer.size();
 
 /*	int line = foo->indexOfTopLevelItem(foo->currentItem ());
 	qDebug() << "TabWidget: line :" << line;

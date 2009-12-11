@@ -67,7 +67,7 @@ private:
 
 	FooTabBar *m_tabBar;
 
-	QList<QTreeWidgetItem *> buffer;
+	//QList<QTreeWidgetItem *> buffer;
 };
 
 #endif // _FOOTABWIDGET_HPP_
