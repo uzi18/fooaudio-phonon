@@ -6,6 +6,7 @@
 #include <QClipboard>
 #include <QEvent>
 #include <QMenu>
+#include <QMouseEvent>
 #include <QStyle>
 #include <QUrl>
 
