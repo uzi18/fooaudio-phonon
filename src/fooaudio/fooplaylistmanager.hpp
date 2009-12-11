@@ -57,6 +57,7 @@ public:
 	int playlist(FooTrackList* playlist) { return Playlists.indexOf(playlist);}
 
 	void setCurrentPlaylist(FooTrackList* playlist);
+	void setCurrentPlaylist(int playlist);
 	FooTrackList* currentPlaylist() { return CurrentPlaylist;}
 	int currentPlaylistIndex() { return Playlists.indexOf(CurrentPlaylist);}
 

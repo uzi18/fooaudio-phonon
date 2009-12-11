@@ -78,6 +78,16 @@ void FooPlaylistManager::setCurrentPlaylist(FooTrackList* playlist)
 	emit currentPlaylistChanged(playlist);
 }
 
+void FooPlaylistManager::setCurrentPlaylist(int playlist)
+{
+	if (playlist < 0 || playlist > Playlists.count())
+	{
+		CurrentPlaylist = 0;
+	}
+	CurrentPlaylist = Playlists.at(playlist);
+	emit currentPlaylistChanged(CurrentPlaylist);
+}
+
 void FooPlaylistManager::currentTabChanged(int tab)
 {
 	CurrentlySelected = Playlists.at(tab);
