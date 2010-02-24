@@ -1,17 +1,23 @@
 DONE :
 - menu kontekstowe dla traya (nowe, uwzględniające zamykanie aplikacji, proste).
 - dodawanie folderów (i drag&drop od razu)
+- engine jako plugin
 
 TODO :
 - trackSlider przeskakuje jak się w niego klinie (bez przeciągania)
 - całkowicie rozdzielić engine i gui (connecty w main())
-- engine jako plugin
 - mvc dla playlisty (pewnie pójdzie dla 0.3)
 - zwracanie metadanych przez engine
 - playlista jakaś sensowna (z metadanymi)
 - sortowanie playlisty
 - dodanie skryptow cmake do budowania fooaudio
 - poprawienie kodu metody savePlaylist (uzycie QFileDialog::getSaveFileName) - info w kodzie metody
+- zaznaczenie aktualnie odtwarzanego utworu poprzez '>' w kolumnie do tego przeznaczonej na playliście
+- manager ustawień.
+
+FIX:
+- naprawienie wywalania się dodawania kart przez kliknięcie
+- podwójny kliknięciue utworu powoduje jego odtworzenie
 
 Ideas:
 - use libmagic or something simmilar for detecting file type
