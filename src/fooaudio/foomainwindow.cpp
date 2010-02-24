@@ -3,12 +3,12 @@
 #include <QUrl>
 
 #include "fooabout.hpp"
-#include "fooaudioengine.hpp"
 #include "foomainwindow.hpp"
 #include "fooplaylistmanager.hpp"
 #include "fooplaylistwidget.hpp"
 #include "footrack.hpp"
 #include "footracklist.hpp"
+#include "abstractaudioplugin.h"
 
 FooMainWindow * FooMainWindow::Instance = 0;
 
@@ -28,7 +28,7 @@ FooMainWindow * FooMainWindow::instance()
 	return Instance;
 }
 
-void FooMainWindow::setAudioEngine(FooPhononAudioEngine * engine)
+void FooMainWindow::setAudioEngine(FooAudio::AbstractAudioPlugin * engine)
 {
 	fooAudioEngine = engine;
 

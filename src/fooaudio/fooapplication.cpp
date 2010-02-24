@@ -18,9 +18,15 @@
 **********************************************************************************/
 
 #include "fooapplication.h"
-#include "fooaudioengine.hpp"
 #include "foomainwindow.hpp"
 #include "logic/applicationlogic.h"
+#include "abstractaudioplugin.h"
+#include "abstractaudiointerface.h"
+
+#include <QPluginLoader>
+#include <QtDebug>
+#include <QFileInfo>
+//#include <QtTest/QtTest>
 
 FooApplication::FooApplication()
 {
@@ -42,10 +48,47 @@ int FooApplication::start(int argc, char *argv[])
 	m_application->setApplicationName("fooaudio");
 	m_application->setQuitOnLastWindowClosed(true);
 
-	FooPhononAudioEngine *fooAudioEngine = new FooPhononAudioEngine(m_application);
+//	FooPhononAudioEngine *fooAudioEngine = new FooPhononAudioEngine(m_application);
+
+	FooAudio::AbstractAudioPlugin *plugin;
+	QFileInfo pluginPath("../lib/libphononplugin.so");
+	QPluginLoader loader(pluginPath.absoluteFilePath());
+
+	QObject *p = loader.instance();
+	if(!p)
+		 qDebug() << loader.errorString();
+
+//	QVERIFY(p != NULL);
+
+	FooAudio::AbstractAudioInterface *aai = 0;
+
+	if(p)
+	{
+		 aai = qobject_cast<FooAudio::AbstractAudioInterface*>(p);
+	}
+	else
+	{
+		 qDebug() << loader.errorString();
+	}
+
+	if(!aai)
+	{
+//		 QFAIL("Cannot cast to AbstractAudioInterfae!");
+	}
+
+//	QVERIFY(aai != NULL);
+
+	plugin = aai->GetAudioPlugin();
+
+//        void aboutToFinish();
+//        void progress(qint64 time);
+//        void willPlayNow(QUrl file);
+
+//	QVERIFY(plugin != NULL);
 
 	FooMainWindow *fooMainWindow = new FooMainWindow();
-	fooMainWindow->setAudioEngine(fooAudioEngine);
+	//fooMainWindow->setAudioEngine(fooAudioEngine);
+	fooMainWindow->setAudioEngine(plugin);
 
 	fooMainWindow->show();
 

@@ -51,6 +51,7 @@ namespace FooAudio
 		void metaData(QMultiMap<QString, QString>);
 		void metaData(QStringList);
 		void mimeTypes(QStringList);
+		void metaDataChanged(QMultiMap<QString, QString> newMetaData);
 
 	public slots:
 		virtual void stop() = 0;

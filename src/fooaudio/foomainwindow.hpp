@@ -4,6 +4,7 @@
 #include <QtGui>
 #include <QUrl>
 #include "footabwidget.hpp"
+#include "abstractaudioplugin.h"
 
 class	QSystemTrayIcon;
 
@@ -24,7 +25,7 @@ public:
 
 	static FooMainWindow * instance();
 
-	void setAudioEngine(FooPhononAudioEngine * engine);
+	void setAudioEngine(FooAudio::AbstractAudioPlugin * engine);
 
 	FooTabWidget *fooTabWidget;
 
@@ -134,7 +135,7 @@ private slots:
 
 private:
 	const int maxProgress;
-	FooPhononAudioEngine *fooAudioEngine;
+	FooAudio::AbstractAudioPlugin *fooAudioEngine;
 	QSize *iconSize;
 
 	QSystemTrayIcon *trayIcon;
