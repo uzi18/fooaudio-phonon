@@ -14,7 +14,6 @@ CONFIG += debug
 HEADERS += abstractaudiointerface.h \
 	 abstractaudioplugin.h \
 	 fooabout.hpp \
-	 fooaudioengine.hpp \
 	 foochangename.hpp \
 	 foomainwindow.hpp \
 	 fooplaylistwidget.hpp \
