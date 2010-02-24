@@ -2,8 +2,6 @@ set( fooaudio_SRCS
     abstractaudioplugin.cpp
     fooabout.cpp
     fooaudio.cpp
-    fooaudioengine.cpp
-    fooaudioengineplugin.cpp
     foochangename.cpp
     foomainwindow.cpp
     fooplaylistwidget.cpp
@@ -11,7 +9,7 @@ set( fooaudio_SRCS
     footabwidget.cpp
     fooplaylistmanager.cpp
     footracklist.cpp
-	 fooplaylistmanager.cpp
+    fooplaylistmanager.cpp
     footrack.cpp
     fooapplication.cpp
     tracklistmodel.cpp
@@ -19,18 +17,12 @@ set( fooaudio_SRCS
 )
 
 set( fooaudio_MOC
-    #abstractaudiointerface.h
+    abstractaudiointerface.h
     abstractaudioplugin.h
     fooabout.hpp
-    fooaudioengine.hpp
-    fooaudioengineplugin.hpp
     foochangename.hpp
     foomainwindow.hpp
-<<<<<<< HEAD
     fooplaylistmanager.hpp
-=======
-	 fooplaylistmanager.hpp
->>>>>>> 73c26dfbc12aa00bcb03d47333d139cef41fe250
     #fooplaylistwidget.hpp
     footabbar.hpp
     footabwidget.hpp
@@ -58,4 +50,4 @@ target_link_libraries(fooaudio ${PHONON_LIBRARIES} ${QT_LIBRARIES})
 #install(TARGETS xx  ${INSTALL_TARGETS_DEFAULT_ARGS} )
 #install( FILES x.x  DESTINATION  ${KCFG_INSTALL_DIR} )
 #install( FILES x.y  DESTINATION  ${DATA_INSTALL_DIR}/fooaudio )
-
+#install(TARGETS fooaudio DESTINATION  )
