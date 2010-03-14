@@ -83,7 +83,6 @@ int FooApplication::start(int argc, char *argv[])
 //        void aboutToFinish();
 //        void progress(qint64 time);
 //        void willPlayNow(QUrl file);
-
 //	QVERIFY(plugin != NULL);
 
 	FooMainWindow *fooMainWindow = new FooMainWindow();

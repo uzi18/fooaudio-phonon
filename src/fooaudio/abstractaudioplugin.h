@@ -44,13 +44,14 @@ namespace FooAudio
 		virtual qint64 totalTime() const = 0;
 		virtual void seek(const qint64 time) = 0;
 
+		virtual QMultiMap<QString, QString> metaData(const QUrl) = 0;
+		virtual QStringList metaData(const QString, const QUrl) = 0;
+		virtual QStringList mimeTypes() = 0;
+
 	signals:
 		void aboutToFinish();
 		void progress(const qint64 time);
 		void willPlayNow(const QUrl file);
-		void metaData(QMultiMap<QString, QString>);
-		void metaData(QStringList);
-		void mimeTypes(QStringList);
 		void metaDataChanged(QMultiMap<QString, QString> newMetaData);
 
 	public slots:
@@ -61,9 +62,6 @@ namespace FooAudio
 		virtual void enqueueNextFile(const QUrl file) = 0;
 		virtual void playFile(const QUrl file) = 0;
 		virtual void setVolume(const int volume) = 0;
-		virtual void metaData(const QUrl) = 0;
-		virtual void metaData(const QString &, const QUrl) = 0;
-		virtual void mimeTypes() = 0;
 	};
 }
 

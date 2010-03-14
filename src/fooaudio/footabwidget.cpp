@@ -40,8 +40,8 @@ FooTabWidget::FooTabWidget (QWidget *parent) : QTabWidget (parent), m_newTabActi
 
 	m_tabBar->setTabsClosable(false);
 	m_tabBar->setSelectionBehaviorOnRemove(QTabBar::SelectPreviousTab);
-	
-	
+
+
 	connect(FooPlaylistManager::instance(), SIGNAL(playlistAdded(FooTrackList*)),
 		this, SLOT(playlistAdded(FooTrackList*)));
 	connect(FooPlaylistManager::instance(), SIGNAL(playlistRemoved(FooTrackList*)),
@@ -78,8 +78,8 @@ void FooTabWidget::newTab(QString name)
 	FooPlaylistWidget *fpw = new FooPlaylistWidget ();
 	addTab (fpw, (name.isEmpty() ? "New Playlist" : name));
 
-	connect(fpw, SIGNAL(doubleClicked ( const QModelIndex & index )),
-			  this, SLOT(doubleClicked ( const QModelIndex & index )));
+	connect(fpw, SIGNAL(doubleClicked (QModelIndex)),
+			  this, SLOT(doubleClicked (QModelIndex)));
 }
 
 void FooTabWidget::cloneTab (int index)
@@ -89,8 +89,8 @@ void FooTabWidget::cloneTab (int index)
 	FooPlaylistWidget *fpwCopy = new FooPlaylistWidget ();
 	addTab (fpwCopy, newName);
 
-	connect(fpwCopy, SIGNAL(doubleClicked ( const QModelIndex & index )),
-			  this, SLOT(doubleClicked ( const QModelIndex & index )));
+	connect(fpwCopy, SIGNAL(doubleClicked (QModelIndex)),
+			  this, SLOT(doubleClicked (QModelIndex)));
 
 }
 
@@ -147,7 +147,7 @@ void FooTabWidget::previousTab()
 	setCurrentIndex(next);
 }
 
-// 
+//
 void FooTabWidget::cut (bool remove)
 {
 	FooPlaylistWidget * foo = static_cast<FooPlaylistWidget *> (currentWidget());
@@ -162,7 +162,7 @@ void FooTabWidget::cut (bool remove)
 // 		{
 // 			qDebug() << "TabWidget: bufor2 :" << item->text(0);
 // 			buffer.append(item->clone());
-// 
+//
 // 			if (remove)
 // 				delete item;
 // 		}
@@ -269,8 +269,7 @@ void FooTabWidget::playlistAdded(FooTrackList *playlist)
 	fpw->setModel(new TrackListModel(playlist, this));
 	addTab (fpw, (playlist->name()));
 
-	connect(fpw, SIGNAL(doubleClicked ( const QModelIndex & index )),
-			  this, SLOT(doubleClicked ( const QModelIndex & index )));
+	connect(fpw, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(doubleClicked(QModelIndex)));
 
 }
 
@@ -282,6 +281,6 @@ void FooTabWidget::currentPlaylistChanged(FooTrackList *playlist)
 {
 	if (!playlist)
 		return;
-	
+
 	setCurrentIndex(FooPlaylistManager::instance()->playlist(playlist));
 }
