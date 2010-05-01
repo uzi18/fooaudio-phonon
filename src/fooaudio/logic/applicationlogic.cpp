@@ -54,7 +54,7 @@ ApplicationLogic* ApplicationLogic::getInstance()
 
 void ApplicationLogic::Release()
 {
-	if (Instance)
+	if (!Instance)
 	{
 		return;
 	}

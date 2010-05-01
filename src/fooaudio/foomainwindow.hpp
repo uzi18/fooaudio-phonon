@@ -16,11 +16,11 @@ class	FooMainWindow : public QMainWindow
 	Q_DISABLE_COPY(FooMainWindow)
 
 	static FooMainWindow *Instance;
+	FooMainWindow ();
 
 	void init();
 
 public:
-	FooMainWindow ();
 	~FooMainWindow ();
 
 	static FooMainWindow * instance();

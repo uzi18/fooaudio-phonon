@@ -26,6 +26,8 @@ class FooPlaylistManager : public QObject
   
 	Q_OBJECT
 
+	FooPlaylistManager();
+
 	static FooPlaylistManager *Instance;
 
 	QList<FooTrackList *> Playlists;
@@ -44,7 +46,6 @@ class FooPlaylistManager : public QObject
 	void init();
 
 public:
-	FooPlaylistManager();
 	~FooPlaylistManager();
 
 	static FooPlaylistManager* instance();
