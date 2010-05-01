@@ -38,12 +38,7 @@ qt4_add_resources( fooaudio_SRCS resource.qrc )
 
 add_executable( fooaudio ${fooaudio_SRCS} ${fooaudio_MOCS})
 
-add_dependencies(fooaudio ${PHONON_LIBRARIES} )
-
-set_target_properties(  fooaudio PROPERTIES
-       link_flags "${PHONON_LDFLAGS_OTHER}" )
-
-target_link_libraries(fooaudio ${PHONON_LIBRARIES} ${QT_LIBRARIES})
+target_link_libraries(fooaudio ${QT_LIBRARIES})
 
 ######### install ####################################################
 
