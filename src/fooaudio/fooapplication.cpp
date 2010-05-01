@@ -71,7 +71,7 @@ int FooApplication::start(int argc, char *argv[])
 		}
 		FooAudio::AbstractAudioPlugin *plugin = aai->GetAudioPlugin();
 
-		FooMainWindow *fooMainWindow = new FooMainWindow();
+		FooMainWindow *fooMainWindow = FooMainWindow::instance();
 		fooMainWindow->setAudioEngine(plugin);
 		fooMainWindow->show();
 
