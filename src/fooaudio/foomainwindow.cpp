@@ -15,7 +15,6 @@ FooMainWindow * FooMainWindow::Instance = 0;
 FooMainWindow::FooMainWindow() : QMainWindow (), maxProgress(1000), slider_pos(-1)
 {
 	Instance = this;
-	init();
 }
 
 FooMainWindow * FooMainWindow::instance()
@@ -460,7 +459,6 @@ void FooMainWindow::createToolBars ()
 	playbackToolBar->setFloatable (false);
 
 	stopToolBarAction = new QAction (QIcon (":images/stop.png"), tr ("Stop"),this);
-	stopToolBarAction->
 	connect (stopToolBarAction, SIGNAL (triggered ()), this, SLOT (stop ()));
 	playbackToolBar->addAction (stopToolBarAction);
 

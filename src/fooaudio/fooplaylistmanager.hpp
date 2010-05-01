@@ -26,8 +26,6 @@ class FooPlaylistManager : public QObject
   
 	Q_OBJECT
 
-	FooPlaylistManager();
-
 	static FooPlaylistManager *Instance;
 
 	QList<FooTrackList *> Playlists;
@@ -43,6 +41,7 @@ class FooPlaylistManager : public QObject
 	QList<QUrl> PrevQueue;
 	int prevqueueindex;
 
+	FooPlaylistManager();
 	void init();
 
 public:

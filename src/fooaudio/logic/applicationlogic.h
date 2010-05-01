@@ -32,10 +32,10 @@ class ApplicationLogic : public QThread
 	QMap<QString, QSharedPointer<QObject> > controllersList;
 
 	static ApplicationLogic* Instance;
+
 	ApplicationLogic();
 
 public:
-
 	~ApplicationLogic();
 
 	QSharedPointer<QObject> getController(QString controllerName);
