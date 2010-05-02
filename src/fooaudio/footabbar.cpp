@@ -19,9 +19,9 @@ FooTabBar::FooTabBar (QWidget *parent) : QTabBar (parent), m_showTabBarWhenOneTa
 	setElideMode (Qt::ElideRight);
 	setUsesScrollButtons (true);
 
-	connect (this, SIGNAL (customContextMenuRequested (const QPoint &)), this, SLOT (contextMenuRequested (const QPoint &)));
+	connect(this, SIGNAL (customContextMenuRequested (const QPoint &)), this, SLOT (contextMenuRequested (const QPoint &)));
 
-	setMovable (true);
+	setMovable(true);
 }
 
 void FooTabBar::contextMenuRequested (const QPoint &position)
@@ -169,7 +169,7 @@ QSize FooTabBar::tabSizeHint (int index) const
 void FooTabBar::tabInserted (int position)
 {
 	Q_UNUSED(position);
-	updateVisibility ();
+	updateVisibility();
 }
 
 void FooTabBar::tabRemoved (int position)

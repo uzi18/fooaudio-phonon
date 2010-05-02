@@ -75,26 +75,25 @@ QAction *FooTabWidget::previousTabAction() const
 
 void FooTabWidget::newTab(QString name)
 {
-	FooPlaylistWidget *fpw = new FooPlaylistWidget ();
-	addTab (fpw, (name.isEmpty() ? "New Playlist" : name));
+	FooTrackList *tracklist = new FooTrackList(name.isEmpty() ? "New Playlist" : name);
 
-	connect(fpw, SIGNAL(doubleClicked (QModelIndex)),
-			  this, SLOT(doubleClicked (QModelIndex)));
+	FooPlaylistManager::instance()->addPlaylist(tracklist);
+
+//	connect(fpw, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(doubleClicked(QModelIndex)));
 }
 
-void FooTabWidget::cloneTab (int index)
+void FooTabWidget::cloneTab(int index)
 {
 	QString newName = QString(tr("Copy of %1")).arg(tabText(index));
 	//FooPlaylistWidget *fpw = qobject_cast<FooPlaylistWidget *> (widget(index));
 	FooPlaylistWidget *fpwCopy = new FooPlaylistWidget ();
 	addTab (fpwCopy, newName);
 
-	connect(fpwCopy, SIGNAL(doubleClicked (QModelIndex)),
-			  this, SLOT(doubleClicked (QModelIndex)));
+	connect(fpwCopy, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(doubleClicked(QModelIndex)));
 
 }
 
-void FooTabWidget::closeTab (int index)
+void FooTabWidget::closeTab(int index)
 {
 	if (count() > 1)
 	{
