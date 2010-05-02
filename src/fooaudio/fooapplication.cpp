@@ -58,7 +58,7 @@ int FooApplication::start(int argc, char *argv[])
 	{
 		qDebug() << loader.errorString();
 		QMessageBox msgBox;
-		msgBox.setText("Nie znaleziono wtyczki AudioPlugin.");
+		msgBox.setText(tr("Can't find Audio Plugin."));
 		return msgBox.exec();
 	}
 //	QVERIFY(p != NULL);
@@ -67,7 +67,9 @@ int FooApplication::start(int argc, char *argv[])
 		FooAudio::AbstractAudioInterface *aai = qobject_cast<FooAudio::AbstractAudioInterface*>(p);
 		if(!aai)
 		{
-		//		 QFAIL("Cannot cast to AbstractAudioInterfae!");
+			QMessageBox msgBox;
+			msgBox.setText(tr("Can't cast to AbstractAudioInterface!."));
+			return msgBox.exec();
 		}
 		FooAudio::AbstractAudioPlugin *plugin = aai->GetAudioPlugin();
 
