@@ -33,8 +33,9 @@ class ApplicationLogic : public QThread
 
 	static ApplicationLogic* Instance;
 
-public:
 	ApplicationLogic();
+
+public:
 	~ApplicationLogic();
 
 	QSharedPointer<QObject> getController(QString controllerName);

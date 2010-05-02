@@ -41,10 +41,10 @@ class FooPlaylistManager : public QObject
 	QList<QUrl> PrevQueue;
 	int prevqueueindex;
 
+	FooPlaylistManager();
 	void init();
 
 public:
-	FooPlaylistManager();
 	~FooPlaylistManager();
 
 	static FooPlaylistManager* instance();

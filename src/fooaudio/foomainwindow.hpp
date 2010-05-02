@@ -17,10 +17,10 @@ class	FooMainWindow : public QMainWindow
 
 	static FooMainWindow *Instance;
 
+	FooMainWindow ();
 	void init();
 
 public:
-	FooMainWindow ();
 	~FooMainWindow ();
 
 	static FooMainWindow * instance();
