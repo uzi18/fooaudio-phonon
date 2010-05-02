@@ -19,6 +19,7 @@
 
 #include "fooapplication.h"
 #include "foomainwindow.hpp"
+#include "foometadatamanager.hpp"
 #include "logic/applicationlogic.h"
 #include "abstractaudioplugin.h"
 #include "abstractaudiointerface.h"
@@ -76,6 +77,8 @@ int FooApplication::start(int argc, char *argv[])
 		FooMainWindow *fooMainWindow = FooMainWindow::instance();
 		fooMainWindow->setAudioEngine(plugin);
 		fooMainWindow->show();
+
+		FooMetaDataManager::instance();
 
 		return m_application->exec();
 	}
