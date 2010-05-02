@@ -7,7 +7,7 @@ set( fooaudio_SRCS
     fooplaylistwidget.cpp
     footabbar.cpp
     footabwidget.cpp
-    fooplaylistmanager.cpp
+    foometadatamanager.cpp
     footracklist.cpp
     fooplaylistmanager.cpp
     footrack.cpp
@@ -23,6 +23,7 @@ set( fooaudio_MOC
     foochangename.hpp
     foomainwindow.hpp
     fooplaylistmanager.hpp
+    foometadatamanager.hpp
     #fooplaylistwidget.hpp
     footabbar.hpp
     footabwidget.hpp
