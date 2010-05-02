@@ -15,7 +15,7 @@ FooPlaylistManager::~FooPlaylistManager()
 
 void FooPlaylistManager::init()
 {
-	qDebug() << "MANAGER INIT";
+	qDebug() << "FooPlaylistManager: INIT";
 }
 
 FooPlaylistManager* FooPlaylistManager::instance()
@@ -31,7 +31,7 @@ FooPlaylistManager* FooPlaylistManager::instance()
 
 void FooPlaylistManager::addPlaylist(FooTrackList *playlist)
 {
-	qDebug() << "MANAGER ADD" << playlist->name();
+	qDebug() << "FooPlaylistManager: ADD" << playlist->name();
 
 	Playlists.append(playlist);
 	emit playlistAdded(playlist);
@@ -223,20 +223,20 @@ void FooPlaylistManager::addToPrevQueue (QUrl path)
 
 void FooPlaylistManager::addFileToQueue (QUrl file)
 {
-	qDebug() << "FooMainWindow::addToQueue";
+	qDebug() << "FooPlaylistManager::addToQueue";
 	qDebug() << "plik dodany do kolejki: " << file.toString();
 	Queue.prepend(file);
 }
 
 void FooPlaylistManager::removeFileFromQueue (QUrl file)
 {
-	qDebug() << "FooMainWindow::removeFromQueue";
+	qDebug() << "FooPlaylistManager::removeFromQueue";
 	qDebug() << "plik usuniety z kolejki: " << file.toString();
 	Queue.removeOne(file);
 }
 
 void FooPlaylistManager::clearQueue()
 {
-	qDebug() << "FooMainWindow::clearQueue";
+	qDebug() << "FooPlaylistManager::clearQueue";
 	Queue.clear();
 }
