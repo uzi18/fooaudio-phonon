@@ -22,7 +22,7 @@ class FooTrack
 	QString Year;
 	QString Album;
 	QString Track;
-
+	
 public:
 	FooTrack();
 	FooTrack(QUrl file);

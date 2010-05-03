@@ -81,6 +81,8 @@ void FooMetaDataManager::timeout()
 	}
 
 	CurrentTrack = Tracks.first();
+
+	qDebug() << "FooMetaDataManager: " << QUrl(CurrentTrack->file()).toString();
 	QMultiMap<QString, QString> data = FooMainWindow::instance()->audioEngine()->metaData(CurrentTrack->file());
 	if (!data.isEmpty())
 	{
