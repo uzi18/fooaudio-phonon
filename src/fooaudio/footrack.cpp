@@ -1,5 +1,6 @@
 #include <QDebug>
 
+#include "foometadatamanager.hpp"
 #include "footrack.hpp"
 
 FooTrack::FooTrack()
@@ -9,6 +10,7 @@ FooTrack::FooTrack()
 FooTrack::FooTrack(QUrl file) : File(file)
 {
 	qDebug() << "footrack " <<file.toString();
+	FooMetaDataManager::instance()->addTrack(this);
 }
 
 bool FooTrack::operator == (const FooTrack &compare) const
