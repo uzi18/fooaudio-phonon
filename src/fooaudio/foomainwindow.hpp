@@ -26,6 +26,7 @@ public:
 	static FooMainWindow * instance();
 
 	void setAudioEngine(FooAudio::AbstractAudioPlugin * engine);
+	FooAudio::AbstractAudioPlugin * audioEngine() {return fooAudioEngine;}
 
 	FooTabWidget *fooTabWidget;
 

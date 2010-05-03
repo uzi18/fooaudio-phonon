@@ -1,6 +1,8 @@
 #include <QDebug>
 #include <QTimer>
 
+#include "foomainwindow.hpp"
+#include "abstractaudioplugin.h"
 #include "foometadatamanager.hpp"
 #include "footrack.hpp"
 
@@ -65,4 +67,32 @@ void FooMetaDataManager::timeout()
 {
 	qDebug() << "FooMetaDataManager: timeout()";
 	Refresh->start(500);
+
+	if (Tracks.isEmpty() || !FooMainWindow::instance()->audioEngine())
+		return;
+
+	// if unsuccesfull so move to end
+	if (CurrentTrack)
+	{
+		deleteTrack(CurrentTrack);
+		addTrack(CurrentTrack);
+		CurrentTrack = 0;
+		return;
+	}
+
+	CurrentTrack = Tracks.first();
+	QMultiMap<QString, QString> data = FooMainWindow::instance()->audioEngine()->metaData(CurrentTrack->file());
+	if (!data.isEmpty())
+	{
+		// TODO: add some logic here
+		CurrentTrack->setArtist(data.key("ARTIST"));
+		CurrentTrack->setAlbum(data.key("ARLBUM"));
+		CurrentTrack->setTitle(data.key("TITLE"));
+		CurrentTrack->setYear(data.key("DATE"));
+		// "GENRE"
+		CurrentTrack->setTrack(data.key("TRACKNUMBER"));
+		// "DESCRIPTION"
+	}
+	deleteTrack(CurrentTrack);
+	CurrentTrack = 0;
 }
