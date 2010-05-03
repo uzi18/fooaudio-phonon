@@ -82,18 +82,38 @@ void FooMetaDataManager::timeout()
 
 	CurrentTrack = Tracks.first();
 
-	qDebug() << "FooMetaDataManager: " << QUrl(CurrentTrack->file()).toString();
+	qDebug() << "FooMetaDataManager: " << CurrentTrack->file().toString();
 	QMultiMap<QString, QString> data = FooMainWindow::instance()->audioEngine()->metaData(CurrentTrack->file());
 	if (!data.isEmpty())
 	{
-		// TODO: add some logic here
-		CurrentTrack->setArtist(data.key("ARTIST"));
-		CurrentTrack->setAlbum(data.key("ARLBUM"));
-		CurrentTrack->setTitle(data.key("TITLE"));
-		CurrentTrack->setYear(data.key("DATE"));
-		// "GENRE"
-		CurrentTrack->setTrack(data.key("TRACKNUMBER"));
-		// "DESCRIPTION"
+		QString value;
+		foreach(QString key, data.keys())
+		{
+			QList<QString> values = data.values(key);
+			value = values.takeFirst();
+			//for (int i = 0; i < values.size(); ++i)
+			//qDebug() << "PE:" << key << values.at(i);
+			qDebug() << "PE:" << key << value;
+
+			// TODO: add some logic here
+			if (key == "ARTIST")
+				CurrentTrack->setArtist(value);
+
+			else if (key == "ALBUM")
+				CurrentTrack->setAlbum(value);
+
+			else if (key == "TITLE")
+				CurrentTrack->setTitle(value);
+
+			else if (key == "DATE")
+				CurrentTrack->setYear(value);
+
+			else if (key == "TRACKNUMBER")
+				CurrentTrack->setTrack(value);
+
+			// "GENRE"
+			// "DESCRIPTION"
+		}
 	}
 	deleteTrack(CurrentTrack);
 	CurrentTrack = 0;
