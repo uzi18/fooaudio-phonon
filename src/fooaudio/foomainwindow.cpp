@@ -673,6 +673,8 @@ void FooMainWindow::readSettings()
 
 	if (tabsCount > 0)
 	{
+		FooTrack *track;
+		FooTrackList *tracklist;
 		for (int i = 0; i < tabsCount; ++i)
 		{
 /*			playlists.setArrayIndex(i);
@@ -690,16 +692,16 @@ void FooMainWindow::readSettings()
 			playlists.endArray();*/
 
 			playlists.setArrayIndex(i);
-			FooTrackList *tracklist = new FooTrackList(playlists.value("name").toString());
+
+			tracklist = new FooTrackList(playlists.value("name").toString());
 			int songsCount = playlists.beginReadArray("playlist");
 
 			for (int j = 0; j < songsCount; ++j)
 			{
 				playlists.setArrayIndex(j);
 
-				FooTrack track(QUrl(playlists.value("path").toString()));
-				FooMetaDataManager::instance()->addTrack(&track);
-				tracklist->append(track);
+				track = new FooTrack(QUrl(playlists.value("path").toString()));
+				tracklist->append(*track);
 			}
 			playlists.endArray();
 			FooPlaylistManager::instance()->addPlaylist(tracklist);
