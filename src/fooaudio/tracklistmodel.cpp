@@ -31,7 +31,7 @@ QVariant TrackListModel::data(const QModelIndex &index, int role) const
 	switch (role)
 	{
 		case Qt::DisplayRole:
-			if (index.column() == 0) // long or shor name?
+			if (index.column() == 0 && trr.title().isEmpty()) // long or shor name?
 				return trr.file();
 			else
 				return QString("%1 (%2)").arg(trr.title(), trr.artist());
